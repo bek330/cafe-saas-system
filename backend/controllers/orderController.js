@@ -64,10 +64,20 @@ const createOrder = async (req, res) => {
 // GET ALL ORDERS WITH ITEMS
 const getOrders = async (req, res) => {
   try {
-    const ordersResult = await pool.query(
-      "SELECT * FROM orders ORDER BY created_at DESC"
-    );
+    const { status } = req.query;
 
+    let query = "SELECT * FROM orders";
+    let values = [];
+
+    if (status) {
+      query += " WHERE status = $1";
+      values.push(status);
+    }
+
+    query += " ORDER BY created_at DESC";
+
+    const ordersResult = await pool.query(query, values);
+    
     const orders = ordersResult.rows;
 
     for (let order of orders) {
@@ -111,7 +121,7 @@ const updateOrderStatus = async (req, res) => {
     }
 
     const result = await pool.query(
-      "UPDATE orders SET status = $1 WHERE id = $2 RETURNING *",
+      "UPDATE orders SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *",
       [status, id]
     );
 
