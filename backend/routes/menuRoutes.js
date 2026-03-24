@@ -8,5 +8,6 @@ const {
 
 router.post("/", createMenuItem);
 router.get("/", getMenuItems);
+router.put("/:id/availability", toggleAvailability);
 
 module.exports = router;

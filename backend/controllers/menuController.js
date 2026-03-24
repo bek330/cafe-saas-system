@@ -38,9 +38,11 @@ const getMenuItems = async (req, res) => {
       `SELECT 
         menu_items.*, 
         categories.name AS category_name
-       FROM menu_items
-       JOIN categories ON menu_items.category_id = categories.id
-       ORDER BY menu_items.created_at DESC`
+      FROM menu_items
+      JOIN categories 
+      ON menu_items.category_id = categories.id
+      WHERE menu_items.is_available = true
+      ORDER BY menu_items.created_at DESC`
     );
 
     res.json(result.rows);
@@ -50,7 +52,27 @@ const getMenuItems = async (req, res) => {
   }
 };
 
+const toggleAvailability = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(
+      `UPDATE menu_items 
+       SET is_available = NOT is_available 
+       WHERE id = $1 
+       RETURNING *`,
+      [id]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 module.exports = {
   createMenuItem,
   getMenuItems,
+  toggleAvailability,
 };
