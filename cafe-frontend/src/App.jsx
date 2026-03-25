@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MenuPage from "./pages/MenuPage";
+import MenuPage from "./pages/menuPages";
 
 function App() {
   return (
