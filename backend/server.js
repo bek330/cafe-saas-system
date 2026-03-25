@@ -25,6 +25,11 @@ const orderRoutes = require("./routes/orderRoutes");
 
 app.use("/api/orders", orderRoutes);
 
+// QR code routes
+const qrRoutes = require("./routes/qrRoutes");
+
+app.use("/api/qr", qrRoutes);
+
 // DB TEST ROUTE
 app.get("/api/test-db", async (req, res) => {
   try {
