@@ -35,17 +35,43 @@ const createMenuItem = async (req, res) => {
 const getMenuItems = async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT 
-        menu_items.*, 
-        categories.name AS category_name
-      FROM menu_items
-      JOIN categories 
-      ON menu_items.category_id = categories.id
-      WHERE menu_items.is_available = true
-      ORDER BY menu_items.created_at DESC`
-    );
+  `SELECT 
+    categories.id AS category_id,
+    categories.name AS category_name,
+    menu_items.id,
+    menu_items.name,
+    menu_items.description,
+    menu_items.price,
+    menu_items.image_url
+  FROM categories
+  LEFT JOIN menu_items 
+  ON categories.id = menu_items.category_id 
+  AND menu_items.is_available = true
+  ORDER BY categories.name`
+);
 
-    res.json(result.rows);
+    const data = {};
+
+    for (let row of result.rows) {
+      if (!data[row.category_id]) {
+        data[row.category_id] = {
+          category: row.category_name,
+          items: [],
+        };
+      }
+
+      if (row.id) {
+        data[row.category_id].items.push({
+          id: row.id,
+          name: row.name,
+          description: row.description,
+          price: row.price,
+          image_url: row.image_url,
+        });
+      }
+    }
+
+    res.json(Object.values(data));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });

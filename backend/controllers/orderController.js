@@ -4,10 +4,9 @@ const pool = require("../config/db");
 const createOrder = async (req, res) => {
   const { table_number, items } = req.body;
 
-  if (!table_number || !items || items.length === 0) {
-    return res.status(400).json({ error: "Invalid order data" });
-  }
-
+  if (!table_number || typeof table_number !== "number") {
+  return res.status(400).json({ error: "Valid table_number is required" });}
+  
   const client = await pool.connect();
 
   try {
