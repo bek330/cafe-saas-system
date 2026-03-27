@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MenuPage from "./pages/menuPages";
+import MenuHome from "./pages/MenuHome";
+import CategoryPage from "./pages/CategoryPage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/menu" element={<MenuHome />} />
+        <Route path="/menu/:categoryId" element={<CategoryPage />} />
       </Routes>
     </Router>
   );
