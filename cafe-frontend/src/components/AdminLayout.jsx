@@ -2,28 +2,42 @@ import { Link } from "react-router-dom";
 
 function AdminLayout({ children }) {
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", height: "100vh" }}>
       
-      {/* Sidebar */}
+      {/* SIDEBAR */}
       <div
         style={{
-          width: "200px",
-          background: "#222",
+          width: "220px",
+          background: "#747474",
           color: "#fff",
-          minHeight: "100vh",
           padding: "20px",
         }}
       >
-        <h3>Admin</h3>
+        <h2 style={{color: "#fff"}}>Admin</h2>
 
-        <nav>
-          <div><Link to="/admin" style={{ color: "#fff" }}>Orders</Link></div>
-          <div><Link to="/admin/add-item" style={{ color: "#fff" }}>Add Item</Link></div>
+        <nav style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <Link to="/admin" style={{ color: "#fff" }}>
+            Orders
+          </Link>
+
+          <Link to="/admin/menu-list" style={{ color: "#fff" }}>
+            Menu List
+          </Link>
+
+
+          <Link to="/admin/new-menu" style={{ color: "#fff" }}>
+            Add Menu Item
+          </Link>
+
+
+          <Link to="/admin/categories" style={{ color: "#fff" }}>
+            Categories
+          </Link>
         </nav>
       </div>
 
-      {/* Content */}
-      <div style={{ flex: 1, padding: "20px" }}>
+      {/* CONTENT */}
+      <div style={{ flex: 1, padding: "20px", overflowY: "auto" }}>
         {children}
       </div>
     </div>

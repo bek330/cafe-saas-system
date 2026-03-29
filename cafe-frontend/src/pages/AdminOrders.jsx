@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import AdminLayout from "../components/AdminLayout";
 
-function AdminPage() {
+function AdminOrders() {
   const [orders, setOrders] = useState([]);
 
   const fetchOrders = async () => {
@@ -17,20 +17,12 @@ function AdminPage() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchOrders();
-
-    const interval = setInterval(() => {
-      fetchOrders();
-    }, 5000); // every 5 seconds
-
-    return () => clearInterval(interval);
   }, []);
 
   const updateStatus = async (id, status) => {
     try {
       await API.put(`/orders/${id}/status`, { status });
-
-      // Refresh orders after update
-      fetchOrders();
+      fetchOrders(); // refresh after update
     } catch (err) {
       console.error(err);
     }
@@ -45,17 +37,16 @@ function AdminPage() {
         <div
           key={order.id}
           style={{
-            border: "1px solid #ccc",
-            borderRadius: "10px",
+            border: "1px solid #ddd",
+            marginBottom: "20px",
             padding: "15px",
-            marginBottom: "15px",
-            background: "#f9f9f9",
+            borderRadius: "10px",
           }}
         >
           <h3>Table {order.table_number}</h3>
           <p>
             Status:{" "}
-            <span
+            <strong
               style={{
                 color:
                   order.status === "pending"
@@ -66,35 +57,33 @@ function AdminPage() {
               }}
             >
               {order.status}
-            </span>
+            </strong>
           </p>
 
-          <div>
-            {order.items?.map((item, index) => (
-              <div key={index}>
-                {item.name} x {item.quantity}
-              </div>
-            ))}
-          </div>
+          <div style={{ marginBottom: "10px" }}>
+            <button onClick={() => updateStatus(order.id, "pending")}>
+              Pending
+            </button>
 
-          <strong>Total: ${order.total?.toFixed(2)}</strong>
-
-          <div>
             <button onClick={() => updateStatus(order.id, "preparing")}>
               Preparing
             </button>
 
-            <button onClick={() => updateStatus(order.id, "pending")}>
-              pending
-            </button>
-
-            <button
-              disabled={order.status === "served"}
-              onClick={() => updateStatus(order.id, "served")}
-            >
+            <button onClick={() => updateStatus(order.id, "served")}>
               Served
             </button>
           </div>
+
+          <ul style={{textDecoration: "none"}}>
+            {order.items.map((item, i) => (
+              <li  key={i}
+              >
+                {item.name} x {item.quantity} (${item.price})
+              </li>
+            ))}
+          </ul>
+
+          <strong>Total: ${order.total.toFixed(2)}</strong>
         </div>
       ))}
     </div>
@@ -102,4 +91,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default AdminOrders;
