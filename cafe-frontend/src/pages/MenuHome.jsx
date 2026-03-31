@@ -31,20 +31,14 @@ function MenuHome() {
     <div>
       <Header />
 
-      <h1 style={{ textAlign: "center" }}>Our Menu</h1>
+      <h1 >Our Menu</h1>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "0 20px" }}>
-        <h2 style={{ marginLeft: "20px" }}>Categories</h2>
+      <div >
+        <h2 >Categories</h2>
       </div>
 
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-          gap: "15px",
-          padding: "20px",
-          
-        }}
+        
       >
         {categories.map((cat) => (
           <CategoryCard

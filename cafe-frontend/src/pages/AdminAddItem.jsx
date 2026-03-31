@@ -55,7 +55,7 @@ function AdminAddItem() {
     <AdminLayout>
       <h1>Add Menu Item</h1>
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
+      <form onSubmit={handleSubmit} >
         
         <input name="name" placeholder="Name" value={form.name} onChange={handleChange} /><br /><br />
 

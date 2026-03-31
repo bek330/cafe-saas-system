@@ -19,19 +19,10 @@ function CategoryCard({ category, onClick }) {
       }}
     >
       {/* dark overlay */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "rgba(0,0,0,0.4)",
-          borderRadius: "12px",
-        }}
-      />
+      <div />
 
       {/* text */}
-      <span style={{ position: "relative", zIndex: 1, }}>
-        {category.name}
-      </span>
+      <span>{category.name}</span>
     </div>
   );
 }

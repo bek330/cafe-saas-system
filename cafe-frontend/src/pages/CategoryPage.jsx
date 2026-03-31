@@ -111,82 +111,19 @@ function CategoryPage() {
       <Header />
 
       {/* MAIN CONTENT */}
-      <div style={{ display: "flex" }}>
+      <div>
         {/* LEFT — MENU */}
 
-        <div
-          style={{
-            flex: 3,
-            padding: "20px",
-            maxWidth: "700px",
-            margin: "0 auto",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "10px",
-              padding: "0px 20px",
-              flexWrap: "nowrap",
-              flexDirection: "column",
-            }}
-          >
-            <h2
-              style={{
-                color: "#333",
-                marginBottom: "20px",
-                textAlign: "center",
-                fontSize: "70px",
-                fontWeight: "bold",
-                marginLeft: "200px",
-              }}
-            >
-              {categoryName}
-            </h2>
-            <button
-              onClick={() => navigate(-1)}
-              style={{
-                backgroundColor: "#33333300",
-                border: "none",
-                color: "#1f1e1e",
-                padding: "10px 15px",
-                borderRadius: "8px",
-                marginBottom: "20px",
-                cursor: "pointer",
-                fontSize: "16px",
-              }}
-            >
-              ⬅ Back
-            </button>
+        <div>
+          <div>
+            <h2>{categoryName}</h2>
+            <button onClick={() => navigate(-1)}>⬅ Back</button>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-              gap: "20px",
-            }}
-          >
+          <div>
             {items.map((item) => (
-              <div
-                key={item.id}
-                style={{
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                  borderRadius: "12px",
-                  padding: "10px",
-                }}
-              >
-                <img
-                  src={item.image_url}
-                  alt={item.name}
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                  }}
-                />
+              <div key={item.id}>
+                <img src={item.image_url} alt={item.name} />
                 <h3>{item.name}</h3>
                 <p>${item.price}</p>
 
@@ -197,30 +134,14 @@ function CategoryPage() {
         </div>
 
         {/* RIGHT — CART */}
-        <div
-          style={{
-            width: "300px",
-            padding: "20px",
-            position: "sticky",
-            top: "80px", // below header
-            height: "fit-content",
-            marginRight: "40px",
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              padding: "15px",
-              borderRadius: "12px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            }}
-          >
+        <div>
+          <div>
             <h2>Cart</h2>
 
             {cart.length === 0 && <p>No items</p>}
 
             {cart.map((item) => (
-              <div key={item.id} style={{ marginBottom: "10px" }}>
+              <div key={item.id}>
                 <div>{item.name}</div>
 
                 <div>
@@ -235,27 +156,10 @@ function CategoryPage() {
               placeholder="Table number"
               value={tableNumber}
               onChange={(e) => setTableNumber(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "8px",
-                marginBottom: "10px",
-              }}
             />
 
             <h3>Total: ${total.toFixed(2)}</h3>
-            <button
-              onClick={placeOrder}
-              style={{
-                width: "100%",
-                padding: "10px",
-                background: "black",
-                color: "white",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Place Order
-            </button>
+            <button onClick={placeOrder}>Place Order</button>
           </div>
         </div>
       </div>

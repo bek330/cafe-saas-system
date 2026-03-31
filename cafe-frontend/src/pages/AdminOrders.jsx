@@ -36,12 +36,7 @@ function AdminOrders() {
       {orders.map((order) => (
         <div
           key={order.id}
-          style={{
-            border: "1px solid #ddd",
-            marginBottom: "20px",
-            padding: "15px",
-            borderRadius: "10px",
-          }}
+          
         >
           <h3>Table {order.table_number}</h3>
           <p>
@@ -60,7 +55,7 @@ function AdminOrders() {
             </strong>
           </p>
 
-          <div style={{ marginBottom: "10px" }}>
+          <div>
             <button onClick={() => updateStatus(order.id, "pending")}>
               Pending
             </button>
@@ -74,7 +69,7 @@ function AdminOrders() {
             </button>
           </div>
 
-          <ul style={{textDecoration: "none"}}>
+          <ul >
             {order.items.map((item, i) => (
               <li  key={i}
               >

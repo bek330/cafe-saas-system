@@ -67,5 +67,29 @@ router.put("/:id/enable", async (req, res) => {
     res.status(500).json({ error: "Failed to update item" });
   }
 });
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, description, price, category_id, image_url } = req.body;
+
+    const result = await pool.query(
+      `UPDATE menu_items
+       SET name = $1,
+           description = $2,
+           price = $3,
+           category_id = $4,
+           image_url = $5,
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $6
+       RETURNING *`,
+      [name, description, price, category_id, image_url, id]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update item" });
+  }
+});
 
 module.exports = router;
