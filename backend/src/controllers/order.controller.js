@@ -49,23 +49,39 @@ exports.getOrders = async (req, res) => {
 
 // UPDATE STATUS
 exports.updateStatus = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
 
-    const validStatuses = ["pending", "accepted", "completed"];
+        // get current status
+        const current = await db.query(
+            `SELECT status FROM orders WHERE id = $1`,
+            [id]
+        );
 
-    if (!validStatuses.includes(status)) {
-      return res.status(400).json({ error: "Invalid status" });
+        const currentStatus = current.rows[0].status;
+
+        // 🚫 prevent invalid transitions
+        const validTransitions = {
+            pending: ["accepted"],
+            accepted: ["completed"],
+            completed: []
+        };
+
+        if (!validTransitions[currentStatus].includes(status)) {
+            return res.status(400).json({
+                error: `Invalid status change from ${currentStatus} to ${status}`
+            });
+        }
+
+        await db.query(
+            `UPDATE orders SET status = $1 WHERE id = $2`,
+            [status, id]
+        );
+
+        res.json({ message: "Order status updated" });
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
-
-    await db.query(
-      `UPDATE orders SET status = $1 WHERE id = $2`,
-      [status, id]
-    );
-
-    res.json({ message: "Order status updated" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
 };

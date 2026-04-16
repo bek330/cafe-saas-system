@@ -29,7 +29,7 @@ function OrderSuccess() {
       <h1 className="text-3xl font-bold mb-4">✅ Order Placed!</h1>
 
       <p className="mb-2">
-        Order:  <strong> {orderId}</strong>
+        Order: #<strong>{orderId}</strong>
       </p>
 
       <p className="mb-2">Table Number: {items[0]?.tableNumber || "Not specified"}</p>

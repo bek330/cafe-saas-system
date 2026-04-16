@@ -4,9 +4,6 @@ import { getMenuByCategory } from "../api/menuApi";
 import { useCart } from "../contexts/useCart";
 import { getCategories } from "../api/categoryApi";
 
-
-
-
 function Category() {
   // Get category ID from URL
   const { id } = useParams();
@@ -18,22 +15,21 @@ function Category() {
   // State for menu items and loading status
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const data = await getCategories();
-      setCategories(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchData = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchData();
-}, []);
+    fetchData();
+  }, []);
 
   // Fetch menu items when category ID changes
   useEffect(() => {
@@ -51,7 +47,6 @@ function Category() {
     fetchData();
   }, [id]);
   // Handle order placement
-  
 
   return (
     <div className="flex">
@@ -59,16 +54,19 @@ function Category() {
 
       <div className="flex-1 p-6">
         <div className="flex items-center mb-6">
-          <button onClick={() => navigate(`/order`)} className="mr-4">
+          <button onClick={() => navigate(`/menu`)} className="mr-4">
             Back
           </button>
-          
-          {categories.map((cat) => cat.id === parseInt(id) && (
-            <h1 key={cat.id} className="text-2xl font-bold">
-              {cat.name}
-            </h1>
-          ))}
-        </div>  
+
+          {categories.map(
+            (cat) =>
+              cat.id === parseInt(id) && (
+                <h1 key={cat.id} className="text-2xl font-bold">
+                  {cat.name}
+                </h1>
+              ),
+          )}
+        </div>
 
         {loading ? (
           <div className="animate-pulse grid grid-cols-2 md:grid-cols-3 gap-4">
