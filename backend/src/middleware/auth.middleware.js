@@ -1,9 +1,21 @@
-module.exports = (req, res, next) => {
-  const token = req.headers.authorization;
+const jwt = require('jsonwebtoken');
 
-  if (token !== "admin-token") {
-    return res.status(401).json({ error: "Unauthorized" });
+const SECRET = "mysecretkey";
+
+module.exports = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ error: 'No token provided' });
   }
 
-  next();
+  try {
+    const decoded = jwt.verify(authHeader, SECRET);
+
+    req.user = decoded; // attach user info
+    next();
+
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
 };

@@ -7,24 +7,31 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    const res = await fetch("http://localhost:5000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const res = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (!res.ok) {
-      alert("Invalid credentials");
-      return;
+      if (!res.ok) {
+        alert("Invalid credentials");
+        return;
+      }
+
+      const data = await res.json();
+
+      // save token
+      localStorage.setItem("token", data.token);
+
+      // go to admin
+      navigate("/admin");
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Something went wrong");
     }
-
-    const data = await res.json();
-
-    localStorage.setItem("token", data.token);
-
-    navigate("/admin");
   };
 
   return (
