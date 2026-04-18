@@ -1,5 +1,13 @@
 const db = require('../config/db');
 
+exports.getAll = async () => {
+  const result = await db.query(
+    `SELECT * FROM menu_items ORDER BY id DESC`
+  );
+
+  return result.rows;
+};
+
 exports.getByCategory = async (categoryId) => {
   const result = await db.query(
     `SELECT * FROM menu_items 
@@ -39,10 +47,10 @@ exports.update = async (id, data) => {
   return result.rows[0];
 };
 
-exports.disable = async (id) => {
+exports.toggleAvailability = async (id) => {
   const result = await db.query(
-    `UPDATE menu_items 
-     SET is_available = false 
+    `UPDATE menu_items
+     SET is_available = NOT is_available
      WHERE id = $1
      RETURNING *`,
     [id]

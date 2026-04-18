@@ -33,13 +33,22 @@ exports.updateItem = async (req, res) => {
     }
 };
 
-exports.disableItem = async (req, res) => {
+exports.toggleAvailability = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const item = await service.disable(id);
+        const item = await service.toggleAvailability(id);
 
         res.json(item);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.getAll = async (req, res) => {
+    try {
+        const items = await service.getAll();
+        res.json(items);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

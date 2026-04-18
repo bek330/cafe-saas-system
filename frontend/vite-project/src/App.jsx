@@ -7,9 +7,8 @@ import Admin from "./pages/Admin";
 import Kitchen from "./pages/Kitchen";
 import Login from "./pages/Login";
 import ProtectedRoute from "./contexts/AuthContext";
-
-// 🔐 protect admin
-
+import AdminMenu from "./pages/AdminMenu";
+import AdminLayout from "./layouts/AdminLayout";
 
 function App() {
   return (
@@ -23,13 +22,16 @@ function App() {
 
         {/* 🔐 protected admin */}
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
             <ProtectedRoute>
-              <Admin />
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Admin />} />
+          <Route path="menu" element={<AdminMenu />} />
+        </Route>
 
         {/* decide if kitchen needs auth */}
         <Route path="/kitchen" element={<Kitchen />} />
