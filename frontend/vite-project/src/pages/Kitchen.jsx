@@ -5,31 +5,31 @@ function Kitchen() {
   const [orders, setOrders] = useState([]);
 
   const fetchOrders = async () => {
-  try {
-    const token = localStorage.getItem("token");
+    try {
+      
 
-    const res = await fetch("http://localhost:5000/orders", {
-      headers: {
-        Authorization: token,
-      },
-    });
+      const res = await fetch("http://localhost:5000/orders", {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
 
-    if (!res.ok) {
-      console.error("Unauthorized or failed:", res.status);
-      return;
+      if (!res.ok) {
+        console.error("Unauthorized or failed:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+
+      const active = data
+        .filter((o) => o.status === "pending" || o.status === "accepted")
+        .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+      setOrders(active);
+    } catch (err) {
+      console.error("Fetch error:", err);
     }
-
-    const data = await res.json();
-
-    const active = data
-      .filter((o) => o.status === "pending" || o.status === "accepted")
-      .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-
-    setOrders(active);
-  } catch (err) {
-    console.error("Fetch error:", err);
-  }
-};
+  };
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -43,7 +43,7 @@ function Kitchen() {
       <h1 className="text-3xl font-bold mb-6">Kitchen Display</h1>
 
       <div className="grid grid-cols-3 gap-6">
-        {orders.map(order => (
+        {orders.map((order) => (
           <KitchenCard key={order.id} order={order} />
         ))}
       </div>

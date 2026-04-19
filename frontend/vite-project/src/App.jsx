@@ -25,7 +25,7 @@ function App() {
         <Route
           path="/admin/*"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="admin">
               <AdminLayout />
             </ProtectedRoute>
           }
@@ -36,7 +36,14 @@ function App() {
         </Route>
 
         {/* decide if kitchen needs auth */}
-        <Route path="/kitchen" element={<Kitchen />} />
+        <Route
+          path="/kitchen"
+          element={
+            <ProtectedRoute role="kitchen">
+              <Kitchen />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/login" element={<Login />} />
 

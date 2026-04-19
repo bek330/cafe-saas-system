@@ -23,11 +23,18 @@ function Login() {
 
       const data = await res.json();
 
-      // save token
       localStorage.setItem("token", data.token);
 
-      // go to admin
-      navigate("/admin");
+      // decode token to get role
+      const payload = JSON.parse(atob(data.token.split(".")[1]));
+
+      if (payload.role === "admin") {
+        navigate("/admin");
+      } else if (payload.role === "kitchen") {
+        navigate("/kitchen");
+      } else {
+        alert("Unknown role");
+      }
     } catch (err) {
       console.error("Login error:", err);
       alert("Something went wrong");
@@ -51,10 +58,7 @@ function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button
-        onClick={handleLogin}
-        className="bg-black text-white px-4 py-2"
-      >
+      <button onClick={handleLogin} className="bg-black text-white px-4 py-2">
         Login
       </button>
     </div>
