@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./contexts/AuthContext";
 import AdminMenu from "./pages/AdminMenu";
 import AdminLayout from "./layouts/AdminLayout";
+import AdminCategories from "./pages/AdminCategories";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         >
           <Route index element={<Admin />} />
           <Route path="menu" element={<AdminMenu />} />
+          <Route path="categories" element={<AdminCategories />} />
         </Route>
 
         {/* decide if kitchen needs auth */}

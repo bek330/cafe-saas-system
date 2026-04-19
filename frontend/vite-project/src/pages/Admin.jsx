@@ -1,12 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import OrderColumn from "../components/OrderColumn";
 
 function Admin() {
   const [orders, setOrders] = useState([]);
   const [prevCount, setPrevCount] = useState(0);
   const topRef = useRef(null);
-  const navigate = useNavigate();
 
   // 🔐 redirect if not logged in
   useEffect(() => {
@@ -95,24 +93,10 @@ function Admin() {
   const accepted = orders.filter((o) => o.status === "accepted");
   const completed = orders.filter((o) => o.status === "completed");
 
-  
-
-const handleLogout = () => {
-  localStorage.removeItem("token");
-  navigate("/login");
-};
-
   return (
     <div ref={topRef} className="p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2"
-        >
-          Logout
-        </button>
       </div>
 
       <div className="grid grid-cols-3 gap-4">

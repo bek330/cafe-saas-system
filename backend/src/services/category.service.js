@@ -24,3 +24,12 @@ exports.hasMenuItems = async (categoryId) => {
 exports.delete = async (id) => {
   await db.query('DELETE FROM categories WHERE id = $1', [id]);
 };
+
+exports.update = async (id, data) => {
+  const { name } = data;
+  const result = await db.query(
+    'UPDATE categories SET name = $1 WHERE id = $2 RETURNING *',
+    [name, id]
+  );
+  return result.rows[0];
+};

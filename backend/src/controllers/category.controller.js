@@ -37,3 +37,15 @@ exports.deleteCategory = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.updateCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const category = await service.update(id, req.body);
+
+    res.json(category);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
