@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 function AdminLayout() {
   const navigate = useNavigate();
 
-  const logout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
@@ -18,7 +18,7 @@ function AdminLayout() {
         <Link to="/admin/menu" className="block">Menu</Link>
         <Link to="/admin/categories" className="block">Categories</Link>
 
-        <button onClick={logout} className="mt-6 bg-red-500 px-2 py-1">
+        <button onClick={handleLogout} className="mt-6 bg-red-500 px-2 py-1">
           Logout
         </button>
       </div>

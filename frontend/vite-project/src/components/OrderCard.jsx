@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/purity */
 import { useEffect, useState } from "react";
 
 function OrderCard({ order, updateStatus }) {
+  const [loading, setLoading] = useState(false);
   const [isNew, setIsNew] = useState(true);
 
   useEffect(() => {
@@ -12,21 +14,22 @@ function OrderCard({ order, updateStatus }) {
   const getStatusStyle = (status) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-200 text-yellow-800";
+        return "bg-yellow-300 text-yellow-900 font-bold";
       case "accepted":
-        return "bg-blue-200 text-blue-800";
+        return "bg-blue-300 text-blue-900 font-bold";
       case "completed":
-        return "bg-green-200 text-green-800";
+        return "bg-green-300 text-green-900 font-bold";
       default:
         return "bg-gray-200";
     }
   };
+  {loading ? "Processing..." : "Accept"}
 
   return (
     <div
       className={`p-3 mb-3 rounded shadow transition-all duration-500 ${
         isNew
-          ? "bg-yellow-100 border-2 border-yellow-400 scale-[1.02]"
+          ? "bg-yellow-100 border-2 border-yellow-500 shadow-lg scale-[1.02]"
           : "bg-white"
       }`}
     >
@@ -34,6 +37,10 @@ function OrderCard({ order, updateStatus }) {
       <p className="font-bold">Order #{order.id}</p>
       <p className="text-xs text-gray-500">
         {new Date(order.created_at).toLocaleTimeString()}
+      </p>
+      <p className="text-xs text-red-500">
+        
+        {Math.floor((Date.now() - new Date(order.created_at)) / 60000)} min ago
       </p>
 
       {order.table_number && <p>Table: {order.table_number}</p>}
@@ -51,7 +58,7 @@ function OrderCard({ order, updateStatus }) {
       </div>
 
       {/* 💰 Total (FIXED) */}
-      <p className="mt-2 font-bold">Total: {order.total_price} ETB</p>
+      <p className="mt-2 font-bold">Total: {order.total} ETB</p>
 
       {/* 🟢 Status Badge (display only) */}
       <p
@@ -66,8 +73,13 @@ function OrderCard({ order, updateStatus }) {
       <div className="mt-3 flex gap-2">
         {order.status === "pending" && (
           <button
-            onClick={() => updateStatus(order.id, "accepted")}
-            className="bg-blue-500 text-white px-2 py-1 rounded"
+            onClick={async () => {
+              setLoading(true);
+              await updateStatus(order.id, "accepted");
+              setLoading(false);
+            }}
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full"
           >
             Accept
           </button>
@@ -75,8 +87,13 @@ function OrderCard({ order, updateStatus }) {
 
         {order.status === "accepted" && (
           <button
-            onClick={() => updateStatus(order.id, "completed")}
-            className="bg-green-600 text-white px-2 py-1 rounded"
+            onClick={async () => {
+              setLoading(true);
+              await updateStatus(order.id, "completed");
+              setLoading(false);
+            }}
+            disabled={loading}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full"
           >
             Complete
           </button>

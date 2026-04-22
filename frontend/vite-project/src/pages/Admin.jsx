@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import OrderColumn from "../components/OrderColumn";
+import { getOrders, updateOrderStatus } from "../api/orderApi";
 
 function Admin() {
   const [orders, setOrders] = useState([]);
@@ -20,28 +21,14 @@ function Admin() {
   };
 
   const fetchOrders = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const res = await fetch("http://localhost:5000/orders", {
-        headers: {
-          Authorization: token,
-        },
-      });
-
-      if (res.status === 401) {
-        // token invalid/expired → force re-login
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-        return;
-      }
-
-      const data = await res.json();
-      setOrders(data);
-    } catch (err) {
-      console.error("Fetch orders error:", err);
-    }
-  };
+  try {
+    const token = localStorage.getItem("token");
+    const data = await getOrders(token);
+    setOrders(data);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -62,32 +49,19 @@ function Admin() {
   }, [orders, prevCount]);
 
   const updateStatus = async (id, status) => {
-    try {
-      const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-      const res = await fetch(`http://localhost:5000/orders/${id}/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({ status }),
-      });
+    await updateOrderStatus(id, status, token);
 
-      if (res.status === 401) {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-        return;
-      }
+    // 🔥 always sync with backend
+    fetchOrders();
 
-      // optimistic UI update
-      setOrders((prev) =>
-        prev.map((o) => (o.id === id ? { ...o, status } : o)),
-      );
-    } catch (err) {
-      console.error("Update status error:", err);
-    }
-  };
+  } catch (err) {
+    alert(err.message);
+    fetchOrders(); // keep UI consistent
+  }
+};
 
   const pending = orders.filter((o) => o.status === "pending");
   const accepted = orders.filter((o) => o.status === "accepted");
@@ -98,8 +72,11 @@ function Admin() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
       </div>
+      {orders.length === 0 && (
+        <p className="text-gray-500 text-center mt-10">No orders yet</p>
+      )}
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <OrderColumn
           title="Pending"
           orders={pending}
