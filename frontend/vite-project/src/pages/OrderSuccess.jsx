@@ -15,7 +15,7 @@ function OrderSuccess() {
         <p className="mb-2">The order you are looking for does not exist.</p>
         <button
           onClick={() => navigate("/menu")}
-          className="mt-6 bg-black text-white px-4 py-2 rounded"
+          className="mt-6 bg-black text-white px-4 py-2 rounded hover:bg-gray-700 transition"
         >
           Back to Menu
         </button>
@@ -52,7 +52,7 @@ function OrderSuccess() {
 
       <button
         onClick={() => navigate("/menu")}
-        className="mt-6 bg-black text-white px-4 py-2 rounded"
+        className="mt-6 bg-black text-white px-4 py-2 rounded hover:bg-gray-700 transition"
       >
         Back to Menu
       </button>

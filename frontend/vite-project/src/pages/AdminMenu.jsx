@@ -116,7 +116,7 @@ function AdminMenu() {
           placeholder="Name"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="border p-2"
+          className="border p-2 rounded "
         />
 
         <input
@@ -124,28 +124,28 @@ function AdminMenu() {
           type="number"
           value={form.price}
           onChange={(e) => setForm({ ...form, price: e.target.value })}
-          className="border p-2"
+          className="border p-2 rounded"
         />
 
         <input
           placeholder="Description"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
-          className="border p-2"
+          className="border p-2 rounded"
         />
 
         <input
           placeholder="Image URL"
           value={form.image_url}
           onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-          className="border p-2"
+          className="border p-2 rounded"
         />
 
         {/* ✅ CATEGORY DROPDOWN */}
         <select
           value={form.category_id}
           onChange={(e) => setForm({ ...form, category_id: e.target.value })}
-          className="border p-2"
+          className="border p-2 rounded"
         >
           <option value="">Select Category</option>
           {categories.map((c) => (
@@ -157,13 +157,13 @@ function AdminMenu() {
 
         <button
           onClick={handleSubmit}
-          className="bg-black text-white px-4 py-2"
+          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-500 hover:text-black transition-ease-in-out duration-200  "
         >
           {editingId ? "Update" : "Add"}
         </button>
 
         {editingId && (
-          <button onClick={resetForm} className="bg-gray-400 px-4 py-2">
+          <button onClick={resetForm} className="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 text-white transition">
             Cancel
           </button>
         )}
@@ -181,14 +181,14 @@ function AdminMenu() {
             <div className="space-x-2">
               <button
                 onClick={() => handleEdit(item)}
-                className="bg-blue-500 text-white px-2"
+                className="bg-blue-500 text-white px-2 rounded hover:bg-blue-600 transition"
               >
                 Edit
               </button>
 
               <button
                 onClick={() => toggleItem(item.id)}
-                className="bg-yellow-500 text-white px-2"
+                className="bg-yellow-500 text-white px-2 rounded hover:bg-yellow-600 transition"
               >
                 {item.is_available ? "Disable" : "Enable"}
               </button>

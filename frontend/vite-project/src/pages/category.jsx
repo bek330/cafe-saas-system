@@ -54,7 +54,7 @@ function Category() {
 
       <div className="flex-1 p-6">
         <div className="flex items-center mb-6">
-          <button onClick={() => navigate(`/menu`)} className="mr-4">
+          <button onClick={() => navigate(`/menu`)} className="mr-4 rounded bg-gray-800 text-white px-3 py-1 hover:bg-gray-500 transition-ease-in-out duration-200  ">
             Back
           </button>
 
@@ -93,7 +93,7 @@ function Category() {
                   </span>
                   <button
                     onClick={() => addToCart(item)}
-                    className="bg-black text-white px-2 rounded"
+                    className="bg-gray-800 text-white px-2 rounded hover:bg-gray-500 transition-ease-in-out duration-200  "
                   >
                     Add
                   </button>

@@ -109,11 +109,11 @@ function AdminCategories() {
           placeholder="New category"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border p-2"
+          className="border p-2 rounded "
         />
         <button
           onClick={handleCreate}
-          className="bg-black text-white px-4 py-2"
+          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-500 transition-ease-in-out duration-200  "
         >
           Add
         </button>
@@ -124,25 +124,25 @@ function AdminCategories() {
         {categories.map((cat) => (
           <div
             key={cat.id}
-            className="flex justify-between items-center border p-2"
+            className="flex justify-between items-center border p-2 rounded"
           >
             {editingId === cat.id ? (
               <>
                 <input
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
-                  className="border p-1"
+                  className="border p-1 rounded"
                 />
                 <div className="space-x-2">
                   <button
                     onClick={handleUpdate}
-                    className="bg-green-500 text-white px-2"
+                    className="bg-green-500 text-white px-2 rounded hover:bg-green-600 transition-ease-in-out duration-200 "
                   >
                     Save
                   </button>
                   <button
                     onClick={() => setEditingId(null)}
-                    className="bg-gray-400 px-2"
+                    className="bg-gray-400 px-2 rounded hover:bg-gray-500 transition-ease-in-out duration-200 "
                   >
                     Cancel
                   </button>
@@ -154,13 +154,13 @@ function AdminCategories() {
                 <div className="space-x-2">
                   <button
                     onClick={() => startEdit(cat)}
-                    className="bg-blue-500 text-white px-2"
+                    className="bg-blue-500 text-white px-2 rounded hover:bg-blue-600 transition-ease-in-out duration-200 "
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(cat.id)}
-                    className="bg-red-500 text-white px-2"
+                    className="bg-red-500 text-white px-2 rounded hover:bg-red-600 transition-ease-in-out duration-200 "
                   >
                     Delete
                   </button>

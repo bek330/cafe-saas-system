@@ -11,20 +11,26 @@ function AdminLayout() {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <div className="w-64 bg-black text-white p-4 space-y-4">
+      <div className="w-64 bg-gray-800 rounded text-white p-4 space-y-4">
         <h2 className="text-xl font-bold">Admin</h2>
 
-        <Link to="/admin" className="block">Dashboard</Link>
-        <Link to="/admin/menu" className="block">Menu</Link>
-        <Link to="/admin/categories" className="block">Categories</Link>
+        <Link to="/admin" className="block rounded hover:text-gray-300   transition">
+          Dashboard
+        </Link>
+        <Link to="/admin/menu" className="block rounded hover:text-gray-300 transition">
+          Menu
+        </Link>
+        <Link to="/admin/categories" className="block rounded hover:text-gray-300 transition">
+          Categories
+        </Link>
 
-        <button onClick={handleLogout} className="mt-6 bg-red-500 px-2 py-1">
+        <button onClick={handleLogout} className="mt-4 w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition">
           Logout
         </button>
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-6 bg-gray-100">
+      <div className="flex-1 p-6 bg-gray-100 rounded-lg shadow-lg">
         <Outlet />
       </div>
     </div>
