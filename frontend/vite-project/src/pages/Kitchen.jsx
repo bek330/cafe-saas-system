@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/purity */
+ 
 import { useEffect, useState } from "react";
 import KitchenCard from "../components/kitchenCard";
 
@@ -9,16 +9,9 @@ function Kitchen() {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch("http://localhost:5000/orders", {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
-
-      if (res.status === 401) {
-        localStorage.clear();
-        window.location.href = "/login";
-        return;
+      const res = await fetch("http://localhost:5000/orders");
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
 
       const data = await res.json();
@@ -55,7 +48,7 @@ function Kitchen() {
     }
 
     setPrevIds(orders.map((o) => o.id));
-  }, [orders]);
+  }, [orders, prevIds]);
 
   // 🕒 smart time display
   const getTimeAgo = () => {

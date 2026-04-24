@@ -37,6 +37,10 @@ exports.getOrders = async (req, res) => {
       FROM orders o
       JOIN order_items oi ON o.id = oi.order_id
       JOIN menu_items mi ON oi.menu_item_id = mi.id
+      WHERE DATE(o.created_at) = CURRENT_DATE -- ✅ ONLY TODAY
+      AND NOT (
+      o.status = 'completed'
+      AND o.created_at < NOW() - INTERVAL '30 minutes')
       GROUP BY o.id, o.table_number, o.status, o.created_at
       ORDER BY o.created_at DESC;
     `);
@@ -49,39 +53,40 @@ exports.getOrders = async (req, res) => {
 
 // UPDATE STATUS
 exports.updateStatus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { status } = req.body;
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
 
-        // get current status
-        const current = await db.query(
-            `SELECT status FROM orders WHERE id = $1`,
-            [id]
-        );
+    // get current status
+    const current = await db.query(
+      `SELECT status FROM orders WHERE id = $1`,
+      [id]
+    );
 
-        const currentStatus = current.rows[0].status;
+    const currentStatus = current.rows[0].status;
 
-        // 🚫 prevent invalid transitions
-        const validTransitions = {
-            pending: ["accepted"],
-            accepted: ["completed"],
-            completed: []
-        };
+    // 🚫 prevent invalid transitions
+    const validTransitions = {
+      pending: ["accepted", "cancelled"],   // ✅ can cancel early
+      accepted: ["completed", "cancelled"], // ✅ can cancel mid-way
+      completed: [],
+      cancelled: []
+    };
 
-        if (!validTransitions[currentStatus].includes(status)) {
-            return res.status(400).json({
-                error: `Invalid status change from ${currentStatus} to ${status}`
-            });
-        }
-
-        await db.query(
-            `UPDATE orders SET status = $1 WHERE id = $2`,
-            [status, id]
-        );
-
-        res.json({ message: "Order status updated" });
-
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+    if (!validTransitions[currentStatus].includes(status)) {
+      return res.status(400).json({
+        error: `Invalid status change from ${currentStatus} to ${status}`
+      });
     }
+
+    await db.query(
+      `UPDATE orders SET status = $1 WHERE id = $2`,
+      [status, id]
+    );
+
+    res.json({ message: "Order status updated" });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };

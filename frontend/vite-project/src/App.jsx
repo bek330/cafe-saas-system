@@ -39,9 +39,9 @@ function App() {
         <Route
           path="/kitchen"
           element={
-            <ProtectedRoute role="kitchen">
+            
               <Kitchen />
-            </ProtectedRoute>
+            
           }
         />
 

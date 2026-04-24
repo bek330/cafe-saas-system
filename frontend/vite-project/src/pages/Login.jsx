@@ -30,9 +30,7 @@ function Login() {
 
       if (payload.role === "admin") {
         navigate("/admin");
-      } else if (payload.role === "kitchen") {
-        navigate("/kitchen");
-      } else {
+      } else{
         alert("Unknown role");
       }
     } catch (err) {

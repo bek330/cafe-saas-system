@@ -4,7 +4,7 @@ const controller = require('../controllers/order.controller');
 const { verifyToken, requireRole } = require('../middleware/auth.middleware');
 
 // both kitchen + admin can view
-router.get('/', verifyToken, controller.getOrders);
+router.get('/', controller.getOrders);
 
 // only admin updates
 router.put('/:id/status', verifyToken, requireRole('admin'), controller.updateStatus);
