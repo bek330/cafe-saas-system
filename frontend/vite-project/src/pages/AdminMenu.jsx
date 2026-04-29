@@ -157,13 +157,13 @@ function AdminMenu() {
 
         <button
           onClick={handleSubmit}
-          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-500 hover:text-black transition-ease-in-out duration-200  "
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
         >
           {editingId ? "Update" : "Add"}
         </button>
 
         {editingId && (
-          <button onClick={resetForm} className="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500 text-white transition">
+          <button onClick={resetForm} className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded transition">
             Cancel
           </button>
         )}

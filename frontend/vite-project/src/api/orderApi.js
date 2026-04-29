@@ -55,3 +55,4 @@ export const updateOrderStatus = async (id, status, token) => {
 
   return res.json();
 };
+

@@ -113,7 +113,7 @@ function AdminCategories() {
         />
         <button
           onClick={handleCreate}
-          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-500 transition-ease-in-out duration-200  "
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded "
         >
           Add
         </button>

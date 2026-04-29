@@ -24,6 +24,10 @@ function AdminLayout() {
           Categories
         </Link>
 
+        <Link to="/admin/history" className="block rounded hover:text-gray-300 transition">
+         Order History
+        </Link>
+
         <button onClick={handleLogout} className="mt-4 w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded transition">
           Logout
         </button>
