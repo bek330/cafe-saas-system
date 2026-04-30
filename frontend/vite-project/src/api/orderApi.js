@@ -56,3 +56,21 @@ export const updateOrderStatus = async (id, status, token) => {
   return res.json();
 };
 
+export const getOrderHistory = async (params, token) => {
+  const query = new URLSearchParams(params);
+
+  const res = await fetch(
+    `http://localhost:5000/orders/history?${query.toString()}`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch order history");
+  }
+
+  return res.json();
+};

@@ -1,6 +1,8 @@
-const jwt = require('jsonwebtoken');
 
-const SECRET = "mysecretkey";
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+const SECRET = process.env.JWT_SECRET || 'fallbacksecret';
 
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;

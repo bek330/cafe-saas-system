@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async () => {
+    setLoading(true);
+    setError("");
     try {
       const res = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
@@ -17,25 +23,27 @@ function Login() {
       });
 
       if (!res.ok) {
-        alert("Invalid credentials");
+        setError("Invalid credentials");
+        setLoading(false);
         return;
       }
 
       const data = await res.json();
-
-      localStorage.setItem("token", data.token);
+      login(data.token);
 
       // decode token to get role
       const payload = JSON.parse(atob(data.token.split(".")[1]));
 
       if (payload.role === "admin") {
         navigate("/admin");
-      } else{
-        alert("Unknown role");
+      } else {
+        setError("Unknown role");
       }
     } catch (err) {
+      setError("Something went wrong");
       console.error("Login error:", err);
-      alert("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,6 +55,8 @@ function Login() {
         placeholder="Username"
         className="border p-2 mb-2"
         onChange={(e) => setUsername(e.target.value)}
+        value={username}
+        disabled={loading}
       />
 
       <input
@@ -54,11 +64,19 @@ function Login() {
         placeholder="Password"
         className="border p-2 mb-2"
         onChange={(e) => setPassword(e.target.value)}
+        value={password}
+        disabled={loading}
       />
 
-      <button onClick={handleLogin} className="bg-black text-white px-4 py-2">
-        Login
+      <button
+        onClick={handleLogin}
+        className="bg-black text-white px-4 py-2"
+        disabled={loading}
+      >
+        {loading ? "Logging in..." : "Login"}
       </button>
+
+      {error && <div className="text-red-500 mt-2">{error}</div>}
     </div>
   );
 }

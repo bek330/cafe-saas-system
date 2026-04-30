@@ -1,59 +1,46 @@
-
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import useOrderHistory  from "../hooks/useOrderHistory";
 
 function AdminHistory() {
-  const [orders, setOrders] = useState([]);
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [search, setSearch] = useState("");
+  const {
+    orders,
+    loading,
 
-  const [status, setStatus] = useState("all"); // ✅ added
-  const [range, setRange] = useState("all");   // ✅ added
+    search,
+    setSearch,
 
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1); // ✅ added
+    status,
+    setStatus,
 
-  const limit = 10;
+    range,
+    setRange,
 
-  const fetchHistory = async () => {
-    try {
-      const params = new URLSearchParams({
-        range,
-        status,
-        search,
-        page,
-        limit,
-        from,
-        to,
-      });
+    from,
+    setFrom,
 
-      const res = await fetch(
-        `http://localhost:5000/orders/history?${params.toString()}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+    to,
+    setTo,
 
-      if (!res.ok) {
-        console.error("Failed to fetch:", res.status);
-        return;
-      }
+    page,
+    setPage,
 
-      const data = await res.json();
+    totalPages,
 
-      setOrders(data.data || []);
-      setTotalPages(data.pages || 1);
-    } catch (err) {
-      console.error("Fetch error:", err);
-    }
-  };
+    fetchHistory,
 
-  useEffect(() => {
-    fetchHistory();
-  }, [range, status, search, page, from, to]);
+    autoRefresh,
+    setAutoRefresh,
+  } = useOrderHistory();
+
+  function SkeletonCard() {
+    return (
+      <div className="border p-3 rounded animate-pulse space-y-2">
+        <div className="h-4 bg-gray-300 w-1/3"></div>
+        <div className="h-3 bg-gray-200 w-1/2"></div>
+        <div className="h-3 bg-gray-200 w-full"></div>
+        <div className="h-3 bg-gray-200 w-full"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
@@ -69,17 +56,16 @@ function AdminHistory() {
             setSearch(e.target.value);
             setPage(1);
           }}
-          className="border p-2 rounded w-full md:w-64"
+          className="border p-1 rounded w-full md:w-64"
         />
 
-        {/* STATUS FILTER */}
         <select
           value={status}
           onChange={(e) => {
             setStatus(e.target.value);
             setPage(1);
           }}
-          className="border p-2 rounded"
+          className="border p-1 rounded"
         >
           <option value="all">All Status</option>
           <option value="pending">Pending</option>
@@ -88,38 +74,45 @@ function AdminHistory() {
           <option value="cancelled">Cancelled</option>
         </select>
 
-        {/* RANGE FILTER */}
         <select
           value={range}
           onChange={(e) => {
             setRange(e.target.value);
             setPage(1);
           }}
-          className="border p-2 rounded"
+          className="border p-1 rounded"
         >
           <option value="all">All Time</option>
           <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
         </select>
 
-        <input
-          type="date"
-          value={from}
-          onChange={(e) => {
-            setFrom(e.target.value);
-            setPage(1);
-          }}
-          className="border p-2"
-        />
+        <label className="flex items-center gap-2">
+          From:
+          <input
+            type="date"
+            value={from}
+            onChange={(e) => {
+              setFrom(e.target.value);
+              setPage(1);
+            }}
+            className="border p-1 rounded"
+          />
+        </label>
 
-        <input
-          type="date"
-          value={to}
-          onChange={(e) => {
-            setTo(e.target.value);
-            setPage(1);
-          }}
-          className="border p-2"
-        />
+        <label className="flex items-center gap-2">
+          To:
+          <input
+            type="date"
+            value={to}
+            onChange={(e) => {
+              setTo(e.target.value);
+              setPage(1);
+            }}
+            className="border p-1 rounded"
+          />
+        </label>
 
         <button
           onClick={fetchHistory}
@@ -127,11 +120,28 @@ function AdminHistory() {
         >
           Apply
         </button>
+
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={autoRefresh}
+            onChange={(e) => setAutoRefresh(e.target.checked)}
+          />
+          Auto Refresh
+        </label>
       </div>
 
+      {/* ⏳ Loading */}
+      {loading && (
+        <div className="space-y-3">
+          {[...Array(5)].map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      )}
       {/* 📜 List */}
       <div className="space-y-3">
-        {orders.length === 0 && (
+        {!loading && orders.length === 0 && (
           <p className="text-gray-500">No results found</p>
         )}
 
@@ -189,4 +199,3 @@ function AdminHistory() {
 }
 
 export default AdminHistory;
-

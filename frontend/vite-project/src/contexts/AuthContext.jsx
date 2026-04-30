@@ -1,23 +1,47 @@
-import { Navigate } from "react-router-dom";
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-hooks/set-state-in-effect */
+import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
-function ProtectedRoute({ children, role }) {
-  const token = localStorage.getItem("token");
+const AuthContext = createContext();
 
-  if (!token) return <Navigate to="/login" />;
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
-  try {
-    const decoded = jwtDecode(token);
-
-    if (role && decoded.role !== role) {
-      // eslint-disable-next-line react-hooks/error-boundaries
-      return <Navigate to="/login" />;
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUser(decoded);
+      } catch {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem("token");
+      }
+    } else {
+      setUser(null);
     }
+  }, [token]);
 
-    return children;
-  } catch {
-    return <Navigate to="/login" />;
-  }
+  const login = (jwt) => {
+    localStorage.setItem("token", jwt);
+    setToken(jwt);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-export default ProtectedRoute;
+export function useAuth() {
+  return useContext(AuthContext);
+}
