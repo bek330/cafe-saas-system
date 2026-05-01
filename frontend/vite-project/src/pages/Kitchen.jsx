@@ -20,7 +20,6 @@ function Kitchen() {
         .filter((o) => o.status === "pending" || o.status === "accepted")
         .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 
-      // ✅ prevent unnecessary re-render
       setOrders((prev) => {
         const same = JSON.stringify(prev) === JSON.stringify(active);
         return same ? prev : active;
@@ -38,7 +37,6 @@ function Kitchen() {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔔 sound only on new orders
   useEffect(() => {
     const newOrders = orders.filter((o) => !prevIds.includes(o.id));
 
@@ -50,25 +48,17 @@ function Kitchen() {
     setPrevIds(orders.map((o) => o.id));
   }, [orders, prevIds]);
 
-  // 🕒 smart time display
   const getTimeAgo = () => {
     const diff = Math.floor((Date.now() - lastUpdate) / 1000);
     if (diff < 60) return `${diff}s ago`;
     return `${Math.floor(diff / 60)}m ago`;
   };
 
-  const sortByTime = (a, b) =>
-    new Date(a.created_at) - new Date(b.created_at);
+  const sortByTime = (a, b) => new Date(a.created_at) - new Date(b.created_at);
 
-  const pending = orders
-    .filter((o) => o.status === "pending")
-    .sort(sortByTime);
+  const pending = orders.filter((o) => o.status === "pending").sort(sortByTime);
+  const accepted = orders.filter((o) => o.status === "accepted").sort(sortByTime);
 
-  const accepted = orders
-    .filter((o) => o.status === "accepted")
-    .sort(sortByTime);
-
-  // 🖥 fullscreen toggle
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -78,58 +68,52 @@ function Kitchen() {
   };
 
   return (
-    <div className="p-8 bg-black min-h-screen text-white">
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Kitchen Display</h1>
-
-        <button
-          onClick={toggleFullscreen}
-          className="bg-gray-800 px-3 py-1 rounded hover:bg-gray-700 transition"
-        >
-          Fullscreen
-        </button>
-      </div>
-
-      {/* LAST UPDATE */}
-      <p className="text-sm text-gray-500 mb-6">
-        Updated {getTimeAgo()}
-      </p>
-
-      {/* TWO COLUMNS */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
-        {/* 🟡 WAITING */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4 text-yellow-400">
-            Waiting
-          </h2>
-
-          {pending.length === 0 && (
-            <p className="text-gray-500">No waiting orders</p>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {pending.map((order) => (
-              <KitchenCard key={order.id} order={order} />
-            ))}
+    <div className="min-h-screen bg-slate-900 p-8 text-white">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold text-white">Kitchen display</h1>
+            <p className="mt-2 text-slate-400">Monitor incoming orders and manage kitchen workflow.</p>
           </div>
+          <button
+            onClick={toggleFullscreen}
+            className="rounded-3xl bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          >
+            Fullscreen
+          </button>
         </div>
 
-        {/* 🔵 IN PROGRESS */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4 text-blue-400">
-            In Progress
-          </h2>
+        <p className="mb-8 text-sm text-slate-500">Updated {getTimeAgo()}</p>
 
-          {accepted.length === 0 && (
-            <p className="text-gray-500">No in-progress orders</p>
-          )}
+        <div className="grid gap-8 lg:grid-cols-2">
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-amber-400">Waiting orders</h2>
+            {pending.length === 0 ? (
+              <div className="rounded-[2rem] bg-slate-800 p-6 text-center">
+                <p className="text-slate-400">No waiting orders.</p>
+              </div>
+            ) : (
+              <div className="grid gap-4 md:grid-cols-2">
+                {pending.map((order) => (
+                  <KitchenCard key={order.id} order={order} />
+                ))}
+              </div>
+            )}
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {accepted.map((order) => (
-              <KitchenCard key={order.id} order={order} />
-            ))}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold text-blue-400">In progress</h2>
+            {accepted.length === 0 ? (
+              <div className="rounded-[2rem] bg-slate-800 p-6 text-center">
+                <p className="text-slate-400">No orders in progress.</p>
+              </div>
+            ) : (
+              <div className="grid gap-4 md:grid-cols-2">
+                {accepted.map((order) => (
+                  <KitchenCard key={order.id} order={order} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
