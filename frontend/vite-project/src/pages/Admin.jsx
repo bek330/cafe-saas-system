@@ -9,7 +9,6 @@ function Admin() {
   const [lastUpdate, setLastUpdate] = useState(Date.now());
   const topRef = useRef(null);
 
-  // 🔐 redirect if not logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -26,7 +25,6 @@ function Admin() {
     try {
       const token = localStorage.getItem("token");
       const data = await getOrders(token);
-
       setOrders(data);
       setLastUpdate(Date.now());
     } catch (err) {
@@ -36,7 +34,6 @@ function Admin() {
 
   useEffect(() => {
     fetchOrders();
-
     const interval = setInterval(fetchOrders, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -46,77 +43,66 @@ function Admin() {
       playSound();
       topRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-
     setPrevCount(orders.length);
   }, [orders, prevCount]);
 
   const updateStatus = async (id, status) => {
     try {
       const token = localStorage.getItem("token");
-
       await updateOrderStatus(id, status, token);
-
-      // 🔥 always sync with backend
       fetchOrders();
     } catch (err) {
       alert(err.message);
-      fetchOrders(); // keep UI consistent
+      fetchOrders();
     }
   };
 
-  const sortByTime = (a, b) =>
-  new Date(a.created_at) - new Date(b.created_at);
+  const sortByTime = (a, b) => new Date(a.created_at) - new Date(b.created_at);
+
+  const isToday = (dateString) => {
+    const date = new Date(dateString);
+    const today = new Date();
+    return (
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate()
+    );
+  };
 
   const pending = orders.filter((o) => o.status === "pending").sort(sortByTime);
   const accepted = orders.filter((o) => o.status === "accepted").sort(sortByTime);
-  const completed = orders.filter((o) => {
-    if (o.status !== "completed") return false;
-
-    const age = (Date.now() - new Date(o.created_at)) / 1000;
-
-    return age < 300; // ⏱️ 5 minutes only
-  });
-  const cancelled = orders.filter((o) => o.status === "cancelled");
+  const completed = orders
+    .filter((o) => o.status === "completed" && isToday(o.created_at))
+    .sort(sortByTime);
+  const cancelled = orders.filter((o) => o.status === "cancelled").sort(sortByTime);
 
   return (
-    <div ref={topRef} className="p-4">
-      <div className="flex items-center gap-4">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+    <div ref={topRef} className="space-y-8">
+      <section className="rounded-[2rem] bg-white p-6 shadow-xl">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-sm uppercase tracking-[0.25em] text-cyan-600">Kitchen flow</p>
+            <h1 className="mt-3 text-3xl font-semibold text-slate-900">Admin dashboard</h1>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-600">
+              Updated {Math.floor((Date.now() - lastUpdate) / 1000)}s ago
+            </span>
+            <button
+              onClick={fetchOrders}
+              className="rounded-full bg-cyan-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-cyan-700"
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
+      </section>
 
-        <span className="text-xs text-gray-500">
-          Updated {Math.floor((Date.now() - lastUpdate) / 1000)}s ago
-        </span>
-
-        <button
-          onClick={fetchOrders}
-          className="bg-gray-200 px-2 py-1 rounded text-sm hover:bg-gray-300"
-        >
-          Refresh
-        </button>
-      </div>
-      
-
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <OrderColumn
-          title="Pending"
-          orders={pending}
-          updateStatus={updateStatus}
-        />
-        <OrderColumn
-          title="Accepted"
-          orders={accepted}
-          updateStatus={updateStatus}
-        />
-        <OrderColumn
-          title="Completed"
-          orders={completed}
-          updateStatus={updateStatus}
-        />
-        <OrderColumn
-          title="Cancelled"
-          orders={cancelled}
-          updateStatus={updateStatus}
-        />
+      <div className="grid gap-6 xl:grid-cols-4">
+        <OrderColumn title="Pending" orders={pending} updateStatus={updateStatus} />
+        <OrderColumn title="Accepted" orders={accepted} updateStatus={updateStatus} />
+        <OrderColumn title="Completed" orders={completed} updateStatus={updateStatus} />
+        <OrderColumn title="Cancelled" orders={cancelled} updateStatus={updateStatus} />
       </div>
     </div>
   );

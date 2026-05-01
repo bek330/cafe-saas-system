@@ -11,8 +11,8 @@ exports.getCategories = async (req, res) => {
 
 exports.createCategory = async (req, res) => {
   try {
-    const { name } = req.body;
-    const category = await service.create(name);
+    const { name, icon } = req.body;
+    const category = await service.create(name, icon);
     res.status(201).json(category);
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -1,19 +1,15 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Header() {
-  const location = useLocation();
-  // Only show login/logout on admin pages
-  const isAdmin = location.pathname.startsWith("/admin") || location.pathname === "/login";
-
   return (
-    <div className="w-full border-b p-4 flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold">
-        Café Menu
-      </Link>
-      {isAdmin && (
-        <div>{/* Login/Logout handled in AdminLayout */}</div>
-      )}
-    </div>
+    <header className="border-b border-slate-200 bg-white/90 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
+        <Link to="/menu" className="text-2xl font-semibold tracking-tight text-slate-900">
+          Café Menu
+        </Link>
+        <p className="text-sm text-slate-500">Discover fresh dishes in a modern menu experience.</p>
+      </div>
+    </header>
   );
 }
 

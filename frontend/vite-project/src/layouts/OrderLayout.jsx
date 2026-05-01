@@ -1,27 +1,27 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Cart from "../components/cart";
+import { useCart } from "../contexts/useCart";
 
 function OrderLayout() {
-  return (
-    <div className="flex flex-col min-h-screen rounded-lg bg-gray-100 shadow-lg">
+  const { cart } = useCart();
 
-      {/* HEADER */}
+  return (
+    <div className="min-h-screen bg-slate-100">
       <Header />
 
-      {/* MAIN CONTENT + CART */}
-      <div className="flex flex-1 rounded-lg overflow-hidden">
-
-        {/* PAGE CONTENT */}
-        <div className="flex-1 p-6 rounded-lg bg-white shadow">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 lg:flex-row">
+        <main className="flex-1 rounded-[2rem] bg-white p-6 shadow-[0_25px_50px_-12px_rgba(15,23,42,0.2)]">
           <Outlet />
-        </div>
+        </main>
 
-        {/* CART (FIXED RIGHT) */}
-        <div className="w-80 border-l p-4 rounded-lg bg-white shadow">
-          <Cart />
-        </div>
-
+        {cart.length > 0 && (
+          <aside className="w-full lg:w-80">
+            <div className="sticky top-6 rounded-[2rem] bg-white p-6 shadow-[0_25px_50px_-12px_rgba(15,23,42,0.1)] border border-slate-200">
+              <Cart />
+            </div>
+          </aside>
+        )}
       </div>
     </div>
   );
