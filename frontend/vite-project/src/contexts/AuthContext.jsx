@@ -13,7 +13,16 @@ export function AuthProvider({ children }) {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        setUser(decoded);
+        // Check if token is expired
+        const currentTime = Date.now() / 1000;
+        if (decoded.exp < currentTime) {
+          // Token is expired, clear it
+          setUser(null);
+          setToken(null);
+          localStorage.removeItem("token");
+        } else {
+          setUser(decoded);
+        }
       } catch {
         setUser(null);
         setToken(null);
@@ -27,6 +36,23 @@ export function AuthProvider({ children }) {
   const login = (jwt) => {
     localStorage.setItem("token", jwt);
     setToken(jwt);
+    try {
+      const decoded = jwtDecode(jwt);
+      // Check if token is expired
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp < currentTime) {
+        // Token is expired, clear it
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem("token");
+      } else {
+        setUser(decoded);
+      }
+    } catch {
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("token");
+    }
   };
 
   const logout = () => {

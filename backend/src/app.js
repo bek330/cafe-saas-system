@@ -29,4 +29,9 @@ const authRoutes = require("./routes/auth.router");
 
 app.use("/auth", authRoutes);
 
+// Import user routes
+const userRoutes = require("./routes/user.router");
+
+app.use("/users", userRoutes);
+
 module.exports = app;

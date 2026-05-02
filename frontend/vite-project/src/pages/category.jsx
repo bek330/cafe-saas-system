@@ -44,91 +44,92 @@ function Category() {
   }, [id]);
 
   return (
-    <div className="space-y-8">
-      <section className="rounded-[2rem] bg-white p-6 shadow-xl">
-        <button
-          onClick={() => navigate(`/menu`)}
-          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-        >
-          ← Back to menu
-        </button>
+    <div className="min-h-screen bg-cream py-8">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="mb-8">
+          <button
+            onClick={() => navigate(`/menu`)}
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-cream px-4 py-2 text-sm font-medium text-charcoal transition hover:bg-sage/10 mb-4"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Menu
+          </button>
 
-        <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-cyan-100 text-3xl">
-                {selectedCategory?.icon || "🍽️"}
-              </div>
-              <div>
-                <p className="text-sm uppercase tracking-[0.24em] text-cyan-600">Category</p>
-                <h1 className="mt-2 text-3xl font-semibold text-slate-900">
-                  {selectedCategory?.name || "Loading category..."}
-                </h1>
-              </div>
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-oat-gold rounded-full mb-4">
+              <span className="text-3xl">{selectedCategory?.icon || "🍽️"}</span>
             </div>
+            <h1 className="text-4xl font-serif font-bold text-charcoal mb-2">
+              {selectedCategory?.name || "Loading category..."}
+            </h1>
+            <p className="text-xl text-sage max-w-2xl mx-auto">
+              Discover our carefully curated selection of delicious dishes in this category.
+            </p>
           </div>
-
-          <p className="max-w-2xl text-slate-600">
-            Explore the best dishes in this section. Tap any menu item to add it to your order and continue building a fresh, tasty cart.
-          </p>
         </div>
-      </section>
 
-      {error && (
-        <section className="rounded-[2rem] bg-rose-50 p-6 text-rose-700 shadow-sm">
-          <p>{error}</p>
-        </section>
-      )}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8 text-center">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
 
-      <section className="grid gap-6">
         {loading ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, index) => (
-              <div key={index} className="h-72 rounded-[1.75rem] bg-slate-100 p-6 animate-pulse"></div>
+              <div key={index} className="bg-white rounded-xl shadow-md p-6 animate-pulse">
+                <div className="h-48 bg-gray-200 rounded-lg mb-4"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                <div className="h-10 bg-gray-200 rounded"></div>
+              </div>
             ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="rounded-[2rem] bg-white p-10 text-center shadow-xl">
-            <p className="text-lg font-semibold text-slate-900">No items found in this category.</p>
-            <p className="mt-2 text-slate-500">Try another category or refresh to see the latest menu.</p>
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">🍽️</div>
+            <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2">No items yet</h2>
+            <p className="text-sage">This category is currently empty. Check back later!</p>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {items.map((item) => (
-              <article
+              <div
                 key={item.id}
-                className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden"
               >
                 <img
                   src={item.image_url}
                   alt={item.name}
-                  className="h-52 w-full object-cover"
+                  className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <h2 className="text-xl font-semibold text-slate-900">{item.name}</h2>
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-xl font-serif font-semibold text-charcoal">{item.name}</h3>
+                    <span className="bg-sage text-white px-3 py-1 rounded-full text-sm font-semibold">
                       {item.price} ETB
                     </span>
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{item.description || "Fresh, delicious and ready to order."}</p>
-                  <div className="mt-6 flex items-center justify-between gap-3">
+                  <p className="text-sage mb-4">{item.description || "A delicious dish made with fresh ingredients."}</p>
+                  <div className="flex items-center justify-between">
                     <button
                       onClick={() => addToCart(item)}
-                      className="rounded-full bg-cyan-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-cyan-700"
+                      className="rounded-full bg-oat-gold px-4 py-2 text-sm font-semibold text-charcoal transition hover:bg-oat-gold/80"
                     >
-                      Add to cart
+                      Add to Cart
                     </button>
-                    <span className={`text-sm font-semibold ${item.is_available ? "text-emerald-600" : "text-rose-600"}`}>
+                    <span className={`text-sm font-semibold ${item.is_available ? "text-sage" : "text-red-500"}`}>
                       {item.is_available ? "Available" : "Unavailable"}
                     </span>
                   </div>
                 </div>
-              </article>
+              </div>
             ))}
           </div>
         )}
-      </section>
+      </div>
     </div>
   );
 }

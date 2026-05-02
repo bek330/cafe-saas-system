@@ -11,6 +11,7 @@ import ProtectedRoute from "./contexts/ProtectedRoute";
 import AdminMenu from "./pages/AdminMenu";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminCategories from "./pages/AdminCategories";
+import AdminUsers from "./pages/AdminUsers";
 import AdminHistory from "./pages/AdminHistory";
 
 function App() {
@@ -24,11 +25,10 @@ function App() {
             <Route path="/success/:id" element={<OrderSuccess />} />
           </Route>
 
-          {/* 🔐 protected admin */}
           <Route
             path="/admin/*"
             element={
-              <ProtectedRoute role="admin">
+              <ProtectedRoute>
                 <AdminLayout />
               </ProtectedRoute>
             }
@@ -36,6 +36,7 @@ function App() {
             <Route index element={<Admin />} />
             <Route path="menu" element={<AdminMenu />} />
             <Route path="categories" element={<AdminCategories />} />
+            <Route path="users" element={<ProtectedRoute role="admin"><AdminUsers /></ProtectedRoute>} />
             <Route path="history" element={<AdminHistory />} />
           </Route>
 

@@ -10,10 +10,9 @@ function Admin() {
   const topRef = useRef(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/login";
-    }
+    fetchOrders();
+    const interval = setInterval(fetchOrders, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const playSound = () => {
@@ -29,14 +28,13 @@ function Admin() {
       setLastUpdate(Date.now());
     } catch (err) {
       console.error(err);
+      // If token is invalid/expired, redirect to login
+      if (err.message.includes("Request failed") || err.message.includes("401")) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
     }
   };
-
-  useEffect(() => {
-    fetchOrders();
-    const interval = setInterval(fetchOrders, 5000);
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     if (orders.length > prevCount) {

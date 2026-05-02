@@ -52,48 +52,49 @@ function Cart() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-semibold text-slate-900">Your order</h2>
-        <p className="mt-1 text-sm text-slate-500">Review your items and place your order.</p>
+    <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="mb-6">
+        <h2 className="text-2xl font-serif font-bold text-charcoal mb-2">Your Order</h2>
+        <p className="text-sage">Review your items and complete your order</p>
       </div>
 
       {cart.length === 0 ? (
         <div className="text-center py-8">
-          <p className="text-slate-500">Your cart is empty.</p>
-          <p className="mt-2 text-sm text-slate-400">Add some delicious items to get started.</p>
+          <div className="text-4xl mb-4">🛒</div>
+          <p className="text-sage mb-2">Your cart is empty</p>
+          <p className="text-sm text-charcoal">Add some delicious items to get started</p>
         </div>
       ) : (
         <>
-          <div className="space-y-4">
+          <div className="space-y-4 mb-6">
             {cart.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm"
+                className="flex items-center justify-between p-4 bg-cream rounded-lg"
               >
                 <div className="flex-1">
-                  <p className="font-semibold text-slate-900">{item.name}</p>
-                  <p className="text-sm text-slate-500">{item.price} ETB each</p>
+                  <p className="font-semibold text-charcoal">{item.name}</p>
+                  <p className="text-sage text-sm">{item.price} ETB each</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+                  <div className="flex items-center gap-2 bg-white rounded-full border border-slate-300 px-3 py-1">
                     <button
                       onClick={() => updateQuantity(item.id, -1)}
-                      className="h-6 w-6 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300"
+                      className="w-6 h-6 flex items-center justify-center text-oat-gold hover:bg-oat-gold hover:text-charcoal rounded-full transition-colors"
                     >
                       −
                     </button>
-                    <span className="min-w-[2rem] text-center text-sm font-semibold text-slate-900">
+                    <span className="min-w-[2rem] text-center text-sm font-semibold text-charcoal">
                       {item.quantity}
                     </span>
                     <button
                       onClick={() => updateQuantity(item.id, 1)}
-                      className="h-6 w-6 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300"
+                      className="w-6 h-6 flex items-center justify-center text-oat-gold hover:bg-oat-gold hover:text-charcoal rounded-full transition-colors"
                     >
                       +
                     </button>
                   </div>
-                  <span className="text-sm font-semibold text-slate-700">
+                  <span className="font-semibold text-charcoal">
                     {item.price * item.quantity} ETB
                   </span>
                 </div>
@@ -101,28 +102,31 @@ function Cart() {
             ))}
           </div>
 
-          <div className="rounded-[1.75rem] border border-slate-200 bg-slate-50 p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-lg font-semibold text-slate-900">Total</span>
-              <span className="text-lg font-semibold text-slate-900">{total} ETB</span>
+          <div className="border-t border-slate-200 pt-4 mb-6">
+            <div className="flex items-center justify-between text-xl font-serif font-bold text-charcoal">
+              <span>Total</span>
+              <span>{total} ETB</span>
             </div>
           </div>
 
           <div className="space-y-4">
-            <input
-              type="number"
-              placeholder="Table number (optional)"
-              value={tableNumber}
-              onChange={(e) => setTableNumber(e.target.value)}
-              className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100"
-            />
+            <div>
+              <label className="block text-sm font-semibold text-charcoal mb-2">Table Number (Optional)</label>
+              <input
+                type="number"
+                placeholder="Enter table number"
+                value={tableNumber}
+                onChange={(e) => setTableNumber(e.target.value)}
+                className="w-full px-4 py-3 border border-slate-300 rounded-3xl focus:ring-2 focus:ring-oat-gold focus:border-transparent outline-none transition-colors"
+              />
+            </div>
 
             <button
               onClick={handlePlaceOrder}
               disabled={placing}
-              className="w-full rounded-3xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-700 disabled:opacity-50"
+              className="w-full rounded-3xl bg-oat-gold px-6 py-3 text-sm font-semibold text-charcoal shadow-lg shadow-oat-gold/20 transition hover:bg-oat-gold/80 disabled:opacity-50"
             >
-              {placing ? "Placing order..." : "Place order"}
+              {placing ? "Placing Order..." : "Place Order"}
             </button>
           </div>
         </>

@@ -26,52 +26,52 @@ function Home() {
 
   if (loading) {
     return (
-      <div className="mx-auto flex max-w-4xl flex-col gap-4 px-6 py-12">
-        <div className="h-8 w-2/5 rounded-full bg-slate-200/90" />
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          <div className="h-40 rounded-3xl bg-white/80 shadow-lg shadow-slate-200/80 animate-pulse" />
-          <div className="h-40 rounded-3xl bg-white/80 shadow-lg shadow-slate-200/80 animate-pulse" />
-          <div className="h-40 rounded-3xl bg-white/80 shadow-lg shadow-slate-200/80 animate-pulse" />
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-charcoal mx-auto mb-4"></div>
+          <p className="text-charcoal text-xl font-serif">Loading menu...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-100 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-cream via-white to-sage py-10">
       <div className="mx-auto max-w-6xl px-6">
-        <header className="mb-10 rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-xl shadow-slate-200/70 backdrop-blur-lg">
-          <p className="inline-flex rounded-full bg-cyan-100 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-cyan-700">Menu</p>
-          <h1 className="mt-5 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-            Browse our menu categories
+        <header className="mb-10 text-center">
+          <h1 className="text-5xl font-serif font-bold text-charcoal mb-4">
+            Our Café Menu
           </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-            Explore the menu sections with a fresh, modern look. Tap any category card to jump directly to the dishes you want.
+          <p className="text-xl text-sage max-w-2xl mx-auto">
+            Discover delicious dishes crafted with passion. Browse our menu and order with ease.
           </p>
         </header>
 
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
-            <button
+            <div
               key={category.id}
-              type="button"
               onClick={() => navigate(`/menu/category/${category.id}`)}
-              className="group relative overflow-hidden rounded-[2rem] border border-white/80 bg-white/90 p-8 text-left shadow-xl shadow-slate-200/80 transition duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-cyan-200"
+              className="group cursor-pointer bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
             >
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-400 via-sky-300 to-cyan-200" />
-              <div className="relative">
-                <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-cyan-50 text-3xl shadow-inner shadow-cyan-100/80">
-                  {category.icon}
-                </div>
-                <h2 className="text-2xl font-semibold text-slate-900">{category.name}</h2>
-                <p className="mt-3 text-sm leading-6 text-slate-600">
-                  Browse menu items, chef recommendations, and fresh options for this category.
-                </p>
-                <span className="mt-6 inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 transition group-hover:bg-cyan-50">
-                  View items
-                </span>
+              <div className="h-48 bg-oat-gold flex items-center justify-center">
+                <span className="text-6xl">{category.icon}</span>
               </div>
-            </button>
+              <div className="p-6">
+                <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2">{category.name}</h2>
+                <p className="text-sage mb-4">
+                  Explore our selection of fresh, delicious {category.name.toLowerCase()} dishes.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex rounded-full bg-cream px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-charcoal transition group-hover:bg-oat-gold">
+                    View Menu
+                  </span>
+                  <svg className="w-5 h-5 text-oat-gold group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>

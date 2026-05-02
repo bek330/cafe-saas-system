@@ -1,7 +1,9 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 function AdminLayout() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -27,6 +29,11 @@ function AdminLayout() {
             <Link to="/admin/categories" className="block rounded-xl px-4 py-3 hover:bg-slate-800 transition">
               Categories
             </Link>
+            {user?.role === "admin" && (
+              <Link to="/admin/users" className="block rounded-xl px-4 py-3 hover:bg-slate-800 transition">
+                Users
+              </Link>
+            )}
             <Link to="/admin/history" className="block rounded-xl px-4 py-3 hover:bg-slate-800 transition">
               Order History
             </Link>

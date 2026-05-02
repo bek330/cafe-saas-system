@@ -2,49 +2,41 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const pool = require('../config/db');
 require('dotenv').config();
 
 const router = express.Router();
 
 const SECRET = process.env.JWT_SECRET || 'fallbacksecret';
 
-// In-memory users with hashed passwords (for demo)
-const users = [
-  {
-    username: 'admin',
-    // password: 1234
-    password: '$2b$10$bnwtPubRafgpkxRTUMu3He5V4eP8rF9YXNKwMFVBeuFXZOtvVWphC',
-    role: 'admin',
-  },
-  {
-    username: 'kitchen',
-    // password: 1234
-    password: '$2b$10$bnwtPubRafgpkxRTUMu3He5V4eP8rF9YXNKwMFVBeuFXZOtvVWphC',
-    role: 'kitchen',
-  },
-];
-
-// TODO: Add express-validator for input validation
+// Login route
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  const user = users.find((u) => u.username === username);
-  if (!user) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const match = await bcrypt.compare(password, user.password_hash);
+    if (!match) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, username: user.username, role: user.role },
+      SECRET,
+      { expiresIn: '12h' }
+    );
+
+    res.json({ token });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
-
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) {
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }
-
-  const token = jwt.sign(
-    { username: user.username, role: user.role },
-    SECRET,
-    { expiresIn: '2h' }
-  );
-
-  res.json({ token });
 });
 
 module.exports = router;

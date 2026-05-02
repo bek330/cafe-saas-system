@@ -7,17 +7,17 @@ function OrderLayout() {
   const { cart } = useCart();
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-cream">
       <Header />
 
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 lg:flex-row">
-        <main className="flex-1 rounded-[2rem] bg-white p-6 shadow-[0_25px_50px_-12px_rgba(15,23,42,0.2)]">
+      <div className="max-w-7xl mx-auto flex flex-col gap-8 px-4 py-8 lg:flex-row">
+        <main className="flex-1 bg-white rounded-xl shadow-lg p-8">
           <Outlet />
         </main>
 
         {cart.length > 0 && (
-          <aside className="w-full lg:w-80">
-            <div className="sticky top-6 rounded-[2rem] bg-white p-6 shadow-[0_25px_50px_-12px_rgba(15,23,42,0.1)] border border-slate-200">
+          <aside className="w-full lg:w-96">
+            <div className="sticky top-8">
               <Cart />
             </div>
           </aside>
