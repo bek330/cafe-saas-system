@@ -39,24 +39,24 @@ function OrderSuccess() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-3 mb-8">
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
+          <div className="bg-white rounded-xl shadow-md p-6 text-center border border-slate-200">
             <div className="text-2xl mb-2">📋</div>
             <p className="text-sm text-sage uppercase tracking-wide">Order Number</p>
             <p className="text-2xl font-serif font-bold text-charcoal">#{orderId}</p>
           </div>
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
+          <div className="bg-white rounded-xl shadow-md p-6 text-center border border-slate-200">
             <div className="text-2xl mb-2">🪑</div>
             <p className="text-sm text-sage uppercase tracking-wide">Table</p>
             <p className="text-2xl font-serif font-bold text-charcoal">{tableNumber ?? "Not specified"}</p>
           </div>
-          <div className="bg-white rounded-xl shadow-md p-6 text-center">
+          <div className="bg-white rounded-xl shadow-md p-6 text-center border border-slate-200">
             <div className="text-2xl mb-2">💰</div>
             <p className="text-sm text-sage uppercase tracking-wide">Total</p>
             <p className="text-2xl font-serif font-bold text-charcoal">{total} ETB</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
           <h2 className="text-2xl font-serif font-bold text-charcoal mb-6">Order Summary</h2>
           <div className="space-y-4">
             {items.length > 0 ? (
