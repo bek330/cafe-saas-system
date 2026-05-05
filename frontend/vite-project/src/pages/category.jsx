@@ -43,16 +43,32 @@ function Category() {
     loadCategoryPage();
   }, [id]);
 
+  const optimizeImage = (url) => {
+    if (!url) return "";
+
+    return url.replace("/upload/", "/upload/w_400,h_400,c_fill,q_auto,f_auto/");
+  };
+
   return (
-    <div className="min-h-screen bg-cream py-8">
+    <div className="min-h-screen bg-gradient-to-br from-cream via-cream to-sage/60 py-8">
       <div className="max-w-6xl mx-auto px-6">
         <div className="mb-8">
           <button
             onClick={() => navigate(`/menu`)}
             className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-cream px-4 py-2 text-sm font-medium text-charcoal transition hover:bg-sage/10 mb-4"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Menu
           </button>
@@ -65,7 +81,8 @@ function Category() {
               {selectedCategory?.name || "Loading category..."}
             </h1>
             <p className="text-xl text-sage max-w-2xl mx-auto">
-              Discover our carefully curated selection of delicious dishes in this category.
+              Discover our carefully curated selection of delicious dishes in
+              this category.
             </p>
           </div>
         </div>
@@ -79,7 +96,10 @@ function Category() {
         {loading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(6)].map((_, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-md p-6 animate-pulse">
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-md p-6 animate-pulse"
+              >
                 <div className="h-48 bg-gray-200 rounded-lg mb-4"></div>
                 <div className="h-6 bg-gray-200 rounded mb-2"></div>
                 <div className="h-4 bg-gray-200 rounded mb-4"></div>
@@ -90,8 +110,12 @@ function Category() {
         ) : items.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">🍽️</div>
-            <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2">No items yet</h2>
-            <p className="text-sage">This category is currently empty. Check back later!</p>
+            <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2">
+              No items yet
+            </h2>
+            <p className="text-sage">
+              This category is currently empty. Check back later!
+            </p>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -100,19 +124,26 @@ function Category() {
                 key={item.id}
                 className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden"
               >
-                <img
-                  src={item.image_url}
-                  alt={item.name}
-                  className="w-full h-48 object-cover"
-                />
+                <div className="relative h-48 bg-gray-200 rounded-t-xl mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                  <img
+                    src={optimizeImage(item.image_url)}
+                    alt={item.name}
+                    className="w-full h-48 object-cover hover:scale-105 transition-transform rounded-t-xl"
+                  />
+                </div>
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-xl font-serif font-semibold text-charcoal">{item.name}</h3>
+                    <h3 className="text-xl font-serif font-semibold text-charcoal">
+                      {item.name}
+                    </h3>
                     <span className="bg-sage text-white px-3 py-1 rounded-full text-sm font-semibold">
                       {item.price} ETB
                     </span>
                   </div>
-                  <p className="text-sage mb-4">{item.description || "A delicious dish made with fresh ingredients."}</p>
+                  <p className="text-sage mb-4">
+                    {item.description ||
+                      "A delicious dish made with fresh ingredients."}
+                  </p>
                   <div className="flex items-center justify-between">
                     <button
                       onClick={() => addToCart(item)}
@@ -120,7 +151,9 @@ function Category() {
                     >
                       Add to Cart
                     </button>
-                    <span className={`text-sm font-semibold ${item.is_available ? "text-sage" : "text-red-500"}`}>
+                    <span
+                      className={`text-sm font-semibold ${item.is_available ? "text-sage" : "text-red-500"}`}
+                    >
                       {item.is_available ? "Available" : "Unavailable"}
                     </span>
                   </div>

@@ -112,7 +112,7 @@ function AdminUsers() {
       <section className="rounded-[2rem] bg-white p-6 shadow-xl">
         <h2 className="text-xl font-semibold text-slate-900 mb-4">User form</h2>
         <div className="grid gap-4 lg:grid-cols-[1.4fr_0.8fr]">
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
             <input
               placeholder="Username"
               value={form.username}

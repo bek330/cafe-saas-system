@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { getCategories } from "../api/categoryApi";
 import { useNavigate } from "react-router-dom";
 
-
-
 function Home() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,17 +34,18 @@ function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-cream to-sage/10 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-cream via-cream to-sage/70 py-10">
       <div className="mx-auto max-w-6xl px-6">
         <header className="mb-10 rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-xl shadow-slate-200/70 text-center">
           <p className="inline-flex rounded-full bg-oat-gold px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-charcoal">
             Menu
           </p>
           <h1 className="mt-5 text-5xl font-serif font-bold text-charcoal sm:text-6xl">
-            Welcome to Our Café
+            Our Café Menu
           </h1>
           <p className="mt-4 text-xl text-sage max-w-2xl mx-auto">
-            Discover delicious dishes crafted with passion. Browse our menu and order with ease.
+            Discover delicious dishes crafted with passion. Browse our menu and
+            order with ease.
           </p>
         </header>
 
@@ -61,16 +60,29 @@ function Home() {
                 <span className="text-6xl">{category.icon}</span>
               </div>
               <div className="p-6">
-                <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2">{category.name}</h2>
+                <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2">
+                  {category.name}
+                </h2>
                 <p className="text-sage mb-4">
-                  Explore our selection of fresh, delicious {category.name.toLowerCase()} dishes.
+                  Explore our selection of fresh, delicious{" "}
+                  {category.name.toLowerCase()} dishes.
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="inline-flex rounded-full bg-cream px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-charcoal transition group-hover:bg-oat-gold">
                     View Menu
                   </span>
-                  <svg className="w-5 h-5 text-oat-gold group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="w-5 h-5 text-oat-gold group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </div>
               </div>

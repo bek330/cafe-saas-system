@@ -53,3 +53,15 @@ exports.getAll = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.deleteItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await service.remove(id);
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

@@ -1,9 +1,12 @@
+
+
 /** @type {import('tailwindcss').Config} */
 
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx}"
+    "./src/**/*.{js,jsx}",
+    ".flowbite-react\\class-list.json"
   ],
   theme: {
     extend: {
@@ -19,5 +22,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  
 }
