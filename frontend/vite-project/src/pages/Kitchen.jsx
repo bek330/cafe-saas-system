@@ -1,6 +1,7 @@
- 
+/* eslint-disable react-hooks/purity */
 import { useEffect, useState } from "react";
 import KitchenCard from "../components/kitchenCard";
+import { getOrders } from "../api/orderApi";
 
 function Kitchen() {
   const [orders, setOrders] = useState([]);
@@ -9,12 +10,7 @@ function Kitchen() {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch("http://localhost:5000/orders");
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-
-      const data = await res.json();
+      const data = await getOrders();
 
       const active = data
         .filter((o) => o.status === "pending" || o.status === "accepted")
@@ -30,6 +26,7 @@ function Kitchen() {
       console.error("Fetch error:", err);
     }
   };
+
 
   useEffect(() => {
     fetchOrders();

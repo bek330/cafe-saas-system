@@ -1,6 +1,6 @@
 const service = require('../services/menu.service');
 
-exports.getByCategory = async (req, res) => {
+exports.getByCategory = async (req, res, next) => {
     try {
         const { categoryId } = req.params;
 
@@ -8,21 +8,21 @@ exports.getByCategory = async (req, res) => {
 
         res.json(items);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 };
 
-exports.createItem = async (req, res) => {
+exports.createItem = async (req, res, next) => {
     try {
         const item = await service.create(req.body);
         
         res.status(201).json(item);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 };
 
-exports.updateItem = async (req, res) => {
+exports.updateItem = async (req, res, next) => {
     try {
         const { id } = req.params;
 
@@ -30,11 +30,11 @@ exports.updateItem = async (req, res) => {
 
         res.json(item);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 };
 
-exports.toggleAvailability = async (req, res) => {
+exports.toggleAvailability = async (req, res, next) => {
     try {
         const { id } = req.params;
 
@@ -42,20 +42,20 @@ exports.toggleAvailability = async (req, res) => {
 
         res.json(item);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 };
 
-exports.getAll = async (req, res) => {
+exports.getAll = async (req, res, next) => {
     try {
         const items = await service.getAll();
         res.json(items);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 };
 
-exports.deleteItem = async (req, res) => {
+exports.deleteItem = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -63,6 +63,6 @@ exports.deleteItem = async (req, res) => {
 
     res.json(result);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

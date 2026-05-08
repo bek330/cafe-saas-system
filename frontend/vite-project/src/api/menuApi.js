@@ -1,11 +1,28 @@
-const BASE_URL = "http://localhost:5000";
+import apiClient from "./apiClient";
+
+export const getMenuItems = async () => {
+  return apiClient("/menu");
+};
 
 export const getMenuByCategory = async (categoryId) => {
-  const res = await fetch(`${BASE_URL}/menu/category/${categoryId}`);
+  return apiClient(`/menu/category/${categoryId}`);
+};
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch menu items");
-  }
+export const createMenuItem = async (menuData) => {
+  return apiClient("/menu", {
+    body: menuData,
+  });
+};
 
-  return res.json();
+export const updateMenuItem = async (id, menuData) => {
+  return apiClient(`/menu/${id}`, {
+    method: "PUT",
+    body: menuData,
+  });
+};
+
+export const toggleMenuItemAvailability = async (id) => {
+  return apiClient(`/menu/toggle/${id}`, {
+    method: "PUT",
+  });
 };

@@ -1,44 +1,44 @@
 const service = require('../services/category.service');
 
-exports.getCategories = async (req, res) => {
+exports.getCategories = async (req, res, next) => {
   try {
     const categories = await service.getAll();
     res.json(categories);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.createCategory = async (req, res) => {
+exports.createCategory = async (req, res, next) => {
   try {
     const { name, icon } = req.body;
     const category = await service.create(name, icon);
     res.status(201).json(category);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.deleteCategory = async (req, res) => {
+exports.deleteCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
 
     const hasItems = await service.hasMenuItems(id);
 
     if (hasItems) {
-      return res.status(400).json({
-        error: 'Cannot delete category with existing menu items',
-      });
+      const error = new Error('Cannot delete category with existing menu items');
+      error.statusCode = 400;
+      throw error;
     }
 
     await service.delete(id);
     res.json({ message: 'Category deleted' });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.updateCategory = async (req, res) => {
+exports.updateCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -46,6 +46,6 @@ exports.updateCategory = async (req, res) => {
 
     res.json(category);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import OrderColumn from "../components/OrderColumn";
 import { getOrders, updateOrderStatus } from "../api/orderApi";
 
-function Admin() {
+function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [prevCount, setPrevCount] = useState(0);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
@@ -23,14 +23,13 @@ function Admin() {
 
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const data = await getOrders(token);
+      const data = await getOrders();
       setOrders(data);
       setLastUpdate(Date.now());
     } catch (err) {
       console.error(err);
       // If token is invalid/expired, redirect to login
-      if (err.message.includes("Request failed") || err.message.includes("401")) {
+      if (err.message.includes("Network response was not ok") || err.message.includes("401")) {
         localStorage.removeItem("token");
         window.location.href = "/login";
       }
@@ -47,14 +46,14 @@ function Admin() {
 
   const updateStatus = async (id, status) => {
     try {
-      const token = localStorage.getItem("token");
-      await updateOrderStatus(id, status, token);
+      await updateOrderStatus(id, status);
       fetchOrders();
     } catch (err) {
       alert(err.message);
       fetchOrders();
     }
   };
+
 
   const sortByTime = (a, b) => new Date(a.created_at) - new Date(b.created_at);
 
@@ -107,4 +106,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default AdminOrders;

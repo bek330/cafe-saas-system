@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { getUsers, createUser, updateUser, deleteUser as deleteUserApi } from "../api/userApi";
 
 function AdminUsers() {
   const { user } = useAuth();
@@ -13,14 +14,13 @@ function AdminUsers() {
     role: "user",
   });
 
-  const token = localStorage.getItem("token");
-
   const fetchUsers = async () => {
-    const res = await fetch("http://localhost:5000/users", {
-      headers: { Authorization: token },
-    });
-    const data = await res.json();
-    setUsers(data);
+    try {
+      const data = await getUsers();
+      setUsers(data);
+    } catch (err) {
+      console.error("Fetch users error:", err);
+    }
   };
 
   useEffect(() => {
@@ -50,26 +50,17 @@ function AdminUsers() {
       return;
     }
 
-    const url = editingId ? `http://localhost:5000/users/${editingId}` : "http://localhost:5000/users";
-    const method = editingId ? "PUT" : "POST";
-
-    const res = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify(form),
-    });
-
-    if (!res.ok) {
-      const err = await res.json();
-      alert(err.error || "Failed");
-      return;
+    try {
+      if (editingId) {
+        await updateUser(editingId, form);
+      } else {
+        await createUser(form);
+      }
+      resetForm();
+      fetchUsers();
+    } catch (err) {
+      alert(err.message || "Failed");
     }
-
-    resetForm();
-    fetchUsers();
   };
 
   const resetForm = () => {
@@ -93,13 +84,14 @@ function AdminUsers() {
   const deleteUser = async (id) => {
     if (!confirm("Delete this user?")) return;
 
-    await fetch(`http://localhost:5000/users/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: token },
-    });
-
-    fetchUsers();
+    try {
+      await deleteUserApi(id);
+      fetchUsers();
+    } catch (err) {
+      alert(err.message || "Delete failed");
+    }
   };
+
 
   return (
     <div className="space-y-8">

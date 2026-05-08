@@ -3,7 +3,7 @@ import OrderLayout from "./layouts/OrderLayout";
 import Menu from "./pages/Menu";
 import Category from "./pages/category";
 import OrderSuccess from "./pages/OrderSuccess";
-import Admin from "./pages/Admin";
+import AdminOrders from "./pages/AdminOrders";
 import Kitchen from "./pages/Kitchen";
 import Login from "./pages/Login";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -15,6 +15,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminHistory from "./pages/AdminHistory";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -37,7 +38,8 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Admin />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="orders" element={<AdminOrders />} />
             <Route path="menu" element={<AdminMenu />} />
             <Route path="categories" element={<AdminCategories />} />
             <Route path="users" element={<ProtectedRoute role="admin"><AdminUsers /></ProtectedRoute>} />

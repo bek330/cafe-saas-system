@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
+import { getCategories, createCategory, updateCategory, deleteCategory } from "../api/categoryApi";
 
 const iconOptions = ["🍽️", "☕", "🍹", "🍰", "🥗", "🍕", "🌮", "🍔", "🥐"];
 
@@ -10,16 +12,16 @@ function AdminCategories() {
   const [editName, setEditName] = useState("");
   const [editIcon, setEditIcon] = useState(iconOptions[0]);
 
-  const token = localStorage.getItem("token");
-
   const fetchCategories = async () => {
-    const res = await fetch("http://localhost:5000/categories");
-    const data = await res.json();
-    setCategories(data);
+    try {
+      const data = await getCategories();
+      setCategories(data);
+    } catch (err) {
+      console.error("Fetch categories error:", err);
+    }
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCategories();
   }, []);
 
@@ -29,24 +31,14 @@ function AdminCategories() {
       return;
     }
 
-    const res = await fetch("http://localhost:5000/categories", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ name, icon }),
-    });
-
-    if (!res.ok) {
-      const err = await res.json();
-      alert(err.error || "Failed to create");
-      return;
+    try {
+      await createCategory({ name, icon });
+      setName("");
+      setIcon(iconOptions[0]);
+      fetchCategories();
+    } catch (err) {
+      alert(err.message || "Failed to create");
     }
-
-    setName("");
-    setIcon(iconOptions[0]);
-    fetchCategories();
   };
 
   const startEdit = (cat) => {
@@ -61,46 +53,29 @@ function AdminCategories() {
       return;
     }
 
-    const res = await fetch(`http://localhost:5000/categories/${editingId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ name: editName, icon: editIcon }),
-    });
-
-    if (!res.ok) {
-      const err = await res.json();
-      alert(err.error || "Update failed");
-      return;
+    try {
+      await updateCategory(editingId, { name: editName, icon: editIcon });
+      setEditingId(null);
+      setEditName("");
+      setEditIcon(iconOptions[0]);
+      fetchCategories();
+    } catch (err) {
+      alert(err.message || "Update failed");
     }
-
-    setEditingId(null);
-    setEditName("");
-    setEditIcon(iconOptions[0]);
-    fetchCategories();
   };
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Delete this category?");
     if (!confirmDelete) return;
 
-    const res = await fetch(`http://localhost:5000/categories/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: token,
-      },
-    });
-
-    if (!res.ok) {
-      const err = await res.json();
-      alert(err.error || "Delete failed");
-      return;
+    try {
+      await deleteCategory(id);
+      fetchCategories();
+    } catch (err) {
+      alert(err.message || "Delete failed");
     }
-
-    fetchCategories();
   };
+
 
   return (
     <div className="space-y-8">

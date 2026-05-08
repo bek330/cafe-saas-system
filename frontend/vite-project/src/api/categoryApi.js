@@ -1,12 +1,24 @@
-
-const BASE_URL = "http://localhost:5000";
+import apiClient from "./apiClient";
 
 export const getCategories = async () => {
-  const res = await fetch(`${BASE_URL}/categories`);
-  
-  if (!res.ok) {
-    throw new Error("Failed to fetch categories");
-  }
+  return apiClient("/categories");
+};
 
-  return res.json();
+export const createCategory = async (categoryData) => {
+  return apiClient("/categories", {
+    body: categoryData,
+  });
+};
+
+export const updateCategory = async (id, categoryData) => {
+  return apiClient(`/categories/${id}`, {
+    method: "PUT",
+    body: categoryData,
+  });
+};
+
+export const deleteCategory = async (id) => {
+  return apiClient(`/categories/${id}`, {
+    method: "DELETE",
+  });
 };

@@ -1,97 +1,110 @@
 const userService = require('../services/user.service');
 
 class UserController {
-  async getAllUsers(req, res) {
+  async getAllUsers(req, res, next) {
     try {
       const users = await userService.getAllUsers();
       res.json(users);
     } catch (err) {
-      console.error('Get users error:', err);
-      res.status(500).json({ error: 'Internal server error' });
+      next(err);
     }
   }
 
-  async getUserById(req, res) {
+  async getUserById(req, res, next) {
     try {
       const { id } = req.params;
       const user = await userService.getUserById(id);
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        const error = new Error('User not found');
+        error.statusCode = 404;
+        throw error;
       }
       res.json(user);
     } catch (err) {
-      console.error('Get user error:', err);
-      res.status(500).json({ error: 'Internal server error' });
+      next(err);
     }
   }
 
-  async createUser(req, res) {
+  async createUser(req, res, next) {
     try {
       const { username, password, role } = req.body;
 
       if (!username || !password || !role) {
-        return res.status(400).json({ error: 'Username, password, and role are required' });
+        const error = new Error('Username, password, and role are required');
+        error.statusCode = 400;
+        throw error;
       }
 
       if (!['admin', 'user'].includes(role)) {
-        return res.status(400).json({ error: 'Role must be admin or user' });
+        const error = new Error('Role must be admin or user');
+        error.statusCode = 400;
+        throw error;
       }
 
       const existingUser = await userService.getUserByUsername(username);
       if (existingUser) {
-        return res.status(409).json({ error: 'Username already exists' });
+        const error = new Error('Username already exists');
+        error.statusCode = 409;
+        throw error;
       }
 
       const user = await userService.createUser(username, password, role);
       res.status(201).json(user);
     } catch (err) {
-      console.error('Create user error:', err);
-      res.status(500).json({ error: 'Internal server error' });
+      next(err);
     }
   }
 
-  async updateUser(req, res) {
+  async updateUser(req, res, next) {
     try {
       const { id } = req.params;
       const { username, password, role } = req.body;
 
       if (!username || !role) {
-        return res.status(400).json({ error: 'Username and role are required' });
+        const error = new Error('Username and role are required');
+        error.statusCode = 400;
+        throw error;
       }
 
       if (!['admin', 'user'].includes(role)) {
-        return res.status(400).json({ error: 'Role must be admin or user' });
+        const error = new Error('Role must be admin or user');
+        error.statusCode = 400;
+        throw error;
       }
 
       const existingUser = await userService.getUserByUsername(username);
       if (existingUser && existingUser.id !== parseInt(id)) {
-        return res.status(409).json({ error: 'Username already exists' });
+        const error = new Error('Username already exists');
+        error.statusCode = 409;
+        throw error;
       }
 
       const user = await userService.updateUser(id, username, password, role);
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        const error = new Error('User not found');
+        error.statusCode = 404;
+        throw error;
       }
       res.json(user);
     } catch (err) {
-      console.error('Update user error:', err);
-      res.status(500).json({ error: 'Internal server error' });
+      next(err);
     }
   }
 
-  async deleteUser(req, res) {
+  async deleteUser(req, res, next) {
     try {
       const { id } = req.params;
       const user = await userService.getUserById(id);
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        const error = new Error('User not found');
+        error.statusCode = 404;
+        throw error;
       }
 
       await userService.deleteUser(id);
       res.status(204).send();
     } catch (err) {
-      console.error('Delete user error:', err);
-      res.status(500).json({ error: 'Internal server error' });
+      next(err);
     }
   }
 }

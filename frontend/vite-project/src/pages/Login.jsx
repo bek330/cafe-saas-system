@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { login as loginApi } from "../api/authApi";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -14,38 +15,25 @@ function Login() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:5000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!res.ok) {
-        setError("Invalid credentials");
-        setLoading(false);
-        return;
-      }
-
-      const data = await res.json();
+      const data = await loginApi(username, password);
       login(data.token);
 
       // decode token to get role
       const payload = JSON.parse(atob(data.token.split(".")[1]));
 
       if (payload.role) {
-        navigate("/admin");
+        navigate("/admin/dashboard");
       } else {
         setError("Invalid role");
       }
     } catch (err) {
-      setError("Something went wrong");
+      setError(err.message || "Something went wrong");
       console.error("Login error:", err);
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-sage to-oat-gold flex items-center justify-center px-4">

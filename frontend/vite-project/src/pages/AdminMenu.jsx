@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from "react";
+import { getMenuItems, createMenuItem, updateMenuItem, toggleMenuItemAvailability } from "../api/menuApi";
+import { getCategories } from "../api/categoryApi";
 
 function AdminMenu() {
   const [items, setItems] = useState([]);
@@ -21,18 +23,22 @@ function AdminMenu() {
     category_id: "",
   });
 
-  const token = localStorage.getItem("token");
-
   const fetchMenu = async () => {
-    const res = await fetch("http://localhost:5000/menu");
-    const data = await res.json();
-    setItems(data);
+    try {
+      const data = await getMenuItems();
+      setItems(data);
+    } catch (err) {
+      console.error("Fetch menu error:", err);
+    }
   };
 
   const fetchCategories = async () => {
-    const res = await fetch("http://localhost:5000/categories");
-    const data = await res.json();
-    setCategories(data);
+    try {
+      const data = await getCategories();
+      setCategories(data);
+    } catch (err) {
+      console.error("Fetch categories error:", err);
+    }
   };
 
   useEffect(() => {
@@ -86,10 +92,12 @@ function AdminMenu() {
     const formData = new FormData();
     formData.append("image", compressed);
 
+    const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 
-      xhr.open("POST", "http://localhost:5000/upload");
+      xhr.open("POST", `${BASE_URL}/upload`);
 
       setUploadingImage(true);
 
@@ -102,6 +110,7 @@ function AdminMenu() {
 
       xhr.onload = () => {
         setUploadProgress(false);
+        setUploadingImage(false);
 
         if (xhr.status === 200) {
           resolve(JSON.parse(xhr.response));
@@ -112,13 +121,13 @@ function AdminMenu() {
 
       xhr.onerror = () => {
         setUploadingImage(false);
-
         reject("Upload error");
       };
 
       xhr.send(formData);
     });
   };
+
   const handleSubmit = async () => {
     if (!form.name || !form.price || !form.category_id) {
       alert("All fields required");
@@ -144,39 +153,24 @@ function AdminMenu() {
         }
       }
 
-      const url = editingId
-        ? `http://localhost:5000/menu/${editingId}`
-        : "http://localhost:5000/menu";
-
-      const method = editingId ? "PUT" : "POST";
-
       setSavingItem(true);
 
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          ...form,
-          image_url: imageUrl,
-          price: Number(form.price),
-          category_id: Number(form.category_id),
-          public_id: publicId,
-        }),
-      });
+      const itemData = {
+        ...form,
+        image_url: imageUrl,
+        price: Number(form.price),
+        category_id: Number(form.category_id),
+        public_id: publicId,
+      };
 
-      if (!res.ok) {
-        const err = await res.json();
-        alert(err.error || "Failed");
-        return;
+      let savedItem;
+      if (editingId) {
+        savedItem = await updateMenuItem(editingId, itemData);
+      } else {
+        savedItem = await createMenuItem(itemData);
       }
 
-      const savedItem = await res.json();
-
       if (editingId) {
-        setSavingItem(false);
         setItems((prev) =>
           prev.map((item) => (item.id === savedItem.id ? savedItem : item)),
         );
@@ -187,6 +181,9 @@ function AdminMenu() {
       resetForm();
     } catch (err) {
       console.error("Submit error:", err);
+      alert(err.message || "Failed to save item");
+    } finally {
+      setSavingItem(false);
     }
   };
 
@@ -230,15 +227,14 @@ function AdminMenu() {
   };
 
   const toggleItem = async (id) => {
-    await fetch(`http://localhost:5000/menu/toggle/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: token,
-      },
-    });
-
-    fetchMenu();
+    try {
+      await toggleMenuItemAvailability(id);
+      fetchMenu();
+    } catch (err) {
+      console.error("Toggle error:", err);
+    }
   };
+
 
   return (
     <div className="space-y-8">

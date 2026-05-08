@@ -47,9 +47,9 @@ export default function useOrderHistory() {
                     limit,
                     from,
                     to,
-                },
-                localStorage.getItem("token")
+                }
             );
+
 
             setOrders(data.data || []);
             setTotalPages(data.pages || 1);

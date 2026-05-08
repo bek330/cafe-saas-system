@@ -32,4 +32,13 @@ app.use("/users", userRoutes);
 const uploadRoutes = require("./routes/upload.router");
 app.use("/upload", uploadRoutes);
 
+const adminDashboardRoutes = require(
+    "./routes/adminDashboard.router"
+);
+app.use("/admin/dashboard", adminDashboardRoutes);
+
+// Error handling middleware
+const errorHandler = require('./middleware/error.middleware');
+app.use(errorHandler);
+
 module.exports = app;
