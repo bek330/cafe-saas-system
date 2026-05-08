@@ -46,7 +46,7 @@ function Category() {
   const optimizeImage = (url) => {
     if (!url) return "";
 
-    return url.replace("/upload/", "/upload/w_400,h_400,c_fill,q_auto,f_auto/");
+    return url.replace("/upload/", "/upload/w_300,c_fill,q_auto,f_auto/");
   };
 
   return (
@@ -124,11 +124,15 @@ function Category() {
                 key={item.id}
                 className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden"
               >
-                <div className="relative h-48 bg-gray-200 rounded-t-xl mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                <div className="relative h-48 w-full bg-gray-200 rounded-t-xl mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
                   <img
                     src={optimizeImage(item.image_url)}
+                    onError={(e) => {
+                      e.target.src = "/fallback-food.jpg";
+                    }}
                     alt={item.name}
                     className="w-full h-48 object-cover hover:scale-105 transition-transform rounded-t-xl"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-6">

@@ -15,6 +15,7 @@ exports.getByCategory = async (req, res) => {
 exports.createItem = async (req, res) => {
     try {
         const item = await service.create(req.body);
+        
         res.status(201).json(item);
     } catch (err) {
         res.status(500).json({ error: err.message });

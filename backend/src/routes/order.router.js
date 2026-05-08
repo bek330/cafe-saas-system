@@ -7,8 +7,8 @@ const { verifyToken, requireRole } = require('../middleware/auth.middleware');
 router.get('/', controller.getOrders);
 
 // only admin updates
-router.put('/:id/status', verifyToken, requireRole('admin'), controller.updateStatus);
-router.get('/history', controller.getOrderHistory);
+router.put('/:id/status', verifyToken, controller.updateStatus);
+router.get('/history', verifyToken, controller.getOrderHistory);
 // public route to create order
 router.post('/', controller.createOrder);
 

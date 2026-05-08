@@ -5,7 +5,12 @@ function AdminMenu() {
   const [categories, setCategories] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [image, setImage] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [savingItem, setSavingItem] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
+  const [existingImage, setExistingImage] = useState("");
 
   const [form, setForm] = useState({
     name: "",
@@ -39,38 +44,103 @@ function AdminMenu() {
     loadData();
   }, []);
 
+  const compressImage = (file) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.src = e.target.result;
+      };
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+
+        const MAX_WIDTH = 800;
+        const scale = Math.min(1, MAX_WIDTH / img.width);
+
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(
+          (blob) => {
+            resolve(new File([blob], file.name, { type: "image/jpeg" }));
+          },
+          "image/jpeg",
+          0.7, // compression quality
+        );
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
   const uploadImage = async () => {
     if (!image) return null;
 
+    const compressed = await compressImage(image);
+
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("image", compressed);
 
-    const res = await fetch("http://localhost:5000/upload", {
-      method: "POST",
-      body: formData,
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.open("POST", "http://localhost:5000/upload");
+
+      setUploadingImage(true);
+
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percent = Math.round((event.loaded / event.total) * 100);
+          setUploadProgress(percent);
+        }
+      };
+
+      xhr.onload = () => {
+        setUploadProgress(false);
+
+        if (xhr.status === 200) {
+          resolve(JSON.parse(xhr.response));
+        } else {
+          reject("Upload failed");
+        }
+      };
+
+      xhr.onerror = () => {
+        setUploadingImage(false);
+
+        reject("Upload error");
+      };
+
+      xhr.send(formData);
     });
-
-    const data = await res.json();
-    return data;
   };
-
   const handleSubmit = async () => {
     if (!form.name || !form.price || !form.category_id) {
       alert("All fields required");
       return;
     }
+    let imageUrl = form.image_url;
+    let publicId = form.public_id;
 
     try {
-      let imageUrl = form.image_url;
-      let publicId = form.public_id;
-
       // upload if new image selected
       if (image) {
-        const uploaded = await uploadImage();
+        try {
+          const uploaded = await uploadImage();
 
-        if (uploaded) {
-          imageUrl = uploaded.imageUrl;
-          publicId = uploaded.public_id;
+          if (uploaded && uploaded.imageUrl) {
+            imageUrl = uploaded.imageUrl;
+            publicId = uploaded.public_id || null;
+          }
+        } catch (err) {
+          console.error("Upload failed:", err);
+          alert("Image upload failed");
+          return; // stop submit if upload fails
         }
       }
 
@@ -79,6 +149,8 @@ function AdminMenu() {
         : "http://localhost:5000/menu";
 
       const method = editingId ? "PUT" : "POST";
+
+      setSavingItem(true);
 
       const res = await fetch(url, {
         method,
@@ -101,9 +173,18 @@ function AdminMenu() {
         return;
       }
 
-      resetForm();
+      const savedItem = await res.json();
 
-      fetchMenu();
+      if (editingId) {
+        setSavingItem(false);
+        setItems((prev) =>
+          prev.map((item) => (item.id === savedItem.id ? savedItem : item)),
+        );
+      } else {
+        setItems((prev) => [savedItem, ...prev]);
+      }
+
+      resetForm();
     } catch (err) {
       console.error("Submit error:", err);
     }
@@ -119,6 +200,7 @@ function AdminMenu() {
       category_id: "",
     });
 
+    setExistingImage("");
     setEditingId(null);
     setImage(null);
 
@@ -138,6 +220,7 @@ function AdminMenu() {
       category_id: item.category_id,
     });
 
+    setExistingImage(item.image_url);
     setEditingId(item.id);
     setImage(null);
 
@@ -176,15 +259,18 @@ function AdminMenu() {
           menu.{" "}
         </p>{" "}
       </section>{" "}
-      <section className="rounded-[2rem] bg-white p-6 shadow-xl">
+      <section className="rounded-[2rem] bg-white p-6 shadow-xl" aria-busy={uploadingImage || savingItem}>
         {" "}
-        <h2 className="text-xl font-semibold text-slate-900 mb-4">
-          Item form
-        </h2>{" "}
+        <label className="text-sm font-400 text-slate-900 mb-4">
+              <legend className="text-xl font-semibold text-slate-900 mb-4">Item form</legend> 
+          
+        {" "}
         <div className="grid gap-4 lg:grid-cols-[1.4fr_0.8fr]">
+           
           {" "}
           <div className="grid gap-4 md:grid-cols-2">
             {" "}
+            
             <input
               placeholder="Name"
               value={form.name}
@@ -199,20 +285,57 @@ function AdminMenu() {
               className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100"
             />{" "}
             {/* 📁 FILE UPLOAD */}{" "}
-            <input
-              onChange={(e) => setImage(e.target.files[0])}
-              className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-100 file:text-cyan-700 hover:file:bg-cyan-200"
-              type="file"
-              ref={fileInputRef}
-            />{" "}
-            {/* 👀 Preview */}{" "}
-            {image && (
-              <img
-                src={URL.createObjectURL(image)}
-                alt="preview"
-                className="w-24 h-24 object-cover rounded mt-2"
-              />
-            )}{" "}
+            <div
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragActive(true);
+              }}
+              onDragLeave={() => setDragActive(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setDragActive(false);
+                const file = e.dataTransfer.files[0];
+                if (file) setImage(file);
+              }}
+              className={`border-2 border-dashed p-4 rounded ${
+                dragActive ? "border-cyan-500 bg-cyan-50" : "border-slate-200"
+              }`}
+            >
+              <p className="text-sm text-slate-500">
+                Drag & drop image here or click to select
+              </p>
+              <input
+                aria-label="Upload menu item image"
+                onChange={(e) => setImage(e.target.files[0])}
+                className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-100 file:text-cyan-700 hover:file:bg-cyan-200"
+                type="file"
+                ref={fileInputRef}
+              />{" "}
+              {/* 👀 Preview */} {/* 👀 Current image (edit mode) */}
+              {editingId && existingImage && !image && (
+                <img
+                  src={existingImage}
+                  alt="current"
+                  className="w-24 h-24 object-cover rounded mt-2"
+                />
+              )}
+              {/* 👀 New preview */}
+              {image && (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="preview"
+                  className="w-24 h-24 object-cover rounded mt-2 border-2 border-cyan-500"
+                />
+              )}{" "}
+              {uploadProgress > 0 && (
+                <div className="w-full bg-gray-200 rounded h-2 mt-2">
+                  <div
+                    className="bg-cyan-600 h-2 rounded transition-all"
+                    style={{ width: `${uploadProgress}%` }}
+                  />
+                </div>
+              )}
+            </div>{" "}
             <textarea
               placeholder="Description"
               value={form.description}
@@ -245,7 +368,13 @@ function AdminMenu() {
               className="w-full rounded-3xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-700"
             >
               {" "}
-              {editingId ? "Update item" : "Add item"}{" "}
+              {uploadingImage
+                ? "Uploading image..."
+                : savingItem
+                  ? "Saving..."
+                  : editingId
+                    ? "Update item"
+                    : "Add item"}{" "}
             </button>{" "}
             {editingId && (
               <button
@@ -257,7 +386,7 @@ function AdminMenu() {
               </button>
             )}{" "}
           </div>{" "}
-        </div>{" "}
+        </div>{" "}</label>
       </section>{" "}
       <section className="grid gap-4">
         {" "}

@@ -1,13 +1,14 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Cart from "../components/cart";
+import Footer from "../components/Footer";
 import { useCart } from "../contexts/useCart";
 
 function OrderLayout() {
   const { cart } = useCart();
 
   return (
-    <div className="min-h-screen bg-cream">
+    <section className="min-h-screen bg-cream">
       <Header />
 
       <div className="max-w-7xl mx-auto flex flex-col gap-8 px-4 py-8 lg:flex-row">
@@ -22,8 +23,10 @@ function OrderLayout() {
             </div>
           </aside>
         )}
+        
       </div>
-    </div>
+      <Footer />
+    </section>
   );
 }
 

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import OrderLayout from "./layouts/OrderLayout";
-import Home from "./pages/Home";
+import Menu from "./pages/Menu";
 import Category from "./pages/category";
 import OrderSuccess from "./pages/OrderSuccess";
 import Admin from "./pages/Admin";
@@ -13,14 +13,18 @@ import AdminLayout from "./layouts/AdminLayout";
 import AdminCategories from "./pages/AdminCategories";
 import AdminUsers from "./pages/AdminUsers";
 import AdminHistory from "./pages/AdminHistory";
+import { Toaster } from "react-hot-toast";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+      <Toaster position="top-right" />
         <Routes>
           <Route element={<OrderLayout />}>
-            <Route path="/menu" element={<Home />} />
+            <Route index element={<Home />} />
+            <Route path="/menu" element={<Menu />} />
             <Route path="/menu/category/:id" element={<Category />} />
             <Route path="/success/:id" element={<OrderSuccess />} />
           </Route>
@@ -46,7 +50,7 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           {/* fallback */}
-          <Route path="*" element={<Navigate to="/menu" />} />
+          <Route path="*" element={<Navigate to="/Home" />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

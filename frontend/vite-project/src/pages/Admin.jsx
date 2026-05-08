@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /* eslint-disable react-hooks/purity */
 import { useEffect, useState, useRef } from "react";
 import OrderColumn from "../components/OrderColumn";
