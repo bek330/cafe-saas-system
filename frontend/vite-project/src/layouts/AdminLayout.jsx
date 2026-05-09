@@ -1,18 +1,16 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidebar from "../components/AdminSidebar";
 
-
 function AdminLayout() {
- 
   return (
-    <div className="min-h-screen bg-slate-100">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 lg:flex-row">
-        <Sidebar />
+    <div className="flex h-screen bg-slate-100 overflow-hidden">
+      <Sidebar />
 
-        <main className="flex-1 rounded-[2rem] bg-white p-6 shadow-[0_25px_50px_-12px_rgba(15,23,42,0.15)]">
+      <main className="flex-1 p-6 md:p-8 overflow-hidden">
+        <div className="h-full rounded-[2rem] bg-white p-6 md:p-8 shadow-[0_25px_50px_-12px_rgba(15,23,42,0.15)] overflow-y-auto">
           <Outlet />
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -5,23 +5,12 @@ exports.getAll = async () => {
   return result.rows;
 };
 
-exports.create = async (name, icon) => {
-  try {
-    const result = await db.query(
-      'INSERT INTO categories (name, icon) VALUES ($1, $2) RETURNING *',
-      [name, icon || null]
-    );
-    return result.rows[0];
-  } catch (err) {
-    if (err.code === '42703') {
-      const result = await db.query(
-        'INSERT INTO categories (name) VALUES ($1) RETURNING *',
-        [name]
-      );
-      return result.rows[0];
-    }
-    throw err;
-  }
+exports.create = async (name, icon, image_url, public_id) => {
+  const result = await db.query(
+    'INSERT INTO categories (name, icon, image_url, public_id) VALUES ($1, $2, $3, $4) RETURNING *',
+    [name, icon || null, image_url || null, public_id || null]
+  );
+  return result.rows[0];
 };
 
 exports.hasMenuItems = async (categoryId) => {
@@ -37,21 +26,10 @@ exports.delete = async (id) => {
 };
 
 exports.update = async (id, data) => {
-  const { name, icon } = data;
-  try {
-    const result = await db.query(
-      'UPDATE categories SET name = $1, icon = $2 WHERE id = $3 RETURNING *',
-      [name, icon || null, id]
-    );
-    return result.rows[0];
-  } catch (err) {
-    if (err.code === '42703') {
-      const result = await db.query(
-        'UPDATE categories SET name = $1 WHERE id = $2 RETURNING *',
-        [name, id]
-      );
-      return result.rows[0];
-    }
-    throw err;
-  }
+  const { name, icon, image_url, public_id } = data;
+  const result = await db.query(
+    'UPDATE categories SET name = $1, icon = $2, image_url = $3, public_id = $4 WHERE id = $5 RETURNING *',
+    [name, icon || null, image_url || null, public_id || null, id]
+  );
+  return result.rows[0];
 };

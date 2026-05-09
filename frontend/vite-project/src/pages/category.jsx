@@ -3,6 +3,33 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getMenuByCategory } from "../api/menuApi";
 import { useCart } from "../contexts/useCart";
 import { getCategories } from "../api/categoryApi";
+import { 
+  ArrowLeft, 
+  ShoppingCart, 
+  Utensils, 
+  Info, 
+  ShoppingBag,
+  Coffee,
+  GlassWater,
+  Cake,
+  Pizza,
+  Salad,
+  Soup,
+  Croissant,
+  Beef
+} from "lucide-react";
+
+const iconMap = {
+  Coffee: Coffee,
+  Utensils: Utensils,
+  GlassWater: GlassWater,
+  Cake: Cake,
+  Pizza: Pizza,
+  Salad: Salad,
+  Soup: Soup,
+  Croissant: Croissant,
+  Beef: Beef,
+};
 
 function Category() {
   const { id } = useParams();
@@ -18,6 +45,8 @@ function Category() {
     () => categories.find((cat) => cat.id === Number(id)),
     [categories, id],
   );
+
+  
 
   useEffect(() => {
     const loadCategoryPage = async () => {
@@ -45,71 +74,82 @@ function Category() {
 
   const optimizeImage = (url) => {
     if (!url) return "";
-
     return url.replace("/upload/", "/upload/w_300,c_fill,q_auto,f_auto/");
   };
 
+  const CategoryIcon = ({ name, ...props }) => {
+    const IconComponent = iconMap[name] || Utensils;
+    return <IconComponent {...props} />;
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-cream to-sage/60 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-cream via-cream to-sage/20 py-8 pb-24">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="mb-8">
+        <div className="flex flex-col md:flex-row items-center gap-6 mb-12">
           <button
             onClick={() => navigate(`/menu`)}
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-cream px-4 py-2 text-sm font-medium text-charcoal transition hover:bg-sage/10 mb-4"
+            className="group flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-md text-charcoal hover:bg-oat-gold transition-all"
+            aria-label="Back to Menu"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Back to Menu
+            <ArrowLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
           </button>
 
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-oat-gold rounded-full mb-4">
-              <span className="text-3xl">{selectedCategory?.icon || "🍽️"}</span>
+          <div className="flex-1 text-center md:text-left">
+            <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-6 mb-2">
+              <div className="relative w-24 h-24 md:w-32 md:h-32">
+                {selectedCategory?.image_url ? (
+                  <img 
+                    src={selectedCategory.image_url} 
+                    alt={selectedCategory.name} 
+                    className="w-full h-full object-cover rounded-3xl shadow-xl border-4 border-white" 
+                  />
+                ) : (
+                  <div className="w-full h-full bg-oat-gold/20 rounded-3xl border border-oat-gold/30 flex items-center justify-center">
+                    <CategoryIcon 
+                      name={selectedCategory?.icon} 
+                      className="w-10 h-10 md:w-12 md:h-12 text-charcoal" 
+                    />
+                  </div>
+                )}
+                {selectedCategory?.image_url && (
+                  <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-xl shadow-lg flex items-center justify-center border border-slate-50">
+                    <CategoryIcon name={selectedCategory.icon} className="w-5 h-5 text-charcoal" />
+                  </div>
+                )}
+              </div>
+              <div className="text-center md:text-left">
+                <h1 className="text-4xl md:text-6xl font-serif font-black text-charcoal tracking-tighter uppercase">
+                  {selectedCategory?.name || "Loading..."}
+                </h1>
+                <p className="text-lg text-sage max-w-2xl mt-2 italic font-medium">
+                  {selectedCategory?.description || `Discover our carefully curated selection of delicious ${selectedCategory?.name?.toLowerCase() || ''} dishes.`}
+                </p>
+              </div>
             </div>
-            <h1 className="text-4xl font-serif font-bold text-charcoal mb-2">
-              {selectedCategory?.name || "Loading category..."}
-            </h1>
-            <p className="text-xl text-sage max-w-2xl mx-auto">
-              Discover our carefully curated selection of delicious dishes in
-              this category.
-            </p>
           </div>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8 text-center">
-            <p className="text-red-600">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8 flex items-center gap-4 text-red-600">
+            <Info className="w-6 h-6 flex-shrink-0" />
+            <p>{error}</p>
           </div>
         )}
 
         {loading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[...Array(6)].map((_, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl shadow-md p-6 animate-pulse"
-              >
-                <div className="h-48 bg-gray-200 rounded-lg mb-4"></div>
-                <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                <div className="h-10 bg-gray-200 rounded"></div>
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-white rounded-2xl shadow-md p-6 animate-pulse border border-white">
+                <div className="h-48 bg-gray-100 rounded-xl mb-4"></div>
+                <div className="h-6 bg-gray-100 rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-gray-100 rounded w-full mb-4"></div>
+                <div className="h-10 bg-gray-100 rounded-full w-full"></div>
               </div>
             ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-6xl mb-4">🍽️</div>
+          <div className="text-center py-24 bg-white/50 rounded-3xl border border-dashed border-sage/30">
+            <ShoppingBag className="w-16 h-16 text-sage/40 mx-auto mb-4" />
             <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2">
               No items yet
             </h2>
@@ -122,45 +162,47 @@ function Category() {
             {items.map((item) => (
               <div
                 key={item.id}
-                className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+                className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-white"
               >
-                <div className="relative h-48 w-full bg-gray-200 rounded-t-xl mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                <div className="relative h-56 overflow-hidden">
                   <img
                     src={optimizeImage(item.image_url)}
                     onError={(e) => {
+                      e.target.onerror = null;
                       e.target.src = "/fallback-food.jpg";
                     }}
                     alt={item.name}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform rounded-t-xl"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
+                  {!item.is_available && (
+                    <div className="absolute inset-0 bg-charcoal/60 backdrop-blur-[2px] flex items-center justify-center">
+                      <span className="bg-white text-charcoal px-4 py-2 rounded-full text-sm font-bold uppercase tracking-widest">
+                        Sold Out
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-xl font-serif font-semibold text-charcoal">
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="text-xl font-serif font-bold text-charcoal group-hover:text-oat-gold transition-colors">
                       {item.name}
                     </h3>
-                    <span className="bg-sage text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      {item.price} ETB
+                    <span className="text-lg font-bold text-charcoal">
+                      {item.price} <span className="text-xs text-sage font-medium uppercase tracking-tighter">ETB</span>
                     </span>
                   </div>
-                  <p className="text-sage mb-4">
-                    {item.description ||
-                      "A delicious dish made with fresh ingredients."}
+                  <p className="text-sage text-sm mb-6 line-clamp-2 leading-relaxed">
+                    {item.description || "A delicious dish made with fresh, locally sourced ingredients."}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <button
-                      onClick={() => addToCart(item)}
-                      className="rounded-full bg-oat-gold px-4 py-2 text-sm font-semibold text-charcoal transition hover:bg-oat-gold/80"
-                    >
-                      Add to Cart
-                    </button>
-                    <span
-                      className={`text-sm font-semibold ${item.is_available ? "text-sage" : "text-red-500"}`}
-                    >
-                      {item.is_available ? "Available" : "Unavailable"}
-                    </span>
-                  </div>
+                  <button
+                    onClick={() => addToCart(item)}
+                    disabled={!item.is_available}
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-charcoal py-3 text-sm font-bold text-cream transition-all hover:bg-charcoal/90 active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:pointer-events-none shadow-lg shadow-charcoal/10"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             ))}

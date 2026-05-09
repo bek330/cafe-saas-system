@@ -1,57 +1,58 @@
 /* eslint-disable react-refresh/only-export-components */
-/* eslint-disable react-hooks/set-state-in-effect */
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token"));
+const getInitialUser = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
 
-  useEffect(() => {
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        // Check if token is expired
-        const currentTime = Date.now() / 1000;
-        if (decoded.exp < currentTime) {
-          // Token is expired, clear it
-          setUser(null);
-          setToken(null);
-          localStorage.removeItem("token");
-        } else {
-          setUser(decoded);
-        }
-      } catch {
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem("token");
-      }
-    } else {
-      setUser(null);
+  try {
+    const decoded = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp < currentTime) {
+      localStorage.removeItem("token");
+      return null;
     }
+    return decoded;
+  } catch {
+    localStorage.removeItem("token");
+    return null;
+  }
+};
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(getInitialUser);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [loading, setLoading] = useState(false);
+
+  // Sync token state if it changes externally (rare but good for consistency)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newToken = localStorage.getItem("token");
+      if (newToken !== token) {
+        setToken(newToken);
+        setUser(getInitialUser());
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, [token]);
 
   const login = (jwt) => {
-    localStorage.setItem("token", jwt);
-    setToken(jwt);
+    setLoading(true);
     try {
+      localStorage.setItem("token", jwt);
+      setToken(jwt);
       const decoded = jwtDecode(jwt);
-      // Check if token is expired
-      const currentTime = Date.now() / 1000;
-      if (decoded.exp < currentTime) {
-        // Token is expired, clear it
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem("token");
-      } else {
-        setUser(decoded);
-      }
-    } catch {
-      setUser(null);
-      setToken(null);
-      localStorage.removeItem("token");
+      setUser(decoded);
+    } catch (err) {
+      console.error("Login Error:", err);
+      logout();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,12 +63,16 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 }

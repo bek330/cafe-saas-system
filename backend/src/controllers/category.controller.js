@@ -11,8 +11,8 @@ exports.getCategories = async (req, res, next) => {
 
 exports.createCategory = async (req, res, next) => {
   try {
-    const { name, icon } = req.body;
-    const category = await service.create(name, icon);
+    const { name, icon, image_url, public_id } = req.body;
+    const category = await service.create(name, icon, image_url, public_id);
     res.status(201).json(category);
   } catch (err) {
     next(err);
