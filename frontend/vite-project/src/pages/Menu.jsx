@@ -157,7 +157,7 @@ function Menu() {
                   {category.name.toLowerCase()} dishes.
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="inline-flex rounded-full bg-cream px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-charcoal border border-oat-gold/20 transition group-hover:bg-oat-gold group-hover:border-oat-gold">
+                  <span className="inline-flex rounded-full bg-charcoal px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream border border-oat-gold/20 transition group-hover:bg-oat-gold group-hover:border-oat-gold group-hover:text-charcoal ease-in-out duration-300" >
                     View Menu
                   </span>
                   <ChevronRight className="w-5 h-5 text-oat-gold group-hover:translate-x-1 transition-transform" />

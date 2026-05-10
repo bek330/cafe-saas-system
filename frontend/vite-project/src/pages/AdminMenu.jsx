@@ -1,6 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import { getMenuItems, createMenuItem, updateMenuItem, toggleMenuItemAvailability } from "../api/menuApi";
 import { getCategories } from "../api/categoryApi";
+import { 
+  UtensilsCrossed, 
+  Plus, 
+  Edit2, 
+  Power, 
+  PowerOff,
+  Upload,
+  Image as ImageIcon,
+  RefreshCw,
+  X,
+  Layers
+} from "lucide-react";
 
 function AdminMenu() {
   const [items, setItems] = useState([]);
@@ -109,7 +121,7 @@ function AdminMenu() {
       };
 
       xhr.onload = () => {
-        setUploadProgress(false);
+        setUploadProgress(0);
         setUploadingImage(false);
 
         if (xhr.status === 200) {
@@ -237,222 +249,215 @@ function AdminMenu() {
 
 
   return (
-    <div className="space-y-8">
-      {" "}
-      <section className="rounded-[2rem] bg-white p-6 shadow-xl">
-        {" "}
-        <p className="text-sm uppercase tracking-[0.25em] text-cyan-600">
-          {" "}
-          Menu manager{" "}
-        </p>{" "}
-        <h1 className="mt-3 text-3xl font-semibold text-slate-900">
-          {" "}
-          Manage menu items{" "}
-        </h1>{" "}
-        <p className="mt-2 text-slate-500">
-          {" "}
-          Create, edit, or toggle availability for menu items in the kitchen
-          menu.{" "}
-        </p>{" "}
-      </section>{" "}
-      <section className="rounded-[2rem] bg-white p-6 shadow-xl" aria-busy={uploadingImage || savingItem}>
-        {" "}
-        <label className="text-sm font-400 text-slate-900 mb-4">
-              <legend className="text-xl font-semibold text-slate-900 mb-4">Item form</legend> 
-          
-        {" "}
-        <div className="grid gap-4 lg:grid-cols-[1.4fr_0.8fr]">
-           
-          {" "}
-          <div className="grid gap-4 md:grid-cols-2">
-            {" "}
-            
-            <input
-              placeholder="Name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100"
-            />{" "}
-            <input
-              placeholder="Price"
-              type="number"
-              value={form.price}
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-              className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100"
-            />{" "}
-            {/* 📁 FILE UPLOAD */}{" "}
-            <div
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragActive(true);
-              }}
-              onDragLeave={() => setDragActive(false)}
-              onDrop={(e) => {
-                e.preventDefault();
-                setDragActive(false);
-                const file = e.dataTransfer.files[0];
-                if (file) setImage(file);
-              }}
-              className={`border-2 border-dashed p-4 rounded ${
-                dragActive ? "border-cyan-500 bg-cyan-50" : "border-slate-200"
-              }`}
-            >
-              <p className="text-sm text-slate-500">
-                Drag & drop image here or click to select
-              </p>
-              <input
-                aria-label="Upload menu item image"
-                onChange={(e) => setImage(e.target.files[0])}
-                className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-100 file:text-cyan-700 hover:file:bg-cyan-200"
-                type="file"
-                ref={fileInputRef}
-              />{" "}
-              {/* 👀 Preview */} {/* 👀 Current image (edit mode) */}
-              {editingId && existingImage && !image && (
-                <img
-                  src={existingImage}
-                  alt="current"
-                  className="w-24 h-24 object-cover rounded mt-2"
+    <div className="space-y-8 bg-cream min-h-screen p-6">
+      <section className="rounded-[2rem] bg-white p-8 shadow-xl border border-slate-100">
+        <div className="mb-8">
+          <p className="text-xs uppercase tracking-[0.3em] text-oat-gold font-bold">Menu manager</p>
+          <h1 className="mt-3 text-4xl font-serif font-black text-charcoal">Manage Menu Items</h1>
+          <p className="mt-2 text-sage italic">Create, edit, or toggle availability for items in your digital menu.</p>
+        </div>
+
+        <div className="bg-cream/30 p-8 rounded-[2.5rem] border border-dashed border-sage/20">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-sage mb-2 ml-4">Item Name</label>
+                <input
+                  placeholder="e.g. Avocado Toast"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full rounded-full border-2 border-transparent bg-white px-6 py-4 text-charcoal shadow-sm focus:border-oat-gold focus:outline-none transition-all"
                 />
-              )}
-              {/* 👀 New preview */}
-              {image && (
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt="preview"
-                  className="w-24 h-24 object-cover rounded mt-2 border-2 border-cyan-500"
-                />
-              )}{" "}
-              {uploadProgress > 0 && (
-                <div className="w-full bg-gray-200 rounded h-2 mt-2">
-                  <div
-                    className="bg-cyan-600 h-2 rounded transition-all"
-                    style={{ width: `${uploadProgress}%` }}
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-sage mb-2 ml-4">Price (ETB)</label>
+                  <input
+                    placeholder="250"
+                    type="number"
+                    value={form.price}
+                    onChange={(e) => setForm({ ...form, price: e.target.value })}
+                    className="w-full rounded-full border-2 border-transparent bg-white px-6 py-4 text-charcoal shadow-sm focus:border-oat-gold focus:outline-none transition-all"
                   />
                 </div>
-              )}
-            </div>{" "}
-            <textarea
-              placeholder="Description"
-              value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
-              className="md:col-span-2 h-28 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100"
-            />{" "}
-          </div>{" "}
-          <div className="space-y-4">
-            {" "}
-            <select
-              value={form.category_id}
-              onChange={(e) =>
-                setForm({ ...form, category_id: e.target.value })
-              }
-              className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100"
-            >
-              {" "}
-              <option value="">Select category</option>{" "}
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {" "}
-                  {c.name}{" "}
-                </option>
-              ))}{" "}
-            </select>{" "}
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-sage mb-2 ml-4">Category</label>
+                  <select
+                    value={form.category_id}
+                    onChange={(e) => setForm({ ...form, category_id: e.target.value })}
+                    className="w-full appearance-none rounded-full border-2 border-transparent bg-white px-6 py-4 text-charcoal shadow-sm focus:border-oat-gold focus:outline-none transition-all cursor-pointer"
+                  >
+                    <option value="">Select...</option>
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-sage mb-2 ml-4">Description</label>
+                <textarea
+                  placeholder="Tell guests about this dish..."
+                  value={form.description}
+                  onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  className="w-full rounded-[2rem] border-2 border-transparent bg-white px-6 py-4 text-charcoal shadow-sm focus:border-oat-gold focus:outline-none transition-all h-32 resize-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-sage mb-2 ml-4">Item Image</label>
+              <div
+                onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+                onDragLeave={() => setDragActive(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDragActive(false);
+                  const file = e.dataTransfer.files[0];
+                  if (file) setImage(file);
+                }}
+                className={`relative border-2 border-dashed p-4 rounded-[2rem] transition-all h-[320px] flex flex-col items-center justify-center ${
+                  dragActive ? "border-oat-gold bg-oat-gold/5" : "border-sage/20 bg-white"
+                }`}
+              >
+                {!image && !existingImage ? (
+                  <div className="text-center">
+                    <Upload className="w-10 h-10 text-sage/40 mx-auto mb-4" />
+                    <p className="text-[10px] text-sage font-black uppercase tracking-widest">Drop dish image or click</p>
+                  </div>
+                ) : (
+                  <div className="relative w-full h-full p-2">
+                    <img
+                      src={image ? URL.createObjectURL(image) : existingImage}
+                      alt="preview"
+                      className="w-full h-full object-cover rounded-[1.5rem] border-2 border-oat-gold/20"
+                    />
+                    <button 
+                      onClick={() => { setImage(null); setExistingImage(""); if(fileInputRef.current) fileInputRef.current.value = ""; }}
+                      className="absolute top-4 right-4 bg-red-500 text-white p-2 rounded-full shadow-lg hover:bg-red-600 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={(e) => setImage(e.target.files[0])}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  accept="image/*"
+                />
+                
+                {uploadProgress > 0 && (
+                  <div className="absolute bottom-0 left-0 w-full h-1 bg-cream overflow-hidden rounded-b-[2rem]">
+                    <div 
+                      className="h-full bg-oat-gold transition-all duration-300"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex gap-3">
             <button
               onClick={handleSubmit}
-              className="w-full rounded-3xl bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-700"
+              disabled={uploadingImage || savingItem}
+              className="flex-1 rounded-full bg-charcoal px-8 py-5 text-sm font-black text-cream shadow-xl shadow-charcoal/20 transition hover:bg-charcoal/90 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {" "}
-              {uploadingImage
-                ? "Uploading image..."
-                : savingItem
-                  ? "Saving..."
-                  : editingId
-                    ? "Update item"
-                    : "Add item"}{" "}
-            </button>{" "}
+              {uploadingImage ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              {uploadingImage ? "Uploading..." : savingItem ? "Saving..." : editingId ? "Update Item" : "Add Menu Item"}
+            </button>
             {editingId && (
               <button
                 onClick={resetForm}
-                className="w-full rounded-3xl bg-slate-200 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-300"
+                className="rounded-full bg-white border-2 border-slate-100 px-8 py-5 text-sm font-black text-charcoal uppercase tracking-widest transition hover:bg-slate-50"
               >
-                {" "}
-                Cancel edit{" "}
+                Cancel
               </button>
-            )}{" "}
-          </div>{" "}
-        </div>{" "}</label>
-      </section>{" "}
-      <section className="grid gap-4">
-        {" "}
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="grid gap-6">
         {items.length === 0 ? (
-          <div className="rounded-[2rem] bg-white p-6 shadow-xl text-slate-500">
-            {" "}
-            No menu items found.{" "}
+          <div className="rounded-[2.5rem] bg-white p-12 text-center border border-dashed border-sage/20 shadow-sm">
+            <UtensilsCrossed className="w-12 h-12 text-sage/20 mx-auto mb-4" />
+            <p className="text-sage font-medium italic">No menu items found. Start by adding one above!</p>
           </div>
         ) : (
           items.map((item) => (
             <div
               key={item.id}
-              className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="group relative flex flex-col md:flex-row gap-6 rounded-[2.5rem] border border-white bg-white p-6 shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden"
             >
-              {" "}
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                {" "}
-                <div>
-                  {" "}
-                  <p className="text-lg font-semibold text-slate-900">
-                    {" "}
-                    {item.name}{" "}
-                  </p>{" "}
-                  <p className="mt-1 text-sm text-slate-500">
-                    {" "}
-                    {item.description || "No description"}{" "}
-                  </p>{" "}
-                </div>{" "}
-                <div className="flex flex-wrap items-center gap-3">
-                  {" "}
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700">
-                    {" "}
-                    {item.is_available ? "Available" : "Unavailable"}{" "}
-                  </span>{" "}
-                  <span className="text-sm text-slate-500">
-                    {" "}
-                    {item.price} ETB{" "}
-                  </span>{" "}
-                </div>{" "}
-              </div>{" "}
-              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                {" "}
-                <div className="text-sm text-slate-500">
-                  {" "}
-                  Category:{" "}
-                  {categories.find((c) => c.id === item.category_id)?.name ||
-                    "Unknown"}{" "}
-                </div>{" "}
-                <div className="flex flex-wrap gap-3">
-                  {" "}
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="rounded-full bg-cyan-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-cyan-700"
-                  >
-                    {" "}
-                    Edit{" "}
-                  </button>{" "}
-                  <button
-                    onClick={() => toggleItem(item.id)}
-                    className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-600"
-                  >
-                    {" "}
-                    {item.is_available ? "Disable" : "Enable"}{" "}
-                  </button>{" "}
-                </div>{" "}
-              </div>{" "}
+              <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 flex-1">
+                <div className="relative w-32 h-32 flex-shrink-0">
+                  {item.image_url ? (
+                    <img 
+                      src={item.image_url} 
+                      alt={item.name} 
+                      className={`w-full h-full object-cover rounded-[1.5rem] shadow-inner border border-oat-gold/10 ${!item.is_available && 'grayscale opacity-60'}`} 
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-cream rounded-[1.5rem] flex items-center justify-center border border-dashed border-oat-gold/30">
+                      <ImageIcon className="w-8 h-8 text-oat-gold/40" />
+                    </div>
+                  )}
+                  {!item.is_available && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="bg-charcoal/80 text-white text-[8px] font-black uppercase tracking-[0.2em] px-2 py-1 rounded-lg">Sold Out</span>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="flex-1 text-center md:text-left">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
+                    <h3 className="text-2xl font-serif font-black text-charcoal group-hover:text-oat-gold transition-colors">{item.name}</h3>
+                    <span className="hidden md:block w-1 h-1 rounded-full bg-slate-200"></span>
+                    <span className="text-lg font-bold text-oat-gold">{item.price} ETB</span>
+                  </div>
+                  <p className="text-sage text-sm italic line-clamp-2 mb-3">{item.description || "No description provided."}</p>
+                  <div className="flex flex-wrap justify-center md:justify-start items-center gap-4">
+                    <div className="flex items-center gap-1.5 rounded-full bg-cream px-3 py-1 border border-oat-gold/10">
+                      <Layers className="w-3 h-3 text-sage" />
+                      <span className="text-[10px] text-sage font-black uppercase tracking-widest">
+                        {categories.find((c) => c.id === item.category_id)?.name || "Uncategorized"}
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-sage font-black uppercase tracking-widest">ID: #{item.id}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative z-10 flex flex-row md:flex-col gap-2 justify-center">
+                <button
+                  onClick={() => handleEdit(item)}
+                  className="flex-1 rounded-full bg-oat-gold px-6 py-3 text-xs font-black text-charcoal transition-all hover:bg-oat-gold/90 active:scale-95 flex items-center justify-center gap-2"
+                >
+                  <Edit2 className="w-3 h-3" />
+                  Edit
+                </button>
+                <button
+                  onClick={() => toggleItem(item.id)}
+                  className={`flex-1 rounded-full px-6 py-3 text-xs font-black transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                    item.is_available 
+                    ? "bg-white border-2 border-red-50 text-red-400 hover:bg-red-50" 
+                    : "bg-emerald-500 text-white hover:bg-emerald-600"
+                  }`}
+                >
+                  {item.is_available ? <PowerOff className="w-3 h-3" /> : <Power className="w-3 h-3" />}
+                  {item.is_available ? "Disable" : "Enable"}
+                </button>
+              </div>
             </div>
           ))
-        )}{" "}
-      </section>{" "}
+        )}
+      </section>
     </div>
   );
 }

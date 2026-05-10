@@ -3,11 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getMenuByCategory } from "../api/menuApi";
 import { useCart } from "../contexts/useCart";
 import { getCategories } from "../api/categoryApi";
-import { 
-  ArrowLeft, 
-  ShoppingCart, 
-  Utensils, 
-  Info, 
+import {
+  ArrowLeft,
+  ShoppingCart,
+  Utensils,
+  Info,
   ShoppingBag,
   Coffee,
   GlassWater,
@@ -16,7 +16,7 @@ import {
   Salad,
   Soup,
   Croissant,
-  Beef
+  Beef,
 } from "lucide-react";
 
 const iconMap = {
@@ -45,8 +45,6 @@ function Category() {
     () => categories.find((cat) => cat.id === Number(id)),
     [categories, id],
   );
-
-  
 
   useEffect(() => {
     const loadCategoryPage = async () => {
@@ -88,7 +86,7 @@ function Category() {
         <div className="flex flex-col md:flex-row items-center gap-6 mb-12">
           <button
             onClick={() => navigate(`/menu`)}
-            className="group flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-md text-charcoal hover:bg-oat-gold transition-all"
+            className="group flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-md text-charcoal hover:bg-oat-gold transition-all ease-in-out duration-300 border border-oat-gold/20"
             aria-label="Back to Menu"
           >
             <ArrowLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
@@ -98,22 +96,25 @@ function Category() {
             <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-6 mb-2">
               <div className="relative w-24 h-24 md:w-32 md:h-32">
                 {selectedCategory?.image_url ? (
-                  <img 
-                    src={selectedCategory.image_url} 
-                    alt={selectedCategory.name} 
-                    className="w-full h-full object-cover rounded-3xl shadow-xl border-4 border-white" 
+                  <img
+                    src={selectedCategory.image_url}
+                    alt={selectedCategory.name}
+                    className="w-full h-full object-cover rounded-3xl shadow-xl border-4 border-white"
                   />
                 ) : (
                   <div className="w-full h-full bg-oat-gold/20 rounded-3xl border border-oat-gold/30 flex items-center justify-center">
-                    <CategoryIcon 
-                      name={selectedCategory?.icon} 
-                      className="w-10 h-10 md:w-12 md:h-12 text-charcoal" 
+                    <CategoryIcon
+                      name={selectedCategory?.icon}
+                      className="w-10 h-10 md:w-12 md:h-12 text-charcoal"
                     />
                   </div>
                 )}
                 {selectedCategory?.image_url && (
                   <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-xl shadow-lg flex items-center justify-center border border-slate-50">
-                    <CategoryIcon name={selectedCategory.icon} className="w-5 h-5 text-charcoal" />
+                    <CategoryIcon
+                      name={selectedCategory.icon}
+                      className="w-5 h-5 text-charcoal"
+                    />
                   </div>
                 )}
               </div>
@@ -122,7 +123,8 @@ function Category() {
                   {selectedCategory?.name || "Loading..."}
                 </h1>
                 <p className="text-lg text-sage max-w-2xl mt-2 italic font-medium">
-                  {selectedCategory?.description || `Discover our carefully curated selection of delicious ${selectedCategory?.name?.toLowerCase() || ''} dishes.`}
+                  {selectedCategory?.description ||
+                    `Discover our carefully curated selection of delicious ${selectedCategory?.name?.toLowerCase() || ""} dishes.`}
                 </p>
               </div>
             </div>
@@ -139,7 +141,10 @@ function Category() {
         {loading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-md p-6 animate-pulse border border-white">
+              <div
+                key={i}
+                className="bg-white rounded-2xl shadow-md p-6 animate-pulse border border-white"
+              >
                 <div className="h-48 bg-gray-100 rounded-xl mb-4"></div>
                 <div className="h-6 bg-gray-100 rounded w-3/4 mb-2"></div>
                 <div className="h-4 bg-gray-100 rounded w-full mb-4"></div>
@@ -158,7 +163,7 @@ function Category() {
             </p>
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 ease-in-out duration-300">
             {items.map((item) => (
               <div
                 key={item.id}
@@ -185,20 +190,24 @@ function Category() {
                 </div>
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-serif font-bold text-charcoal group-hover:text-oat-gold transition-colors">
+                    <h3 className="text-xl font-serif font-bold text-charcoal group-hover:text-oat-gold transition-colors ease-in-out duration-200">
                       {item.name}
                     </h3>
                     <span className="text-lg font-bold text-charcoal">
-                      {item.price} <span className="text-xs text-sage font-medium uppercase tracking-tighter">ETB</span>
+                      {item.price}{" "}
+                      <span className="text-xs text-sage font-medium uppercase tracking-tighter">
+                        ETB
+                      </span>
                     </span>
                   </div>
                   <p className="text-sage text-sm mb-6 line-clamp-2 leading-relaxed">
-                    {item.description || "A delicious dish made with fresh, locally sourced ingredients."}
+                    {item.description ||
+                      "A delicious dish made with fresh, locally sourced ingredients."}
                   </p>
                   <button
                     onClick={() => addToCart(item)}
                     disabled={!item.is_available}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-charcoal py-3 text-sm font-bold text-cream transition-all hover:bg-charcoal/90 active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:pointer-events-none shadow-lg shadow-charcoal/10"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-charcoal py-3 text-sm font-bold text-cream transition-all hover:bg-charcoal/90 active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:pointer-events-none shadow-lg shadow-charcoal/10 border-e-sage duration-300"
                   >
                     <ShoppingCart className="w-4 h-4" />
                     Add to Cart

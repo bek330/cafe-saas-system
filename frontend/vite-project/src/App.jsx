@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import OrderLayout from "./layouts/OrderLayout";
 import Menu from "./pages/Menu";
-import Category from "./pages/category";
+import Category from "./pages/Category";
 import OrderSuccess from "./pages/OrderSuccess";
 import AdminOrders from "./pages/AdminOrders";
 import Kitchen from "./pages/Kitchen";
@@ -52,7 +52,7 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           {/* fallback */}
-          <Route path="*" element={<Navigate to="/Home" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
