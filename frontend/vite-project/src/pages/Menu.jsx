@@ -109,7 +109,7 @@ function Menu() {
   }
 
   return (
-    <div className="min-h-screen bg-coffee-900 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-sm relative overflow-hidden">
+    <div className="min-h-screen bg-coffee-900/20 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-4xl relative overflow-hidden">
       <div className="mx-auto max-w-6xl px-6">
         <header className="mb-20 text-center">
           <Motion.div

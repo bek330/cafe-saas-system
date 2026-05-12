@@ -80,7 +80,7 @@ function Category() {
   };
 
   return (
-    <div className="min-h-screen bg-coffee-900 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-sm relative overflow-hidden">
+    <div className="min-h-screen bg-coffee-900/15 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-4xl relative overflow-hidden">
       {/* Page-specific Geometric Accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-coffee-400/5 to-transparent"></div>
@@ -154,7 +154,7 @@ function Category() {
                 className="group relative"
               >
                 {/* Image Showcase */}
-                <div className="relative aspect-[16/11] overflow-hidden rounded-[3rem] bg-coffee-800 border border-coffee-800/50 shadow-2xl">
+                <div className="relative aspect-[16/11] overflow-hidden rounded-[3rem] bg-coffee-800  border-coffee-800/50 shadow-2xl">
                   <img
                     src={optimizeImage(item.image_url)}
                     onError={(e) => {
