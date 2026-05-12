@@ -9,11 +9,11 @@ function OrderLayout() {
   const { cart } = useCart();
 
   return (
-    <div className="min-h-screen bg-coffee-950 flex flex-col selection:bg-coffee-400 selection:text-coffee-900">
+    <div className="min-h-screen bg-coffee-250 flex flex-col selection:bg-coffee-400 selection:text-coffee-900">
       <Header />
 
       <div className="max-w-7xl mx-auto w-full flex flex-col gap-8 px-4 py-8 md:py-16 lg:flex-row items-start flex-1">
-        <main className="flex-1 w-full bg-coffee-900/40 rounded-[3rem] shadow-2xl p-6 md:p-16 border border-white/5 backdrop-blur-sm relative overflow-hidden">
+        <main className="flex-1 w-full bg-coffee-200 rounded-[3rem] shadow-2xl p-6 md:p-16 border border-white/5 backdrop-blur-sm relative overflow-hidden">
           {/* Subtle light effect in the corner */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-coffee-400/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
           
