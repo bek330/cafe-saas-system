@@ -119,56 +119,49 @@ function Menu() {
           </Motion.div>
         </header>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category, index) => (
             <Motion.div
               key={category.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
               onClick={() => navigate(`/menu/category/${category.id}`)}
-              className="group cursor-pointer relative aspect-[16/9] md:aspect-[21/9] rounded-[2.5rem] overflow-hidden border border-coffee-800/50 shadow-2xl transition-all duration-700"
+              className="group cursor-pointer relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl transition-all duration-700"
             >
-              {/* Background Image with Overlay */}
+              {/* Parallax Image Effect */}
               {category.image_url ? (
                 <img 
                   src={category.image_url} 
                   alt={category.name} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110" 
                 />
               ) : (
                 <div className="absolute inset-0 bg-coffee-800" />
               )}
               
-              {/* Refined Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/40 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-500" />
+              {/* Minimalist Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
               
-              {/* Content Overlay */}
-              <div className="absolute inset-0 p-8 flex flex-col justify-between">
-                <div className="flex justify-between items-start">
-                  <div className="p-3 rounded-2xl bg-coffee-950/40 backdrop-blur-md border border-white/10 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+              {/* Elegant Content Layout */}
+              <div className="absolute inset-0 p-10 flex flex-col justify-end items-center text-center">
+                <div className="space-y-6">
+                  {/* Subtle Floating Icon */}
+                  <div className="inline-flex p-4 rounded-full bg-white/5 backdrop-blur-md border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0 shadow-2xl">
                     <CategoryIcon name={category.icon} className="w-6 h-6 text-white" />
                   </div>
-                </div>
-
-                <div className="flex items-end justify-between">
-                  <div className="space-y-2">
-                    <h2 className="text-3xl md:text-4xl font-serif font-light text-white tracking-wide">
+                  
+                  <div className="space-y-3">
+                    <h2 className="text-4xl md:text-5xl font-serif font-light text-white tracking-tighter leading-tight transition-all duration-700 group-hover:tracking-normal group-hover:text-coffee-300">
                       {category.name}
                     </h2>
-                    <div className="flex items-center gap-2">
-                      <span className="h-px w-4 bg-coffee-400"></span>
-                      <p className="text-[10px] text-coffee-300 uppercase tracking-[0.3em] font-bold">
-                        View Selection
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md bg-white/5 transition-all duration-500 group-hover:bg-white group-hover:border-white">
-                    <IoChevronForward className="w-5 h-5 text-white group-hover:text-coffee-950 transition-colors" />
+                    <div className="h-px w-0 bg-coffee-400 mx-auto transition-all duration-700 group-hover:w-20 opacity-60"></div>
                   </div>
                 </div>
               </div>
+
+              {/* Ultra-thin Border Highlight */}
+              <div className="absolute inset-0 border border-white/0 group-hover:border-white/10 rounded-[3rem] transition-colors duration-700 pointer-events-none" />
             </Motion.div>
           ))}
         </div>
