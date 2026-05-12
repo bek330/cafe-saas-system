@@ -80,7 +80,7 @@ function Category() {
   };
 
   return (
-    <div className="min-h-screen bg-coffee-900 py-16">
+    <div className="min-h-screen bg-coffee-900 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-sm relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">

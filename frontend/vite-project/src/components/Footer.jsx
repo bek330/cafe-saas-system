@@ -15,8 +15,14 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid gap-16 md:grid-cols-2 lg:grid-cols-4">
         {/* Brand */}
         <div className="space-y-8">
-          <div className="flex items-center gap-3">
-            <IoCafeOutline className="text-coffee-400" size={32} />
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-full overflow-hidden border border-coffee-800 shadow-2xl">
+              <img 
+                src="/Safe-land-logo.jpg" 
+                alt="Safeland Cafe Logo" 
+                className="w-full h-full object-cover"
+              />
+            </div>
             <span className="text-3xl font-serif font-light text-white tracking-tighter italic uppercase">Safeland</span>
           </div>
           <p className="text-coffee-500 leading-relaxed font-light italic">
