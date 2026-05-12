@@ -64,17 +64,16 @@ function Menu() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream py-10">
+      <div className="min-h-screen bg-coffee-900 py-10">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="h-48 w-full bg-white/50 animate-pulse rounded-[2rem] mb-10"></div>
+          <div className="h-48 w-full bg-coffee-800 animate-pulse rounded-[2.5rem] mb-10 border border-coffee-700/30"></div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-lg h-80 overflow-hidden animate-pulse">
-                <div className="h-48 bg-gray-100"></div>
+              <div key={i} className="bg-coffee-800 rounded-3xl shadow-lg h-80 overflow-hidden animate-pulse border border-coffee-700/30">
+                <div className="h-48 bg-coffee-700/50"></div>
                 <div className="p-6 space-y-3">
-                  <div className="h-6 bg-gray-100 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-100 rounded w-full"></div>
-                  <div className="h-10 bg-gray-100 rounded-full w-1/3"></div>
+                  <div className="h-6 bg-coffee-700/50 rounded w-3/4"></div>
+                  <div className="h-4 bg-coffee-700/50 rounded w-full"></div>
                 </div>
               </div>
             ))}
@@ -86,14 +85,14 @@ function Menu() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center p-6">
+      <div className="min-h-screen bg-coffee-900 flex items-center justify-center p-6">
         <div className="text-center max-w-md">
-          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-serif font-bold text-charcoal mb-2">Oops! Something went wrong</h2>
-          <p className="text-sage mb-6">{error}</p>
+          <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+          <h2 className="text-2xl font-serif font-bold text-coffee-50 mb-2">Oops! Something went wrong</h2>
+          <p className="text-coffee-300 mb-6">{error}</p>
           <button
             onClick={fetchData}
-            className="inline-flex items-center gap-2 rounded-full bg-oat-gold px-6 py-3 text-sm font-semibold text-charcoal hover:bg-oat-gold/80 transition-colors shadow-lg shadow-oat-gold/20"
+            className="inline-flex items-center gap-2 rounded-full bg-coffee-400 px-6 py-3 text-sm font-semibold text-coffee-900 hover:bg-coffee-300 transition-colors shadow-lg shadow-coffee-400/20"
           >
             <RefreshCw className="w-4 h-4" />
             Try Again
@@ -104,64 +103,58 @@ function Menu() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-cream to-sage/30 py-10">
-      <div className="mx-auto max-w-6xl px-6">
-        <header className="mb-10 rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-xl shadow-slate-200/70 text-center">
-          <p className="inline-flex rounded-full bg-oat-gold/20 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-charcoal border border-oat-gold/30">
-            Menu
-          </p>
-          <h1 className="mt-5 text-5xl font-serif font-bold text-charcoal sm:text-6xl">
-            Our Café Menu
+    <div className="min-h-screen bg-coffee-900 py-12">
+      <div className="mx-auto max-w-5xl px-4">
+        <header className="mb-16 text-center">
+          <span className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400 mb-4 block">
+            The Collection
+          </span>
+          <h1 className="text-4xl md:text-6xl font-serif font-light text-coffee-50 tracking-tight leading-none">
+            Our <span className="italic font-normal text-coffee-300">Selection</span>
           </h1>
-          <p className="mt-4 text-xl text-sage max-w-2xl mx-auto">
-            Discover delicious dishes crafted with passion. Browse our menu and
-            order with ease.
-          </p>
+          <div className="h-px w-12 bg-coffee-600 mx-auto mt-8 opacity-50"></div>
         </header>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
           {categories.map((category) => (
             <div
               key={category.id}
               onClick={() => navigate(`/menu/category/${category.id}`)}
-              className="group cursor-pointer bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-white/50 rounded-t-2xl"
+              className="group cursor-pointer relative aspect-[16/9] md:aspect-[21/9] rounded-[2rem] overflow-hidden border border-coffee-800 shadow-2xl transition-all duration-700"
             >
-              <div className="relative h-48 bg-oat-gold overflow-hidden rounded-t-2xl">
-                {category.image_url ? (
-                  <img 
-                    src={category.image_url} 
-                    alt={category.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center group-hover:bg-oat-gold/90 transition-colors">
-                    <CategoryIcon 
-                      name={category.icon} 
-                      className="w-16 h-16 text-charcoal opacity-80 group-hover:scale-110 transition-transform duration-300" 
-                    />
-                  </div>
-                )}
-                {category.image_url && (
-                  <div className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg border border-white/20">
-                    <CategoryIcon name={category.icon} className="w-5 h-5 text-charcoal" />
-                  </div>
-                )}
-              </div>
-              <div className="p-6">
-                <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2 group-hover:text-oat-gold transition-colors">
-                  {category.name}
-                </h2>
-                <p className="text-sage mb-4 line-clamp-2">
-                  Explore our selection of fresh, delicious{" "}
-                  {category.name.toLowerCase()} dishes.
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex rounded-full bg-charcoal px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream border border-oat-gold/20 transition group-hover:bg-oat-gold group-hover:border-oat-gold group-hover:text-charcoal ease-in-out duration-300" >
-                    View Menu
-                  </span>
-                  <ChevronRight className="w-5 h-5 text-oat-gold group-hover:translate-x-1 transition-transform" />
+              {/* Background Image with Overlay */}
+              {category.image_url ? (
+                <img 
+                  src={category.image_url} 
+                  alt={category.name} 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                />
+              ) : (
+                <div className="absolute inset-0 bg-coffee-800" />
+              )}
+              
+              {/* Refined Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+              
+              {/* Glass Content Card */}
+              <div className="absolute inset-x-4 bottom-4 p-6 backdrop-blur-md bg-coffee-950/30 rounded-[1.5rem] border border-white/5 flex items-end justify-between transition-all duration-500 group-hover:bg-coffee-950/50">
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-serif font-light text-white tracking-wide">
+                    {category.name}
+                  </h2>
+                  <p className="text-[10px] text-coffee-300 uppercase tracking-[0.2em] font-medium opacity-80">
+                    Explore Collection
+                  </p>
                 </div>
+                
+                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center transition-all duration-500 group-hover:bg-white group-hover:border-white">
+                  <ChevronRight className="w-4 h-4 text-white group-hover:text-coffee-950 transition-colors" />
+                </div>
+              </div>
+
+              {/* Minimal Icon Badge */}
+              <div className="absolute top-6 left-6 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
+                <CategoryIcon name={category.icon} className="w-5 h-5 text-white" />
               </div>
             </div>
           ))}

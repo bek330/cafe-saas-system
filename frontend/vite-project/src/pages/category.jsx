@@ -17,6 +17,7 @@ import {
   Soup,
   Croissant,
   Beef,
+  Plus
 } from "lucide-react";
 
 const iconMap = {
@@ -81,95 +82,58 @@ function Category() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-cream to-sage/20 py-8 pb-24">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center gap-6 mb-12">
+    <div className="min-h-screen bg-coffee-900 py-12">
+      <div className="max-w-5xl mx-auto px-4">
+        {/* Minimal Header */}
+        <div className="flex items-center justify-between mb-16">
           <button
             onClick={() => navigate(`/menu`)}
-            className="group flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-md text-charcoal hover:bg-oat-gold transition-all ease-in-out duration-300 border border-oat-gold/20"
-            aria-label="Back to Menu"
+            className="group flex items-center gap-3 text-coffee-400 hover:text-white transition-colors duration-300"
           >
-            <ArrowLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
-          </button>
-
-          <div className="flex-1 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-6 mb-2">
-              <div className="relative w-24 h-24 md:w-32 md:h-32">
-                {selectedCategory?.image_url ? (
-                  <img
-                    src={selectedCategory.image_url}
-                    alt={selectedCategory.name}
-                    className="w-full h-full object-cover rounded-3xl shadow-xl border-4 border-white"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-oat-gold/20 rounded-3xl border border-oat-gold/30 flex items-center justify-center">
-                    <CategoryIcon
-                      name={selectedCategory?.icon}
-                      className="w-10 h-10 md:w-12 md:h-12 text-charcoal"
-                    />
-                  </div>
-                )}
-                {selectedCategory?.image_url && (
-                  <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-white rounded-xl shadow-lg flex items-center justify-center border border-slate-50">
-                    <CategoryIcon
-                      name={selectedCategory.icon}
-                      className="w-5 h-5 text-charcoal"
-                    />
-                  </div>
-                )}
-              </div>
-              <div className="text-center md:text-left">
-                <h1 className="text-4xl md:text-6xl font-serif font-black text-charcoal tracking-tighter uppercase">
-                  {selectedCategory?.name || "Loading..."}
-                </h1>
-                <p className="text-lg text-sage max-w-2xl mt-2 italic font-medium">
-                  {selectedCategory?.description ||
-                    `Discover our carefully curated selection of delicious ${selectedCategory?.name?.toLowerCase() || ""} dishes.`}
-                </p>
-              </div>
+            <div className="w-10 h-10 rounded-full border border-coffee-800 flex items-center justify-center group-hover:border-coffee-400 transition-colors">
+              <ArrowLeft className="w-4 h-4" />
             </div>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Back</span>
+          </button>
+          
+          <div className="flex flex-col items-end">
+            <h1 className="text-3xl md:text-5xl font-serif font-light text-white tracking-tight">
+              {selectedCategory?.name || "Selection"}
+            </h1>
+            <div className="h-px w-8 bg-coffee-400 mt-2"></div>
           </div>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8 flex items-center gap-4 text-red-600">
-            <Info className="w-6 h-6 flex-shrink-0" />
+          <div className="bg-red-900/10 border border-red-500/20 rounded-2xl p-6 mb-12 text-red-400 text-sm flex items-center gap-4">
+            <Info className="w-4 h-4" />
             <p>{error}</p>
           </div>
         )}
 
         {loading ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div
-                key={i}
-                className="bg-white rounded-2xl shadow-md p-6 animate-pulse border border-white"
-              >
-                <div className="h-48 bg-gray-100 rounded-xl mb-4"></div>
-                <div className="h-6 bg-gray-100 rounded w-3/4 mb-2"></div>
-                <div className="h-4 bg-gray-100 rounded w-full mb-4"></div>
-                <div className="h-10 bg-gray-100 rounded-full w-full"></div>
+          <div className="grid gap-8 sm:grid-cols-2">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="animate-pulse space-y-4">
+                <div className="aspect-[4/5] bg-coffee-800 rounded-[2.5rem]"></div>
+                <div className="h-4 bg-coffee-800 rounded w-1/2"></div>
+                <div className="h-3 bg-coffee-800 rounded w-1/4"></div>
               </div>
             ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="text-center py-24 bg-white/50 rounded-3xl border border-dashed border-sage/30">
-            <ShoppingBag className="w-16 h-16 text-sage/40 mx-auto mb-4" />
-            <h2 className="text-2xl font-serif font-semibold text-charcoal mb-2">
-              No items yet
-            </h2>
-            <p className="text-sage">
-              This category is currently empty. Check back later!
-            </p>
+          <div className="text-center py-32 border-t border-coffee-800">
+            <p className="text-coffee-500 font-serif italic text-lg">The collection is currently unavailable.</p>
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 ease-in-out duration-300">
+          <div className="grid gap-10 sm:grid-cols-2">
             {items.map((item) => (
               <div
                 key={item.id}
-                className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-white"
+                className="group relative flex flex-col"
               >
-                <div className="relative h-56 overflow-hidden">
+                {/* Image Container */}
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-coffee-800 border border-coffee-800 shadow-2xl transition-transform duration-700">
                   <img
                     src={optimizeImage(item.image_url)}
                     onError={(e) => {
@@ -177,42 +141,52 @@ function Category() {
                       e.target.src = "/fallback-food.jpg";
                     }}
                     alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                     loading="lazy"
                   />
+                  
+                  {/* Status Overlay */}
                   {!item.is_available && (
-                    <div className="absolute inset-0 bg-charcoal/60 backdrop-blur-[2px] flex items-center justify-center">
-                      <span className="bg-white text-charcoal px-4 py-2 rounded-full text-sm font-bold uppercase tracking-widest">
-                        Sold Out
-                      </span>
+                    <div className="absolute inset-0 bg-coffee-950/80 backdrop-blur-sm flex items-center justify-center">
+                      <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white">Reserved</span>
                     </div>
                   )}
+
+                  {/* Quick Add Button (Luxury Style) */}
+                  {item.is_available && (
+                    <button
+                      onClick={() => addToCart(item)}
+                      className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-white text-coffee-950 flex items-center justify-center shadow-2xl translate-y-20 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 hover:scale-110 active:scale-95"
+                    >
+                      <Plus className="w-6 h-6" />
+                    </button>
+                  )}
                 </div>
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-serif font-bold text-charcoal group-hover:text-oat-gold transition-colors ease-in-out duration-200">
+
+                {/* Content */}
+                <div className="mt-6 flex justify-between items-start px-2">
+                  <div className="space-y-1 max-w-[70%]">
+                    <h3 className="text-xl font-serif font-light text-white tracking-wide group-hover:text-coffee-300 transition-colors">
                       {item.name}
                     </h3>
-                    <span className="text-lg font-bold text-charcoal">
-                      {item.price}{" "}
-                      <span className="text-xs text-sage font-medium uppercase tracking-tighter">
-                        ETB
-                      </span>
+                    <p className="text-[10px] text-coffee-400 uppercase tracking-widest font-medium">
+                      Available Today
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="text-xl font-light text-white">
+                      {item.price}
+                    </span>
+                    <span className="text-[8px] font-black text-coffee-500 uppercase tracking-widest">
+                      ETB
                     </span>
                   </div>
-                  <p className="text-sage text-sm mb-6 line-clamp-2 leading-relaxed">
-                    {item.description ||
-                      "A delicious dish made with fresh, locally sourced ingredients."}
-                  </p>
-                  <button
-                    onClick={() => addToCart(item)}
-                    disabled={!item.is_available}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-charcoal py-3 text-sm font-bold text-cream transition-all hover:bg-charcoal/90 active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:pointer-events-none shadow-lg shadow-charcoal/10 border-e-sage duration-300"
-                  >
-                    <ShoppingCart className="w-4 h-4" />
-                    Add to Cart
-                  </button>
                 </div>
+
+                {/* Optional Description (Subtle) */}
+                <p className="mt-4 px-2 text-coffee-500 text-[11px] leading-relaxed font-medium line-clamp-2">
+                  {item.description || "A masterfully prepared selection for the discerning palate."}
+                </p>
               </div>
             ))}
           </div>
