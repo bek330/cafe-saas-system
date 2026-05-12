@@ -62,8 +62,16 @@ function Menu() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-coffee-900 py-10">
-        <div className="mx-auto max-w-6xl px-6">
+      <div className="min-h-screen bg-transparent py-16 relative">
+        {/* Page-specific Geometric Accents */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-coffee-400/10 to-transparent"></div>
+          <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-coffee-400/10 to-transparent"></div>
+          <div className="absolute top-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-coffee-400/10 to-transparent"></div>
+        </div>
+
+        <div className="mx-auto max-w-6xl px-6 relative z-10">
+
           <div className="h-48 w-full bg-coffee-800 animate-pulse rounded-[2.5rem] mb-10 border border-coffee-700/30"></div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (

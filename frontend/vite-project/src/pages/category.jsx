@@ -81,7 +81,14 @@ function Category() {
 
   return (
     <div className="min-h-screen bg-coffee-900 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-sm relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6">
+      {/* Page-specific Geometric Accents */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-coffee-400/5 to-transparent"></div>
+        <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-coffee-400/5 to-transparent"></div>
+        <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-coffee-400/5 to-transparent"></div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
           <Motion.button
