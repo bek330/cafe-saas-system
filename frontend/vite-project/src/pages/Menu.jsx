@@ -101,7 +101,7 @@ function Menu() {
   }
 
   return (
-    <div className="min-h-screen bg-coffee-900 py-16">
+    <div className="min-h-screen bg-coffee-900 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-sm relative overflow-hidden">
       <div className="mx-auto max-w-6xl px-6">
         <header className="mb-20 text-center">
           <Motion.div
@@ -115,7 +115,7 @@ function Menu() {
             <h1 className="text-5xl md:text-7xl font-serif font-light text-coffee-50 tracking-tight leading-none">
               Explore Our <span className="italic font-normal text-coffee-300">Menu</span>
             </h1>
-            <div className="h-px w-20 bg-gradient-to-r from-transparent via-coffee-600 to-transparent mx-auto mt-10"></div>
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-coffee-600 to-transparent mx-auto mt-10"></div>
           </Motion.div>
         </header>
 

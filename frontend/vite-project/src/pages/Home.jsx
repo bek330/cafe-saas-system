@@ -5,7 +5,7 @@ import { IoArrowForward, IoCafeOutline, IoLeafOutline, IoSparklesOutline } from 
 
 export default function Home() {
   return (
-    <div className="relative min-h-[85vh] flex items-center justify-center overflow-hidden rounded-[3rem] my-8 mx-4 md:mx-0 shadow-2xl">
+    <div className="relative min-h-[100vh] flex items-center justify-center overflow-hidden rounded-[3rem] my-8 mx-4 md:mx-0 shadow-2xl">
       {/* Background with subtle texture overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-coffee-900 via-coffee-800 to-coffee-900">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#a68a6d 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }}></div>
