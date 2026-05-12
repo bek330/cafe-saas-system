@@ -1,36 +1,34 @@
 import { useEffect, useState } from "react";
 import { getCategories } from "../api/categoryApi";
 import { useNavigate } from "react-router-dom";
+import { motion as Motion } from "framer-motion";
 import { 
-  ChevronRight, 
-  RefreshCw, 
-  AlertCircle,
-  Coffee, 
-  Utensils, 
-  GlassWater, 
-  Cake, 
-  Pizza, 
-  Salad, 
-  Soup, 
-  Croissant, 
-  Martini,
-  Beef, 
-  Ham,
-  Hamburger
-} from "lucide-react";
+  IoChevronForward, 
+  IoReload, 
+  IoAlertCircleOutline,
+  IoCafeOutline, 
+  IoRestaurantOutline, 
+  IoBeerOutline, 
+  IoWineOutline,
+  IoPizzaOutline,
+  IoLeafOutline,
+  IoFlaskOutline,
+  IoFastFoodOutline
+} from "react-icons/io5";
+import { GiCupcake, GiCroissant, GiSteak, GiHamburger } from "react-icons/gi";
 
 const iconMap = {
-  Coffee: Coffee,
-  Utensils: Utensils,
-  GlassWater: GlassWater,
-  Cake: Cake,
-  Pizza: Pizza,
-  Cocktails: Martini,
-  Burgers: Hamburger,
-  Salad: Salad,
-  Soup: Soup,
-  Croissant: Croissant,
-  Beef: Beef,
+  Coffee: IoCafeOutline,
+  Utensils: IoRestaurantOutline,
+  GlassWater: IoBeerOutline,
+  Cake: GiCupcake,
+  Pizza: IoPizzaOutline,
+  Cocktails: IoWineOutline,
+  Burgers: GiHamburger,
+  Salad: IoLeafOutline,
+  Soup: IoFlaskOutline,
+  Croissant: GiCroissant,
+  Beef: GiSteak,
 };
 
 function Menu() {
@@ -58,7 +56,7 @@ function Menu() {
   }, []);
 
   const CategoryIcon = ({ name, ...props }) => {
-    const IconComponent = iconMap[name] || Utensils;
+    const IconComponent = iconMap[name] || IoRestaurantOutline;
     return <IconComponent {...props} />;
   };
 
@@ -87,14 +85,14 @@ function Menu() {
     return (
       <div className="min-h-screen bg-coffee-900 flex items-center justify-center p-6">
         <div className="text-center max-w-md">
-          <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+          <IoAlertCircleOutline className="w-16 h-16 text-red-400 mx-auto mb-4" />
           <h2 className="text-2xl font-serif font-bold text-coffee-50 mb-2">Oops! Something went wrong</h2>
           <p className="text-coffee-300 mb-6">{error}</p>
           <button
             onClick={fetchData}
             className="inline-flex items-center gap-2 rounded-full bg-coffee-400 px-6 py-3 text-sm font-semibold text-coffee-900 hover:bg-coffee-300 transition-colors shadow-lg shadow-coffee-400/20"
           >
-            <RefreshCw className="w-4 h-4" />
+            <IoReload className="w-4 h-4" />
             Try Again
           </button>
         </div>
@@ -103,60 +101,75 @@ function Menu() {
   }
 
   return (
-    <div className="min-h-screen bg-coffee-900 py-12">
-      <div className="mx-auto max-w-5xl px-4">
-        <header className="mb-16 text-center">
-          <span className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400 mb-4 block">
-            The Collection
-          </span>
-          <h1 className="text-4xl md:text-6xl font-serif font-light text-coffee-50 tracking-tight leading-none">
-            Our <span className="italic font-normal text-coffee-300">Selection</span>
-          </h1>
-          <div className="h-px w-12 bg-coffee-600 mx-auto mt-8 opacity-50"></div>
+    <div className="min-h-screen bg-coffee-900 py-16">
+      <div className="mx-auto max-w-6xl px-6">
+        <header className="mb-20 text-center">
+          <Motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400 mb-4 block">
+              Curated Collections
+            </span>
+            <h1 className="text-5xl md:text-7xl font-serif font-light text-coffee-50 tracking-tight leading-none">
+              Explore Our <span className="italic font-normal text-coffee-300">Menu</span>
+            </h1>
+            <div className="h-px w-20 bg-gradient-to-r from-transparent via-coffee-600 to-transparent mx-auto mt-10"></div>
+          </Motion.div>
         </header>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
-          {categories.map((category) => (
-            <div
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
+          {categories.map((category, index) => (
+            <Motion.div
               key={category.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               onClick={() => navigate(`/menu/category/${category.id}`)}
-              className="group cursor-pointer relative aspect-[16/9] md:aspect-[21/9] rounded-[2rem] overflow-hidden border border-coffee-800 shadow-2xl transition-all duration-700"
+              className="group cursor-pointer relative aspect-[16/9] md:aspect-[21/9] rounded-[2.5rem] overflow-hidden border border-coffee-800/50 shadow-2xl transition-all duration-700"
             >
               {/* Background Image with Overlay */}
               {category.image_url ? (
                 <img 
                   src={category.image_url} 
                   alt={category.name} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                 />
               ) : (
                 <div className="absolute inset-0 bg-coffee-800" />
               )}
               
               {/* Refined Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/40 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-500" />
               
-              {/* Glass Content Card */}
-              <div className="absolute inset-x-4 bottom-4 p-6 backdrop-blur-md bg-coffee-950/30 rounded-[1.5rem] border border-white/5 flex items-end justify-between transition-all duration-500 group-hover:bg-coffee-950/50">
-                <div className="space-y-1">
-                  <h2 className="text-2xl font-serif font-light text-white tracking-wide">
-                    {category.name}
-                  </h2>
-                  <p className="text-[10px] text-coffee-300 uppercase tracking-[0.2em] font-medium opacity-80">
-                    Explore Collection
-                  </p>
+              {/* Content Overlay */}
+              <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                <div className="flex justify-between items-start">
+                  <div className="p-3 rounded-2xl bg-coffee-950/40 backdrop-blur-md border border-white/10 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+                    <CategoryIcon name={category.icon} className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-                
-                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center transition-all duration-500 group-hover:bg-white group-hover:border-white">
-                  <ChevronRight className="w-4 h-4 text-white group-hover:text-coffee-950 transition-colors" />
-                </div>
-              </div>
 
-              {/* Minimal Icon Badge */}
-              <div className="absolute top-6 left-6 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-                <CategoryIcon name={category.icon} className="w-5 h-5 text-white" />
+                <div className="flex items-end justify-between">
+                  <div className="space-y-2">
+                    <h2 className="text-3xl md:text-4xl font-serif font-light text-white tracking-wide">
+                      {category.name}
+                    </h2>
+                    <div className="flex items-center gap-2">
+                      <span className="h-px w-4 bg-coffee-400"></span>
+                      <p className="text-[10px] text-coffee-300 uppercase tracking-[0.3em] font-bold">
+                        View Selection
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-md bg-white/5 transition-all duration-500 group-hover:bg-white group-hover:border-white">
+                    <IoChevronForward className="w-5 h-5 text-white group-hover:text-coffee-950 transition-colors" />
+                  </div>
+                </div>
               </div>
-            </div>
+            </Motion.div>
           ))}
         </div>
       </div>

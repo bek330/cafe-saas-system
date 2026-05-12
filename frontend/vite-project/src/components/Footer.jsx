@@ -1,78 +1,88 @@
 import { Link } from "react-router-dom";
-import { Coffee, MapPin, Camera, Share2, Phone, Mail } from "lucide-react";
+import { 
+  IoCafeOutline, 
+  IoLocationOutline, 
+  IoLogoInstagram, 
+  IoLogoFacebook, 
+  IoCallOutline, 
+  IoMailOutline,
+  IoTimeOutline
+} from "react-icons/io5";
 
 export default function Footer() {
   return (
-    <footer className="bg-coffee-900 text-stone-200 pt-16 pb-8">
-      <div className="max-w-6xl mx-auto px-6 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="bg-coffee-900 text-coffee-100 pt-24 pb-12 border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-6 grid gap-16 md:grid-cols-2 lg:grid-cols-4">
         {/* Brand */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-2">
-            <Coffee className="text-coffee-400" size={24} />
-            <span className="text-2xl font-serif font-bold text-white">Safeland Cafe</span>
+        <div className="space-y-8">
+          <div className="flex items-center gap-3">
+            <IoCafeOutline className="text-coffee-400" size={32} />
+            <span className="text-3xl font-serif font-light text-white tracking-tighter italic uppercase">Safeland</span>
           </div>
-          <p className="text-stone-400 leading-relaxed">
-            Crafting cozy moments and exceptional coffee in the heart of the city. 
-            Your sanctuary for taste and tranquility.
+          <p className="text-coffee-500 leading-relaxed font-light italic">
+            Crafting sanctuary moments and artisanal experiences in the heart of the city. 
+            Your destination for taste and tranquility.
           </p>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-coffee-300 transition-colors"><Camera size={20} /></a>
-            <a href="#" className="hover:text-coffee-300 transition-colors"><Share2 size={20} /></a>
+          <div className="flex gap-6">
+            <a href="#" className="w-10 h-10 rounded-full border border-coffee-800 flex items-center justify-center text-coffee-400 hover:text-white hover:border-white transition-all"><IoLogoInstagram size={20} /></a>
+            <a href="#" className="w-10 h-10 rounded-full border border-coffee-800 flex items-center justify-center text-coffee-400 hover:text-white hover:border-white transition-all"><IoLogoFacebook size={20} /></a>
           </div>
         </div>
 
         {/* Contact */}
-        <div className="space-y-6">
-          <h3 className="text-lg font-serif font-bold text-white">Contact Us</h3>
-          <ul className="space-y-4 text-stone-400">
-            <li className="flex items-start gap-3">
-              <MapPin size={18} className="text-coffee-400 shrink-0 mt-1" />
-              <span>123 Espresso Lane, Coffee District, Addis Ababa</span>
+        <div className="space-y-8">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400">Concierge</h3>
+          <ul className="space-y-5 text-coffee-500 font-light">
+            <li className="flex items-start gap-4">
+              <IoLocationOutline size={20} className="text-coffee-400 shrink-0" />
+              <span className="text-sm">123 Espresso Lane, Coffee District,<br />Addis Ababa, Ethiopia</span>
             </li>
-            <li className="flex items-center gap-3">
-              <Phone size={18} className="text-coffee-400" />
-              <span>+251 11 234 5678</span>
+            <li className="flex items-center gap-4">
+              <IoCallOutline size={20} className="text-coffee-400" />
+              <span className="text-sm font-serif italic">+251 11 234 5678</span>
             </li>
-            <li className="flex items-center gap-3">
-              <Mail size={18} className="text-coffee-400" />
-              <span>hello@safelandcafe.com</span>
+            <li className="flex items-center gap-4">
+              <IoMailOutline size={20} className="text-coffee-400" />
+              <span className="text-sm">hello@safelandcafe.com</span>
             </li>
           </ul>
         </div>
 
         {/* Hours */}
-        <div className="space-y-6">
-          <h3 className="text-lg font-serif font-bold text-white">Opening Hours</h3>
-          <ul className="space-y-3 text-stone-400">
-            <li className="flex justify-between">
-              <span>Mon - Fri</span>
-              <span className="text-white">7:00 - 20:00</span>
+        <div className="space-y-8">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400">Service Hours</h3>
+          <ul className="space-y-4 text-coffee-500 font-light">
+            <li className="flex justify-between items-center border-b border-coffee-900 pb-3">
+              <span className="text-sm uppercase tracking-widest text-[10px] font-bold">Weekday</span>
+              <span className="text-white font-serif italic">7:00 — 20:00</span>
             </li>
-            <li className="flex justify-between">
-              <span>Saturday</span>
-              <span className="text-white">8:00 - 21:00</span>
+            <li className="flex justify-between items-center border-b border-coffee-900 pb-3">
+              <span className="text-sm uppercase tracking-widest text-[10px] font-bold">Saturday</span>
+              <span className="text-white font-serif italic">8:00 — 21:00</span>
             </li>
-            <li className="flex justify-between">
-              <span>Sunday</span>
-              <span className="text-white">9:00 - 18:00</span>
+            <li className="flex justify-between items-center">
+              <span className="text-sm uppercase tracking-widest text-[10px] font-bold">Sunday</span>
+              <span className="text-white font-serif italic">9:00 — 18:00</span>
             </li>
           </ul>
         </div>
 
         {/* Quick Links */}
-        <div className="space-y-6">
-          <h3 className="text-lg font-serif font-bold text-white">Quick Links</h3>
-          <ul className="space-y-3 text-stone-400">
-            <li><Link to="/menu" className="hover:text-coffee-300 transition-colors">Our Menu</Link></li>
-            <li><Link to="/about" className="hover:text-coffee-300 transition-colors">Our Story</Link></li>
-            <li><Link to="/contact" className="hover:text-coffee-300 transition-colors">Locations</Link></li>
-            <li><Link to="/careers" className="hover:text-coffee-300 transition-colors">Join the Team</Link></li>
+        <div className="space-y-8">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400">Navigation</h3>
+          <ul className="grid grid-cols-1 gap-4 text-coffee-500 font-light">
+            <li><Link to="/menu" className="hover:text-white transition-colors flex items-center gap-2 italic">Our Selection</Link></li>
+            <li><Link to="/about" className="hover:text-white transition-colors flex items-center gap-2 italic">Our Story</Link></li>
+            <li><Link to="/contact" className="hover:text-white transition-colors flex items-center gap-2 italic">Locations</Link></li>
+            <li><Link to="/careers" className="hover:text-white transition-colors flex items-center gap-2 italic">Join the Sanctuary</Link></li>
           </ul>
         </div>
       </div>
       
-      <div className="max-w-6xl mx-auto px-6 mt-16 pt-8 border-t border-coffee-800 text-center text-sm text-stone-500">
-        <p>&copy; {new Date().getFullYear()} Safeland Cafe. All rights reserved.</p>
+      <div className="max-w-7xl mx-auto px-6 mt-24 pt-12 border-t border-coffee-900 text-center">
+        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-700">
+          &copy; {new Date().getFullYear()} Safeland Cafe. All rights reserved.
+        </p>
       </div>
     </footer>
   );

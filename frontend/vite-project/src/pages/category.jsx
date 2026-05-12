@@ -3,33 +3,31 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getMenuByCategory } from "../api/menuApi";
 import { useCart } from "../contexts/useCart";
 import { getCategories } from "../api/categoryApi";
+import { motion as Motion } from "framer-motion";
 import {
-  ArrowLeft,
-  ShoppingCart,
-  Utensils,
-  Info,
-  ShoppingBag,
-  Coffee,
-  GlassWater,
-  Cake,
-  Pizza,
-  Salad,
-  Soup,
-  Croissant,
-  Beef,
-  Plus
-} from "lucide-react";
+  IoArrowBack,
+  IoCartOutline,
+  IoRestaurantOutline,
+  IoInformationCircleOutline,
+  IoAdd,
+  IoCafeOutline,
+  IoBeerOutline,
+  IoPizzaOutline,
+  IoLeafOutline,
+  IoFlaskOutline
+} from "react-icons/io5";
+import { GiCupcake, GiCroissant, GiSteak } from "react-icons/gi";
 
 const iconMap = {
-  Coffee: Coffee,
-  Utensils: Utensils,
-  GlassWater: GlassWater,
-  Cake: Cake,
-  Pizza: Pizza,
-  Salad: Salad,
-  Soup: Soup,
-  Croissant: Croissant,
-  Beef: Beef,
+  Coffee: IoCafeOutline,
+  Utensils: IoRestaurantOutline,
+  GlassWater: IoBeerOutline,
+  Cake: GiCupcake,
+  Pizza: IoPizzaOutline,
+  Salad: IoLeafOutline,
+  Soup: IoFlaskOutline,
+  Croissant: GiCroissant,
+  Beef: GiSteak,
 };
 
 function Category() {
@@ -73,67 +71,83 @@ function Category() {
 
   const optimizeImage = (url) => {
     if (!url) return "";
-    return url.replace("/upload/", "/upload/w_300,c_fill,q_auto,f_auto/");
+    return url.replace("/upload/", "/upload/w_600,c_fill,q_auto,f_auto/");
   };
 
   const CategoryIcon = ({ name, ...props }) => {
-    const IconComponent = iconMap[name] || Utensils;
+    const IconComponent = iconMap[name] || IoRestaurantOutline;
     return <IconComponent {...props} />;
   };
 
   return (
-    <div className="min-h-screen bg-coffee-900 py-12">
-      <div className="max-w-5xl mx-auto px-4">
-        {/* Minimal Header */}
-        <div className="flex items-center justify-between mb-16">
-          <button
+    <div className="min-h-screen bg-coffee-900 py-16">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+          <Motion.button
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
             onClick={() => navigate(`/menu`)}
-            className="group flex items-center gap-3 text-coffee-400 hover:text-white transition-colors duration-300"
+            className="group self-start flex items-center gap-4 text-coffee-400 hover:text-white transition-all"
           >
-            <div className="w-10 h-10 rounded-full border border-coffee-800 flex items-center justify-center group-hover:border-coffee-400 transition-colors">
-              <ArrowLeft className="w-4 h-4" />
+            <div className="w-12 h-12 rounded-full border border-coffee-800 flex items-center justify-center group-hover:border-coffee-400 group-hover:bg-coffee-400/10 transition-all">
+              <IoArrowBack size={20} />
             </div>
-            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Back</span>
-          </button>
+            <span className="text-xs font-black uppercase tracking-[0.3em]">Return to Menu</span>
+          </Motion.button>
           
-          <div className="flex flex-col items-end">
-            <h1 className="text-3xl md:text-5xl font-serif font-light text-white tracking-tight">
-              {selectedCategory?.name || "Selection"}
+          <Motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col md:items-end text-left md:text-right"
+          >
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400 mb-2">
+              Collection Selection
+            </span>
+            <h1 className="text-5xl md:text-6xl font-serif font-light text-white tracking-tight">
+              {selectedCategory?.name || "The Selection"}
             </h1>
-            <div className="h-px w-8 bg-coffee-400 mt-2"></div>
-          </div>
+            <div className="h-px w-24 bg-gradient-to-r from-coffee-400 to-transparent mt-4"></div>
+          </Motion.div>
         </div>
 
         {error && (
-          <div className="bg-red-900/10 border border-red-500/20 rounded-2xl p-6 mb-12 text-red-400 text-sm flex items-center gap-4">
-            <Info className="w-4 h-4" />
-            <p>{error}</p>
+          <div className="bg-red-950/20 border border-red-500/20 rounded-3xl p-8 mb-16 text-red-400 flex items-center gap-4">
+            <IoInformationCircleOutline size={24} />
+            <p className="font-medium">{error}</p>
           </div>
         )}
 
         {loading ? (
-          <div className="grid gap-8 sm:grid-cols-2">
+          <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-2">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="animate-pulse space-y-4">
-                <div className="aspect-[4/5] bg-coffee-800 rounded-[2.5rem]"></div>
-                <div className="h-4 bg-coffee-800 rounded w-1/2"></div>
-                <div className="h-3 bg-coffee-800 rounded w-1/4"></div>
+              <div key={i} className="animate-pulse space-y-6">
+                <div className="aspect-[16/10] bg-coffee-800 rounded-[3rem]"></div>
+                <div className="space-y-3">
+                  <div className="h-6 bg-coffee-800 rounded w-1/2"></div>
+                  <div className="h-4 bg-coffee-800 rounded w-3/4"></div>
+                </div>
               </div>
             ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="text-center py-32 border-t border-coffee-800">
-            <p className="text-coffee-500 font-serif italic text-lg">The collection is currently unavailable.</p>
+          <div className="text-center py-40 border-t border-coffee-800/50">
+            <p className="text-cream font-serif italic text-2xl tracking-wide">
+              This collection is being masterfully prepared...
+            </p>
           </div>
         ) : (
-          <div className="grid gap-10 sm:grid-cols-2">
-            {items.map((item) => (
-              <div
+          <div className="grid gap-16 sm:grid-cols-2">
+            {items.map((item, index) => (
+              <Motion.div
                 key={item.id}
-                className="group relative flex flex-col"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group relative"
               >
-                {/* Image Container */}
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-coffee-800 border border-coffee-800 shadow-2xl transition-transform duration-700">
+                {/* Image Showcase */}
+                <div className="relative aspect-[16/11] overflow-hidden rounded-[3rem] bg-coffee-800 border border-coffee-800/50 shadow-2xl">
                   <img
                     src={optimizeImage(item.image_url)}
                     onError={(e) => {
@@ -141,53 +155,61 @@ function Category() {
                       e.target.src = "/fallback-food.jpg";
                     }}
                     alt={item.name}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     loading="lazy"
                   />
                   
                   {/* Status Overlay */}
                   {!item.is_available && (
-                    <div className="absolute inset-0 bg-coffee-950/80 backdrop-blur-sm flex items-center justify-center">
-                      <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white">Reserved</span>
+                    <div className="absolute inset-0 bg-coffee-950/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
+                      <IoInformationCircleOutline className="text-coffee-400" size={40} />
+                      <span className="text-xs font-black uppercase tracking-[0.5em] text-white">Unavailable</span>
                     </div>
                   )}
 
-                  {/* Quick Add Button (Luxury Style) */}
+                  {/* Elegant Gradient Shadow */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-coffee-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                  {/* Premium Add Button */}
                   {item.is_available && (
                     <button
                       onClick={() => addToCart(item)}
-                      className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-white text-coffee-950 flex items-center justify-center shadow-2xl translate-y-20 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 hover:scale-110 active:scale-95"
+                      className="absolute bottom-8 right-8 w-16 h-16 rounded-2xl bg-coffee-50 text-coffee-950 flex items-center justify-center shadow-2xl translate-y-24 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 hover:bg-coffee-400 hover:text-white"
                     >
-                      <Plus className="w-6 h-6" />
+                      <IoAdd size={32} />
                     </button>
                   )}
                 </div>
 
-                {/* Content */}
-                <div className="mt-6 flex justify-between items-start px-2">
-                  <div className="space-y-1 max-w-[70%]">
-                    <h3 className="text-xl font-serif font-light text-white tracking-wide group-hover:text-coffee-300 transition-colors">
-                      {item.name}
-                    </h3>
-                    <p className="text-[10px] text-coffee-400 uppercase tracking-widest font-medium">
-                      Available Today
-                    </p>
+                {/* Information */}
+                <div className="mt-8 px-2">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="space-y-2">
+                      <h3 className="text-2xl md:text-3xl font-serif font-light text-white tracking-wide group-hover:text-coffee-300 transition-colors">
+                        {item.name}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-coffee-400"></span>
+                        <p className="text-[10px] text-coffee-200 uppercase tracking-widest font-bold">
+                          Chef's Selection
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span className="text-3xl font-light text-white">
+                        {item.price}
+                      </span>
+                      <span className="text-[9px] font-black text-coffee-400 uppercase tracking-widest">
+                        ETB
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-xl font-light text-white">
-                      {item.price}
-                    </span>
-                    <span className="text-[8px] font-black text-coffee-500 uppercase tracking-widest">
-                      ETB
-                    </span>
-                  </div>
-                </div>
 
-                {/* Optional Description (Subtle) */}
-                <p className="mt-4 px-2 text-coffee-500 text-[11px] leading-relaxed font-medium line-clamp-2">
-                  {item.description || "A masterfully prepared selection for the discerning palate."}
-                </p>
-              </div>
+                  <p className="text-cream text-sm leading-relaxed font-light line-clamp-2 italic">
+                    {item.description || "A masterfully prepared selection for the discerning palate, crafted with the finest ingredients."}
+                  </p>
+                </div>
+              </Motion.div>
             ))}
           </div>
         )}

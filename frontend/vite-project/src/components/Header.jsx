@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
+import { IoCafeOutline } from "react-icons/io5";
 
 function Header() {
   return (
-    <header className="bg-coffee-900/50 backdrop-blur-md sticky top-0 z-10 shadow-xl border-b border-coffee-800/60" title="Safeland Cafe - Fresh dishes, great experiences">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
+    <header className="bg-coffee-900/80 backdrop-blur-xl sticky top-0 z-50 border-b border-white/5 transition-all duration-300" title="Safeland Cafe - Fresh dishes, great experiences">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
         <Link
           to="/"
-          className="text-2xl font-serif font-bold text-coffee-50"
+          className="group transition-transform duration-500 hover:scale-[1.02]"
         >
-          <div className="inline-flex items-center justify-center w-[180px] h-auto">
+          <div className="inline-flex items-center justify-center w-[160px] md:w-[200px] h-auto">
             <svg
               viewBox="0 0 420 200"
-              className="w-full h-full"
+              className="w-full h-full drop-shadow-2xl"
               xmlns="http://www.w3.org/2000/svg"
             >
               {/* Icon Group */}
@@ -97,7 +98,20 @@ function Header() {
             </svg>
           </div>
         </Link>
-        <p className="text-coffee-300 text-sm italic hidden md:block">Fresh dishes, great experiences</p>
+        
+        <div className="flex items-center gap-6">
+          <p className="text-coffee-300 text-[10px] font-black uppercase tracking-[0.3em] hidden lg:block italic">
+            Artisanal Experience
+          </p>
+          <div className="h-4 w-px bg-coffee-800 hidden lg:block"></div>
+          <Link 
+            to="/menu" 
+            className="flex items-center gap-2 text-coffee-100 hover:text-coffee-400 transition-colors duration-300"
+          >
+            <IoCafeOutline size={20} />
+            <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">Menu</span>
+          </Link>
+        </div>
       </div>
     </header>
   );

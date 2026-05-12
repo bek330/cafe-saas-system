@@ -1,5 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { CheckCircle, Coffee, Hash, ArrowRight, Utensils, HelpCircle, XCircle } from "lucide-react";
+import { motion as Motion } from "framer-motion";
+import { 
+  IoCheckmarkCircle, 
+  IoCafeOutline, 
+  IoArrowForward, 
+  IoRestaurantOutline, 
+  IoHelpCircleOutline, 
+  IoCloseCircleOutline,
+  IoPrintOutline,
+  IoShareSocialOutline
+} from "react-icons/io5";
 
 function OrderSuccess() {
   const navigate = useNavigate();
@@ -12,113 +22,166 @@ function OrderSuccess() {
 
   if (!orderId) {
     return (
-      <div className="min-h-screen bg-coffee-900 flex items-center justify-center px-4">
-        <div className="bg-coffee-800 rounded-[2.5rem] shadow-2xl p-10 text-center max-w-md border border-coffee-700/30">
-          <XCircle className="w-20 h-20 text-red-400 mx-auto mb-6" />
-          <h1 className="text-3xl font-serif font-black text-coffee-50 mb-4 uppercase tracking-tighter">Order Not Found</h1>
-          <p className="text-coffee-300 mb-8 leading-relaxed">The order you're looking for doesn't exist or may have expired. Let's get you back to the menu.</p>
+      <div className="min-h-screen bg-coffee-900 flex items-center justify-center px-6">
+        <Motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-coffee-800/50 backdrop-blur-xl rounded-[3rem] shadow-2xl p-12 text-center max-w-md border border-coffee-700/30"
+        >
+          <IoCloseCircleOutline className="w-24 h-24 text-red-400 mx-auto mb-8" />
+          <h1 className="text-3xl font-serif font-black text-coffee-50 mb-4 uppercase tracking-tighter leading-tight">Order Session <br /> Expired</h1>
+          <p className="text-coffee-300 mb-10 leading-relaxed font-light">The order details could not be retrieved. Let's get you back to our selection.</p>
           <button
             onClick={() => navigate("/menu")}
-            className="w-full rounded-full bg-coffee-400 px-8 py-4 text-sm font-bold text-coffee-900 transition-all hover:bg-coffee-300 active:scale-95 shadow-xl shadow-coffee-400/20"
+            className="w-full rounded-2xl bg-coffee-400 px-8 py-5 text-xs font-black text-coffee-900 uppercase tracking-widest transition-all hover:bg-coffee-300 active:scale-95 shadow-xl shadow-coffee-400/20"
           >
             Back to Menu
           </button>
-        </div>
+        </Motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-coffee-900 py-16 px-4">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-coffee-900 py-20 px-6">
+      <div className="max-w-4xl mx-auto">
         {/* Success Header */}
-        <div className="bg-coffee-800/50 backdrop-blur-md rounded-[2.5rem] shadow-2xl p-10 text-center mb-8 border border-coffee-700/30">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-coffee-400/10 rounded-full mb-8">
-            <CheckCircle className="w-12 h-12 text-coffee-400" />
+        <Motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center justify-center w-28 h-28 bg-coffee-400/10 rounded-full mb-10 border border-coffee-400/20">
+            <IoCheckmarkCircle className="w-16 h-16 text-coffee-400" />
           </div>
-          <h1 className="text-5xl font-serif font-black text-coffee-50 mb-4 tracking-tighter uppercase">Order Confirmed!</h1>
-          <p className="text-xl text-coffee-300 max-w-md mx-auto leading-relaxed">
-            Thank you for choosing <span className="text-coffee-400 font-bold italic">Safeland Cafe</span>. Your delicious meal is being prepared with care!
+          <h1 className="text-5xl md:text-7xl font-serif font-light text-coffee-50 mb-6 tracking-tight leading-none uppercase">
+            Order <span className="italic font-normal text-coffee-400">Confirmed</span>
+          </h1>
+          <p className="text-xl text-coffee-300 max-w-lg mx-auto leading-relaxed font-light italic">
+            Thank you for choosing Safeland Cafe. Your selection is being masterfully prepared by our chefs.
           </p>
-        </div>
+        </Motion.div>
 
-        {/* Order Number Focus Box */}
-        <div className="bg-coffee-400 rounded-[2.5rem] shadow-2xl p-10 text-center mb-8 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
-          <div className="inline-flex items-center gap-2 bg-coffee-900/10 px-4 py-1 rounded-full mb-4 border border-coffee-900/10">
-            <Hash className="w-4 h-4 text-coffee-900" />
-            <span className="text-xs font-black text-coffee-900 uppercase tracking-[0.2em]">Transaction ID</span>
+        {/* Transaction Focus Box */}
+        <Motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="relative bg-gradient-to-br from-coffee-400 to-coffee-300 rounded-[3rem] shadow-2xl p-12 text-center mb-12 overflow-hidden group"
+        >
+          <div className="absolute top-0 right-0 p-8 text-coffee-900/10 transition-transform group-hover:scale-110">
+            <IoCafeOutline size={180} />
           </div>
-          <p className="text-7xl font-serif font-black text-coffee-900 tracking-tighter">#{orderId}</p>
-          <p className="mt-4 text-coffee-800 text-sm font-black uppercase tracking-widest opacity-80">Please keep this number for your reference</p>
-        </div>
+          
+          <div className="relative z-10">
+            <span className="text-[10px] font-black text-coffee-900/60 uppercase tracking-[0.5em] mb-4 block">Transaction ID</span>
+            <p className="text-7xl md:text-9xl font-serif font-black text-coffee-900 tracking-tighter leading-none mb-4">#{orderId}</p>
+            <p className="text-coffee-900 text-xs font-black uppercase tracking-widest opacity-70 italic">A sanctuary for taste and tranquility</p>
+          </div>
+        </Motion.div>
 
         {/* Details Grid */}
-        <div className="grid gap-4 md:grid-cols-2 mb-8">
-          <div className="bg-coffee-800/40 rounded-3xl shadow-md p-8 flex items-center gap-6 border border-coffee-700/30">
-            <div className="w-14 h-14 bg-coffee-900 rounded-2xl flex items-center justify-center">
-              <Coffee className="w-7 h-7 text-coffee-400" />
+        <div className="grid gap-6 md:grid-cols-2 mb-12">
+          <Motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-coffee-800/30 backdrop-blur-md rounded-[2.5rem] p-10 flex items-center gap-8 border border-coffee-700/30"
+          >
+            <div className="w-16 h-16 bg-coffee-900 rounded-2xl flex items-center justify-center text-coffee-400">
+              <IoRestaurantOutline size={28} />
             </div>
             <div>
-              <p className="text-[10px] text-coffee-400 font-black uppercase tracking-widest mb-1">Table Assigned</p>
-              <p className="text-2xl font-serif font-black text-coffee-50">{tableNumber ?? "Self-Pickup"}</p>
+              <p className="text-[10px] text-coffee-400 font-black uppercase tracking-[0.3em] mb-2">Service Point</p>
+              <p className="text-3xl font-serif font-light text-white">{tableNumber ?? "Collection"}</p>
             </div>
-          </div>
-          <div className="bg-coffee-800/40 rounded-3xl shadow-md p-8 flex items-center gap-6 border border-coffee-700/30">
-            <div className="w-14 h-14 bg-coffee-900 rounded-2xl flex items-center justify-center">
-              <span className="text-xl font-black text-coffee-400">ETB</span>
+          </Motion.div>
+          
+          <Motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-coffee-800/30 backdrop-blur-md rounded-[2.5rem] p-10 flex items-center gap-8 border border-coffee-700/30"
+          >
+            <div className="w-16 h-16 bg-coffee-900 rounded-2xl flex items-center justify-center text-coffee-400 font-black">
+              ETB
             </div>
             <div>
-              <p className="text-[10px] text-coffee-400 font-black uppercase tracking-widest mb-1">Total Paid</p>
-              <p className="text-2xl font-serif font-black text-coffee-50">{total} <span className="text-sm font-medium">.00</span></p>
+              <p className="text-[10px] text-coffee-400 font-black uppercase tracking-[0.3em] mb-2">Total Amount</p>
+              <p className="text-3xl font-serif font-light text-white">{total}.00</p>
             </div>
-          </div>
+          </Motion.div>
         </div>
 
-        {/* Order Summary */}
-        <div className="bg-coffee-800/40 rounded-[2.5rem] shadow-lg p-10 mb-10 border border-coffee-700/30">
-          <div className="flex items-center gap-3 mb-8">
-            <Utensils className="w-6 h-6 text-coffee-400" />
-            <h2 className="text-2xl font-serif font-black text-coffee-50 uppercase tracking-tighter">Order Summary</h2>
+        {/* Order Summary Summary */}
+        <Motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="bg-coffee-800/20 backdrop-blur-sm rounded-[3rem] p-12 mb-16 border border-coffee-700/20"
+        >
+          <div className="flex items-center justify-between mb-12 border-b border-coffee-800 pb-8">
+            <div className="flex items-center gap-4">
+              <div className="h-px w-8 bg-coffee-400"></div>
+              <h2 className="text-2xl font-serif font-light text-white uppercase tracking-tight">Order Summary</h2>
+            </div>
+            <div className="flex gap-4">
+              <button className="p-3 rounded-full border border-coffee-700 text-coffee-400 hover:text-white hover:border-coffee-400 transition-all">
+                <IoPrintOutline size={18} />
+              </button>
+              <button className="p-3 rounded-full border border-coffee-700 text-coffee-400 hover:text-white hover:border-coffee-400 transition-all">
+                <IoShareSocialOutline size={18} />
+              </button>
+            </div>
           </div>
-          <div className="space-y-6">
+
+          <div className="space-y-8">
             {items.length > 0 ? (
               items.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between py-4 border-b border-dashed border-coffee-700/30 last:border-b-0 last:pb-0">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-coffee-900 rounded-xl flex items-center justify-center text-coffee-400 font-black text-sm">
+                <div key={idx} className="flex items-center justify-between group">
+                  <div className="flex items-center gap-6">
+                    <div className="w-12 h-12 bg-coffee-900 rounded-2xl flex items-center justify-center text-coffee-400 font-serif font-black text-lg border border-coffee-800 group-hover:border-coffee-400 transition-all">
                       {item.quantity}
                     </div>
                     <div>
-                      <p className="font-bold text-coffee-50 uppercase text-sm tracking-tight">{item.name}</p>
-                      <p className="text-[10px] text-coffee-400 font-bold uppercase tracking-widest">{item.price} ETB / Unit</p>
+                      <p className="font-light text-white text-xl tracking-wide italic">{item.name}</p>
+                      <p className="text-[9px] text-coffee-500 font-black uppercase tracking-[0.2em] mt-1">{item.price} ETB / Piece</p>
                     </div>
                   </div>
-                  <p className="font-black text-coffee-50">{item.price * item.quantity} ETB</p>
+                  <div className="text-right">
+                    <p className="font-light text-white text-xl">{item.price * item.quantity}.00</p>
+                    <p className="text-[8px] text-coffee-500 font-black uppercase tracking-widest">ETB</p>
+                  </div>
                 </div>
               ))
             ) : (
-              <p className="text-coffee-400 text-center font-serif italic">No item details available.</p>
+              <p className="text-coffee-500 text-center font-serif italic py-10">No item details available.</p>
             )}
           </div>
-        </div>
+        </Motion.div>
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Final Actions */}
+        <Motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+          className="flex flex-col sm:flex-row gap-6 justify-center"
+        >
           <button
             onClick={() => navigate("/menu")}
-            className="flex-1 rounded-full bg-coffee-400 px-8 py-5 text-xs font-black text-coffee-900 uppercase tracking-widest shadow-xl shadow-coffee-400/20 transition-all hover:bg-coffee-300 hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-2"
+            className="group flex-1 rounded-2xl bg-coffee-400 px-8 py-6 text-xs font-black text-coffee-900 uppercase tracking-widest shadow-2xl shadow-coffee-400/20 transition-all hover:bg-coffee-300 flex items-center justify-center gap-3"
           >
-            Order Something Else
-            <ArrowRight className="w-4 h-4" />
+            Explore More Delights
+            <IoArrowForward className="transition-transform group-hover:translate-x-1" size={18} />
           </button>
           <a
-            href="mailto:support@safelandcafe.com"
-            className="rounded-full bg-transparent border-2 border-coffee-700 text-coffee-50 px-8 py-5 text-xs font-black uppercase tracking-widest transition-all hover:border-coffee-400 hover:text-coffee-400 flex items-center justify-center gap-2"
+            href="mailto:concierge@safelandcafe.com"
+            className="rounded-2xl bg-transparent border border-coffee-700 text-coffee-400 px-10 py-6 text-xs font-black uppercase tracking-widest transition-all hover:border-coffee-400 hover:text-white hover:bg-white/5 flex items-center justify-center gap-3"
           >
-            <HelpCircle className="w-4 h-4" />
-            Support
+            <IoHelpCircleOutline size={20} />
+            Concierge Support
           </a>
-        </div>
+        </Motion.div>
       </div>
     </div>
   );

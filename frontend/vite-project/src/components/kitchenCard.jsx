@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function KitchenCard({ order }) {
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
     const timer = setInterval(() => {
