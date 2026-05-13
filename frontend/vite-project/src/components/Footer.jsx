@@ -25,30 +25,30 @@ export default function Footer() {
             </div>
             <span className="text-3xl font-serif font-light text-white tracking-tighter italic uppercase">Safeland</span>
           </div>
-          <p className="text-coffee-300 leading-relaxed font-light italic">
+          <p className="text-cream/80 leading-relaxed font-light italic">
             Crafting sanctuary moments and artisanal experiences in the heart of the city. 
             Your destination for taste and tranquility.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="w-10 h-10 rounded-full border border-coffee-800 flex items-center justify-center text-coffee-300 hover:text-white hover:border-white transition-all"><IoLogoInstagram size={20} /></a>
-            <a href="#" className="w-10 h-10 rounded-full border border-coffee-800 flex items-center justify-center text-coffee-300 hover:text-white hover:border-white transition-all"><IoLogoFacebook size={20} /></a>
+            <a href="#" className="w-10 h-10 rounded-full border border-coffee-800 flex items-center justify-center text-oat-gold hover:text-white hover:border-oat-gold transition-all"><IoLogoInstagram size={20} /></a>
+            <a href="#" className="w-10 h-10 rounded-full border border-coffee-800 flex items-center justify-center text-oat-gold hover:text-white hover:border-oat-gold transition-all"><IoLogoFacebook size={20} /></a>
           </div>
         </div>
 
         {/* Contact */}
         <div className="space-y-8">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400">Concierge</h3>
-          <ul className="space-y-5 text-coffee-300 font-light">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-oat-gold">Concierge</h3>
+          <ul className="space-y-5 text-cream/90 font-light">
             <li className="flex items-start gap-4">
-              <IoLocationOutline size={20} className="text-coffee-400 shrink-0" />
+              <IoLocationOutline size={20} className="text-oat-gold shrink-0" />
               <span className="text-sm">123 Espresso Lane, Coffee District,<br />Addis Ababa, Ethiopia</span>
             </li>
             <li className="flex items-center gap-4">
-              <IoCallOutline size={20} className="text-coffee-400" />
+              <IoCallOutline size={20} className="text-oat-gold" />
               <span className="text-sm font-serif italic">+251 11 234 5678</span>
             </li>
             <li className="flex items-center gap-4">
-              <IoMailOutline size={20} className="text-coffee-400" />
+              <IoMailOutline size={20} className="text-oat-gold" />
               <span className="text-sm">hello@safelandcafe.com</span>
             </li>
           </ul>
@@ -56,18 +56,18 @@ export default function Footer() {
 
         {/* Hours */}
         <div className="space-y-8">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400">Service Hours</h3>
-          <ul className="space-y-4 text-coffee-300 font-light">
-            <li className="flex justify-between items-center border-b border-coffee-900 pb-3">
-              <span className="text-sm uppercase tracking-widest text-[10px] font-bold">Weekday</span>
+          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-oat-gold">Service Hours</h3>
+          <ul className="space-y-4 text-cream/90 font-light">
+            <li className="flex justify-between items-center border-b border-coffee-800/50 pb-3">
+              <span className="text-sm uppercase tracking-widest text-[10px] font-bold text-oat-gold/80">Weekday</span>
               <span className="text-white font-serif italic">7:00 — 20:00</span>
             </li>
-            <li className="flex justify-between items-center border-b border-coffee-900 pb-3">
-              <span className="text-sm uppercase tracking-widest text-[10px] font-bold">Saturday</span>
+            <li className="flex justify-between items-center border-b border-coffee-800/50 pb-3">
+              <span className="text-sm uppercase tracking-widest text-[10px] font-bold text-oat-gold/80">Saturday</span>
               <span className="text-white font-serif italic">8:00 — 21:00</span>
             </li>
             <li className="flex justify-between items-center">
-              <span className="text-sm uppercase tracking-widest text-[10px] font-bold">Sunday</span>
+              <span className="text-sm uppercase tracking-widest text-[10px] font-bold text-oat-gold/80">Sunday</span>
               <span className="text-white font-serif italic">9:00 — 18:00</span>
             </li>
           </ul>
@@ -75,17 +75,17 @@ export default function Footer() {
 
         {/* Quick Links */}
         <div className="space-y-8">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400">Navigation</h3>
-          <ul className="grid grid-cols-1 gap-4 text-coffee-300 font-light">
-            <li><Link to="/menu" className="hover:text-white transition-colors flex items-center gap-2 italic">Our Selection</Link></li>
-            <li><Link to="/about" className="hover:text-white transition-colors flex items-center gap-2 italic">Our Story</Link></li>
-            <li><Link to="/contact" className="hover:text-white transition-colors flex items-center gap-2 italic">Locations</Link></li>
-            <li><Link to="/careers" className="hover:text-white transition-colors flex items-center gap-2 italic">Join the Sanctuary</Link></li>
+          <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-oat-gold">Navigation</h3>
+          <ul className="grid grid-cols-1 gap-4 text-cream/90 font-light">
+            <li><Link to="/menu" className="hover:text-oat-gold transition-colors flex items-center gap-2 italic">Our Selection</Link></li>
+            <li><Link to="/about" className="hover:text-oat-gold transition-colors flex items-center gap-2 italic">Our Story</Link></li>
+            <li><Link to="/contact" className="hover:text-oat-gold transition-colors flex items-center gap-2 italic">Locations</Link></li>
+            <li><Link to="/careers" className="hover:text-oat-gold transition-colors flex items-center gap-2 italic">Join the Sanctuary</Link></li>
           </ul>
         </div>
       </div>
       
-      <div className="max-w-7xl mx-auto px-6 mt-24 pt-12 border-t border-coffee-900 text-center">
+      <div className="max-w-7xl mx-auto px-6 mt-24 pt-12 border-t border-white/10 text-center">
         <p className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-500">
           &copy; {new Date().getFullYear()} Safeland Cafe. All rights reserved.
         </p>

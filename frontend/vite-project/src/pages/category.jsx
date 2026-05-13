@@ -95,9 +95,9 @@ function Category() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             onClick={() => navigate(`/menu`)}
-            className="group self-start flex items-center gap-4 text-coffee-400 hover:text-white transition-all"
+            className="group self-start flex items-center gap-4 text-oat-gold hover:text-white transition-all"
           >
-            <div className="w-12 h-12 rounded-full border border-coffee-800 flex items-center justify-center group-hover:border-coffee-400 group-hover:bg-coffee-400/10 transition-all">
+            <div className="w-12 h-12 rounded-full border border-coffee-800 flex items-center justify-center group-hover:border-oat-gold group-hover:bg-oat-gold/10 transition-all">
               <IoArrowBack size={20} />
             </div>
             <span className="text-xs font-black uppercase tracking-[0.3em]">Return to Menu</span>
@@ -108,13 +108,13 @@ function Category() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col md:items-end text-left md:text-right"
           >
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400 mb-2">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-oat-gold mb-2">
               Collection Selection
             </span>
             <h1 className="text-5xl md:text-6xl font-serif font-light text-white tracking-tight">
               {selectedCategory?.name || "The Selection"}
             </h1>
-            <div className="h-px w-24 bg-gradient-to-r from-coffee-400 to-transparent mt-4"></div>
+            <div className="h-px w-24 bg-gradient-to-r from-oat-gold to-transparent mt-4"></div>
           </Motion.div>
         </div>
 

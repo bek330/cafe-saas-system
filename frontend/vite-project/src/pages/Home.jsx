@@ -35,21 +35,21 @@ export default function Home() {
           className="space-y-8"
         >
           <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="h-px w-8 bg-coffee-400/50"></span>
-            <p className="text-coffee-300 font-serif italic tracking-[0.3em] text-xs md:text-sm uppercase">
+            <span className="h-px w-8 bg-oat-gold/30"></span>
+            <p className="text-oat-gold font-serif italic tracking-[0.3em] text-xs md:text-sm uppercase">
               Established 2024
             </p>
-            <span className="h-px w-8 bg-coffee-400/50"></span>
+            <span className="h-px w-8 bg-oat-gold/30"></span>
           </div>
 
           <h1 className="text-5xl md:text-8xl font-serif font-white text-oat-gold leading-[1.1] tracking-tight">
             Elevate Your <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-coffee-300 to-coffee-100 italic font-light">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-oat-gold to-cream italic font-light">
               Coffee Ritual
             </span>
           </h1>
 
-          <p className="max-w-xl mx-auto text-lg md:text-xl text-cream leading-relaxed font-light">
+          <p className="max-w-xl mx-auto text-lg md:text-xl text-cream/90 leading-relaxed font-light">
             Step into a sanctuary of flavor. We blend artisanal craft with 
             unmatched comfort to serve you more than just a meal.
           </p>
@@ -57,7 +57,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-10">
             <Link
               to="/menu"
-              className="group relative flex items-center gap-3 px-10 py-5 bg-coffee-400 text-coffee-900 rounded-full text-sm font-black uppercase tracking-widest overflow-hidden transition-all hover:bg-coffee-300"
+              className="group relative flex items-center gap-3 px-10 py-5 bg-oat-gold text-coffee-950 rounded-full text-sm font-black uppercase tracking-widest overflow-hidden transition-all hover:bg-cream hover:text-coffee-950"
             >
               <span className="relative z-10">Explore Menu</span>
               <IoArrowForward className="relative z-10 transition-transform group-hover:translate-x-1" size={18} />
@@ -65,7 +65,7 @@ export default function Home() {
             </Link>
             
             <button
-              className="px-10 py-5 bg-sage/80 border border-sage text-coffee-50 rounded-full text-sm font-black uppercase tracking-widest transition-all hover:border-coffee-300 hover:bg-sage"
+              className="px-10 py-5 bg-sage/80 border border-sage text-white rounded-full text-sm font-black uppercase tracking-widest transition-all hover:border-oat-gold hover:bg-sage"
             >
               Our Story
             </button>
@@ -73,17 +73,17 @@ export default function Home() {
 
           <div className="pt-16 flex items-center justify-center gap-10">
             <div className="flex flex-col items-center gap-2">
-              <div className="p-3 rounded-2xl bg-coffee-800/50 border border-coffee-700/50 text-coffee-300">
+              <div className="p-3 rounded-2xl bg-coffee-800/50 border border-coffee-700/50 text-oat-gold">
                 <IoSparklesOutline size={24} />
               </div>
-              <span className="text-[10px] text-coffee-400 uppercase tracking-widest font-bold">Premium Quality</span>
+              <span className="text-[10px] text-oat-gold/70 uppercase tracking-widest font-bold">Premium Quality</span>
             </div>
             <div className="w-px h-8 bg-coffee-800"></div>
             <div className="flex flex-col items-center gap-2">
-              <div className="p-3 rounded-2xl bg-coffee-800/50 border border-coffee-700/50 text-coffee-300">
+              <div className="p-3 rounded-2xl bg-coffee-800/50 border border-coffee-700/50 text-oat-gold">
                 <IoCafeOutline size={24} />
               </div>
-              <span className="text-[10px] text-coffee-400 uppercase tracking-widest font-bold">Artisan Brew</span>
+              <span className="text-[10px] text-oat-gold/70 uppercase tracking-widest font-bold">Artisan Brew</span>
             </div>
           </div>
         </Motion.div>

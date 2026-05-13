@@ -117,13 +117,13 @@ function Menu() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-coffee-400 mb-4 block">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-oat-gold mb-4 block">
               Curated Collections
             </span>
-            <h1 className="text-5xl md:text-7xl font-serif font-light text-coffee-50 tracking-tight leading-none">
-              Explore Our <span className="italic font-normal text-coffee-300">Menu</span>
+            <h1 className="text-5xl md:text-7xl font-serif font-light text-white tracking-tight leading-none">
+              Explore Our <span className="italic font-normal text-oat-gold">Menu</span>
             </h1>
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-coffee-600 to-transparent mx-auto mt-10"></div>
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-oat-gold/30 to-transparent mx-auto mt-10"></div>
           </Motion.div>
         </header>
 
