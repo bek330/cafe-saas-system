@@ -80,7 +80,7 @@ function Category() {
   };
 
   return (
-    <div className="min-h-screen bg-coffee-900/15 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-4xl relative overflow-hidden">
+    <div className="min-h-screen bg-coffee-900/75 py-16 rounded-[2.5rem] shadow-2xl border border-white/5 backdrop-blur-4xl relative overflow-hidden">
       {/* Page-specific Geometric Accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-coffee-400/5 to-transparent"></div>
@@ -95,12 +95,12 @@ function Category() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             onClick={() => navigate(`/menu`)}
-            className="group self-start flex items-center gap-4 text-oat-gold hover:text-white transition-all"
+            className="group self-start flex items-center gap-4 text-sage hover:text-white transition-all"
           >
-            <div className="w-12 h-12 rounded-full border border-coffee-800 flex items-center justify-center group-hover:border-oat-gold group-hover:bg-oat-gold/10 transition-all">
+            <div className="w-12 h-12 rounded-full border bg-coffee-200 border-coffee-200 flex items-center justify-center group-hover:border-oat-gold group-hover:bg-oat-gold ease-in-out duration-300 transition-all">
               <IoArrowBack size={20} />
             </div>
-            <span className="text-xs font-black uppercase tracking-[0.3em]">Return to Menu</span>
+            <span className="text-xs text-cream font-black uppercase tracking-[0.3em]">Return to Menu</span>
           </Motion.button>
           
           <Motion.div 
@@ -108,13 +108,13 @@ function Category() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col md:items-end text-left md:text-right"
           >
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-oat-gold mb-2">
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#e4d75f] mb-2">
               Collection Selection
             </span>
-            <h1 className="text-5xl md:text-6xl font-serif font-light text-white tracking-tight">
+            <h1 className="text-5xl md:text-6xl font-serif font-light text-cream tracking-tight">
               {selectedCategory?.name || "The Selection"}
             </h1>
-            <div className="h-px w-24 bg-gradient-to-r from-oat-gold to-transparent mt-4"></div>
+            <div className="h-px w-24 bg-gradient-to-r from-cream to-transparent mt-4"></div>
           </Motion.div>
         </div>
 
