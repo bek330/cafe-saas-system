@@ -42,14 +42,14 @@ export default function Home() {
             <span className="h-px w-8 bg-coffee-400/50"></span>
           </div>
 
-          <h1 className="text-5xl md:text-8xl font-serif font-black text-coffee-50 leading-[1.1] tracking-tight">
+          <h1 className="text-5xl md:text-8xl font-serif font-white text-oat-gold leading-[1.1] tracking-tight">
             Elevate Your <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-coffee-300 to-coffee-100 italic font-light">
               Coffee Ritual
             </span>
           </h1>
 
-          <p className="max-w-xl mx-auto text-lg md:text-xl text-coffee-200/80 leading-relaxed font-light">
+          <p className="max-w-xl mx-auto text-lg md:text-xl text-cream leading-relaxed font-light">
             Step into a sanctuary of flavor. We blend artisanal craft with 
             unmatched comfort to serve you more than just a meal.
           </p>
@@ -65,7 +65,7 @@ export default function Home() {
             </Link>
             
             <button
-              className="px-10 py-5 bg-transparent border border-coffee-700 text-coffee-50 rounded-full text-sm font-black uppercase tracking-widest transition-all hover:border-coffee-300 hover:bg-white/5"
+              className="px-10 py-5 bg-sage/80 border border-sage text-coffee-50 rounded-full text-sm font-black uppercase tracking-widest transition-all hover:border-coffee-300 hover:bg-sage"
             >
               Our Story
             </button>

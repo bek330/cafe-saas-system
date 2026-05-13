@@ -26,7 +26,7 @@ function OrderLayout() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-coffee-950 flex flex-col selection:bg-coffee-400 selection:text-coffee-900 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-coffee-950 flex flex-col selection:bg-coffee-400 selection:text-coffee-900 relative overflow-x-hidden font-sans">
       {/* Animated & Geometric Background Elements */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Subtle Geometric Dot Grid */}
@@ -146,7 +146,7 @@ function OrderLayout() {
       </div>
 
       {/* Main Content Wrapper */}
-      <div className="relative z-10 flex flex-col flex-1">
+      <div className="relative z-10 flex flex-col flex-1 pt-24">
         <Header />
 
         <div className="max-w-7xl mx-auto w-full flex flex-col gap-8 px-4 py-8 md:py-16 lg:flex-row items-start flex-1">
