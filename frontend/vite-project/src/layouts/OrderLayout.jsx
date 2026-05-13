@@ -150,7 +150,7 @@ function OrderLayout() {
         <Header />
 
         <div className="max-w-7xl mx-auto w-full flex flex-col gap-8 px-4 py-8 md:py-16 lg:flex-row items-start flex-1">
-          <main className="flex-1 w-full bg-coffee-950/30 rounded-[4rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] p-2 md:p-9 border border-white/10 backdrop-blur-4xl relative overflow-hidden">
+          <main className="flex-1 w-full bg-coffee-950/30 rounded-[3.5rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] p-2 md:p-9 border border-white/10 backdrop-blur-4xl relative overflow-hidden">
             {/* Subtle local light effect in the corner */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-oat-gold/10 rounded-full blur-[200px] -translate-y-1/2 translate-x-1/2"></div>
             
