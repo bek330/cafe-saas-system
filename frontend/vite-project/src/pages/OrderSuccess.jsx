@@ -52,10 +52,10 @@ function OrderSuccess() {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center justify-center w-28 h-28 bg-coffee-400/10 rounded-full mb-10 border border-coffee-400/20">
-            <IoCheckmarkCircle className="w-16 h-16 text-coffee-400" />
+            <IoCheckmarkCircle className="w-16 h-16 text-coffee-200" />
           </div>
           <h1 className="text-5xl md:text-7xl font-serif font-light text-coffee-50 mb-6 tracking-tight leading-none uppercase">
-            Order <span className="italic font-normal text-coffee-400">Confirmed</span>
+            Order <span className="italic font-normal text-coffee-300">Confirmed</span>
           </h1>
           <p className="text-xl text-coffee-300 max-w-lg mx-auto leading-relaxed font-light italic">
             Thank you for choosing Safeland Cafe. Your selection is being masterfully prepared by our chefs.

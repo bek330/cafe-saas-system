@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { CheckCircle, Play } from "lucide-react";
 
-export default function KitchenCard({ order }) {
+export default function KitchenCard({ order, onStatusUpdate }) {
   const [now, setNow] = useState(() => Date.now());
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -10,6 +12,14 @@ export default function KitchenCard({ order }) {
 
     return () => clearInterval(timer);
   }, []);
+
+  const handleUpdate = async () => {
+    if (!onStatusUpdate) return;
+    setIsUpdating(true);
+    const nextStatus = order.status === "pending" ? "accepted" : "completed";
+    await onStatusUpdate(order.id, nextStatus);
+    setIsUpdating(false);
+  };
 
   const age = Math.floor((now - new Date(order.created_at)) / 60000);
 
@@ -22,7 +32,7 @@ export default function KitchenCard({ order }) {
       : "bg-blue-500 text-white";
 
   return (
-    <div className={`rounded-[1.75rem] border p-6 shadow-sm transition hover:shadow-md ${urgency}`}>
+    <div className={`flex flex-col rounded-[1.75rem] border p-6 shadow-sm transition hover:shadow-md ${urgency}`}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-slate-900">#{order.id}</h2>
         <span className={`rounded-full px-3 py-1 text-sm font-semibold ${statusStyle}`}>
@@ -41,7 +51,7 @@ export default function KitchenCard({ order }) {
         <p className="mb-4 text-sm text-slate-600">Table: {order.table_number}</p>
       )}
 
-      <div className="space-y-2 mb-4">
+      <div className="space-y-2 mb-4 flex-grow">
         {order.items.map((item, i) => (
           <div key={i} className="flex justify-between text-lg font-semibold">
             <span className="text-slate-900">{item.name}</span>
@@ -50,14 +60,40 @@ export default function KitchenCard({ order }) {
         ))}
       </div>
 
-      <div className="flex items-center justify-between border-t border-slate-200 pt-4">
+      <div className="flex items-center justify-between border-t border-slate-200 py-4">
         <span className="text-sm font-semibold text-slate-900">Total</span>
         <span className="text-sm font-semibold text-slate-900">{order.total || order.total_price} ETB</span>
       </div>
 
-      <p className="mt-4 text-xs text-slate-500">
-        {new Date(order.created_at).toLocaleTimeString()}
-      </p>
+      <div className="mt-auto space-y-4">
+        <button
+          onClick={handleUpdate}
+          disabled={isUpdating}
+          className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-bold transition-all active:scale-95 disabled:opacity-50 ${
+            order.status === "pending"
+              ? "bg-amber-500 text-white hover:bg-amber-600 shadow-amber-200"
+              : "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-200"
+          } shadow-lg`}
+        >
+          {isUpdating ? (
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          ) : order.status === "pending" ? (
+            <>
+              <Play className="h-5 w-5" />
+              Accept Order
+            </>
+          ) : (
+            <>
+              <CheckCircle className="h-5 w-5" />
+              Mark as Ready
+            </>
+          )}
+        </button>
+
+        <p className="text-center text-xs text-slate-500">
+          {new Date(order.created_at).toLocaleTimeString()}
+        </p>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/purity */
 import { useEffect, useState } from "react";
 import KitchenCard from "../components/kitchenCard";
-import { getOrders } from "../api/orderApi";
+import { getOrders, updateOrderStatus } from "../api/orderApi";
+import { toast } from "react-hot-toast";
 
 function Kitchen() {
   const [orders, setOrders] = useState([]);
@@ -24,6 +25,17 @@ function Kitchen() {
       setLastUpdate(Date.now());
     } catch (err) {
       console.error("Fetch error:", err);
+    }
+  };
+
+  const handleStatusUpdate = async (id, status) => {
+    try {
+      await updateOrderStatus(id, status);
+      toast.success(`Order #${id} ${status ==='completed' ? 'completed' : 'accepted'}`);
+      fetchOrders();
+    } catch (err) {
+      toast.error("Failed to update order status");
+      console.error(err);
     }
   };
 
@@ -92,7 +104,11 @@ function Kitchen() {
             ) : (
               <div className="grid gap-4 md:grid-cols-2">
                 {pending.map((order) => (
-                  <KitchenCard key={order.id} order={order} />
+                  <KitchenCard 
+                    key={order.id} 
+                    order={order} 
+                    onStatusUpdate={handleStatusUpdate}
+                  />
                 ))}
               </div>
             )}
@@ -107,7 +123,11 @@ function Kitchen() {
             ) : (
               <div className="grid gap-4 md:grid-cols-2">
                 {accepted.map((order) => (
-                  <KitchenCard key={order.id} order={order} />
+                  <KitchenCard 
+                    key={order.id} 
+                    order={order} 
+                    onStatusUpdate={handleStatusUpdate}
+                  />
                 ))}
               </div>
             )}

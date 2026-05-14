@@ -1,7 +1,7 @@
 import apiClient from "./apiClient";
 
-export const getDashboardSummary = async () => {
-  return apiClient("/admin/dashboard/summary");
+export const getDashboardSummary = async (range = 7) => {
+  return apiClient(`/admin/dashboard/summary?range=${range}`);
 };
 
 export const uploadFile = async (formData) => {

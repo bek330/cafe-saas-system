@@ -5,9 +5,8 @@ const { verifyToken, requireRole } = require('../middleware/auth.middleware');
 
 // both kitchen + admin can view
 router.get('/', controller.getOrders);
-
+router.put('/:id/status', controller.updateStatus);
 // only admin updates
-router.put('/:id/status', verifyToken, controller.updateStatus);
 router.get('/history', verifyToken, controller.getOrderHistory);
 // public route to create order
 router.post('/', controller.createOrder);
