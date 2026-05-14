@@ -341,19 +341,20 @@ function AdminDashboard() {
             <h3 className="text-xl font-serif font-black text-charcoal">Sales Mix</h3>
           </div>
           
-          <div className="h-[300px] w-full">
+          <div className="h-[400px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={summary.categorySales}
                   cx="50%"
-                  cy="45%"
-                  innerRadius={70}
-                  outerRadius={100}
-                  paddingAngle={8}
+                  cy="50%"
+                  outerRadius={130}
                   dataKey="value"
                   nameKey="category"
-                  stroke="none"
+                  stroke="#fff"
+                  strokeWidth={2}
+                  labelLine={true}
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 >
                   {summary.categorySales.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
