@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL;
 
 async function apiClient(endpoint, { body, ...customConfig } = {}) {
   const token = localStorage.getItem('token');
@@ -25,7 +25,7 @@ async function apiClient(endpoint, { body, ...customConfig } = {}) {
     config.body = body instanceof FormData ? body : JSON.stringify(body);
   }
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, config);
+  const response = await fetch(`${API}${endpoint}`, config);
 
   if (response.status === 204) {
     return null;

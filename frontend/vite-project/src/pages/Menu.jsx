@@ -120,8 +120,8 @@ function Menu() {
             <span className="text-[10px] font-black uppercase tracking-[0.5em] text-oat-gold mb-4 block">
               Curated Collections
             </span>
-            <h1 className="text-5xl md:text-7xl font-serif font-light text-coffee-900 tracking-tight leading-none">
-              Explore Our <span className="italic font-normal text-[#141414]">Menu</span>
+            <h1 className="text-5xl md:text-7xl font-serif font-light text-oat-gold tracking-tight leading-none">
+              Explore Our <span className="italic font-normal text-sage/80">Menu</span>
             </h1>
             <div className="h-px w-full bg-gradient-to-r from-transparent via-oat-gold/30 to-transparent mx-auto mt-10"></div>
           </Motion.div>

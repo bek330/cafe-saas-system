@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState, useCallback } from "react";
 import { getDashboardSummary } from "../api/adminApi";
 import { 
@@ -186,8 +187,8 @@ function AdminDashboard() {
               </div>
               
               <p className="text-[10px] text-sage font-black uppercase tracking-widest mb-1">{card.title}</p>
-              <div className="flex items-baseline gap-2">
-                <h2 className="text-3xl font-serif font-black text-charcoal tracking-tight">
+              <div className="flex items-baseline gap-1">
+                <h2 className="text-2xl font-serif font-black text-charcoal tracking-tight">
                   {card.value}
                 </h2>
                 {card.growth !== undefined && (

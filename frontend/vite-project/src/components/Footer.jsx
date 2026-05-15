@@ -11,7 +11,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-coffee-900 text-coffee-100 pt-24 pb-12 border-t border-white/5">
+    <footer className="bg-coffee-900/80 text-coffee-100 pt-24 pb-12 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 grid gap-16 md:grid-cols-2 lg:grid-cols-4">
         {/* Brand */}
         <div className="space-y-8">
