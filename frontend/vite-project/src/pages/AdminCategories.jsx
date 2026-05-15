@@ -17,7 +17,8 @@ import {
   Save,
   X,
   Upload,
-  Image as ImageIcon
+  Image as ImageIcon,
+  RefreshCw
 } from "lucide-react";
 
 const iconMap = {
