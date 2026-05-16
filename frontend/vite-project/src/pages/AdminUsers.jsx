@@ -36,11 +36,12 @@ function AdminUsers() {
 
   useEffect(() => {
     if (user?.role === "admin") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchUsers().finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [user]);
 
   if (user?.role !== "admin") {
