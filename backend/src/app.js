@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-  origin: ['https://your-vercel-domain.vercel.app', 'http://localhost:3000'],
+  origin: ['https://safeland-cafe.vercel.app', 'http://localhost:3000'],
   credentials: true
 }));
 app.use(express.json());
