@@ -1,13 +1,14 @@
 const errorHandler = (err, req, res, next) => {
-  console.error(`[Error] ${err.stack}`);
+  console.error('[Error]', err.message);
 
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal Server Error';
+  const statusCode = err.statusCode || (err.name === 'MulterError' ? 400 : 500);
+  const response = { error: statusCode >= 500 ? 'Internal Server Error' : err.message || 'Request failed' };
 
-  res.status(statusCode).json({
-    error: message,
-    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
-  });
+  if (process.env.NODE_ENV !== 'production') {
+    response.stack = err.stack;
+  }
+
+  res.status(statusCode).json(response);
 };
 
 module.exports = errorHandler;
