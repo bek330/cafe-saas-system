@@ -9,7 +9,7 @@ router.use(verifyToken, requireRole("admin"));
 router.get("/summary", async (req, res) => {
   try {
     const { range = '7' } = req.query;
-    const days = Number.parseInt(range, 10);
+    const days = Number(range);
 
     if (!Number.isInteger(days) || days < 1 || days > 365) {
       return res.status(400).json({ error: 'Range must be an integer between 1 and 365 days' });
