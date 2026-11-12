@@ -13,6 +13,13 @@ class UserController {
   async getUserById(req, res, next) {
     try {
       const { id } = req.params;
+
+      if (String(req.user.id) === String(id)) {
+        const error = new Error('You cannot delete your own account');
+        error.statusCode = 403;
+        throw error;
+      }
+
       const user = await userService.getUserById(id);
       if (!user) {
         const error = new Error('User not found');
@@ -58,7 +65,13 @@ class UserController {
   async updateUser(req, res, next) {
     try {
       const { id } = req.params;
-      const { username, password, role } = req.body;
+      const { username, password, role } = req.body || {};
+
+      if (String(req.user.id) === String(id) && role !== 'admin') {
+        const error = new Error('You cannot remove your own administrator role');
+        error.statusCode = 403;
+        throw error;
+      }
 
       if (!username || !role) {
         const error = new Error('Username and role are required');
