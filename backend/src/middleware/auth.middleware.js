@@ -11,8 +11,8 @@ const verifyToken = (req, res, next) => {
   }
 
   const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    return res.status(503).json({ error: 'Authentication is not configured' });
+  if (!secret || secret.length < 32) {
+    return res.status(503).json({ error: 'JWT_SECRET must be configured with at least 32 characters' });
   }
 
   try {
