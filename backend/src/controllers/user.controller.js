@@ -14,12 +14,6 @@ class UserController {
     try {
       const { id } = req.params;
 
-      if (String(req.user.id) === String(id)) {
-        const error = new Error('You cannot delete your own account');
-        error.statusCode = 403;
-        throw error;
-      }
-
       const user = await userService.getUserById(id);
       if (!user) {
         const error = new Error('User not found');
@@ -107,6 +101,13 @@ class UserController {
   async deleteUser(req, res, next) {
     try {
       const { id } = req.params;
+
+      if (String(req.user.id) === String(id)) {
+        const error = new Error('You cannot delete your own account');
+        error.statusCode = 403;
+        throw error;
+      }
+
       const user = await userService.getUserById(id);
       if (!user) {
         const error = new Error('User not found');
