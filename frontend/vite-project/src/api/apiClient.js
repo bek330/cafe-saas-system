@@ -9,7 +9,7 @@ async function apiClient(endpoint, { body, ...customConfig } = {}) {
   }
 
   if (token) {
-    headers.Authorization = token;
+    headers.Authorization = `Bearer ${token}`;
   }
 
   const config = {
@@ -34,7 +34,7 @@ async function apiClient(endpoint, { body, ...customConfig } = {}) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.error || response.statusText || 'Network response was not ok');
+    throw new Error(data.error || `Request failed with status ${response.status}`);
   }
 
   return data;
