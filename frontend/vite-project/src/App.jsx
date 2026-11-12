@@ -21,7 +21,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-      <Toaster position="top-right" />
+        <Toaster position="top-right" />
         <Routes>
           <Route element={<OrderLayout />}>
             <Route index element={<Home />} />
@@ -33,7 +33,7 @@ function App() {
           <Route
             path="/admin/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="admin">
                 <AdminLayout />
               </ProtectedRoute>
             }
@@ -42,16 +42,20 @@ function App() {
             <Route path="orders" element={<AdminOrders />} />
             <Route path="menu" element={<AdminMenu />} />
             <Route path="categories" element={<AdminCategories />} />
-            <Route path="users" element={<ProtectedRoute role="admin"><AdminUsers /></ProtectedRoute>} />
+            <Route path="users" element={<AdminUsers />} />
             <Route path="history" element={<AdminHistory />} />
           </Route>
 
-          {/* decide if kitchen needs auth */}
-          <Route path="/kitchen" element={<Kitchen />} />
+          <Route
+            path="/kitchen"
+            element={
+              <ProtectedRoute role="admin">
+                <Kitchen />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/login" element={<Login />} />
-
-          {/* fallback */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
