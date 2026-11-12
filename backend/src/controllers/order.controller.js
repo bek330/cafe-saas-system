@@ -56,10 +56,10 @@ exports.getOrderHistory = async (req, res, next) => {
   try {
     const { range, status, search, page, limit } = req.query;
 
-    const parsePositiveInteger = (value, defaultValue, field, maximum = Number.MAX_SAFE_INTEGER) => {
+    const parsePositiveInteger = (value, defaultValue, maximum = Number.MAX_SAFE_INTEGER) => {
       if (value === undefined) return defaultValue;
 
-      if (typeof value !== 'string' || !/^\\d+$/.test(value)) {
+      if (typeof value !== 'string' || !/^\d+$/.test(value)) {
         return null;
       }
 
@@ -71,8 +71,8 @@ exports.getOrderHistory = async (req, res, next) => {
       return parsed;
     };
 
-    const parsedPage = parsePositiveInteger(page, 1, 'page');
-    const parsedLimit = parsePositiveInteger(limit, 10, 'limit', 100);
+    const parsedPage = parsePositiveInteger(page, 1);
+    const parsedLimit = parsePositiveInteger(limit, 10, 100);
 
     if (parsedPage === null || parsedLimit === null) {
       return res.status(400).json({
