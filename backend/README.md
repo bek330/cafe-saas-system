@@ -1,75 +1,72 @@
-# QR Cafe Menu System - Backend
+# Café Menu System - Backend
 
-This folder contains the backend API for the QR Cafe Menu System, built with Express and PostgreSQL.
+This folder contains the Express API for the café ordering and management application. It uses PostgreSQL for application data and Cloudinary for uploaded images.
 
-## Overview
+## Features
 
-The backend provides the core server-side functionality for the cafe app, including user authentication, menu and category management, order processing, file uploads, and admin dashboard metrics.
-
-## Key Features
-
-- JWT-based authentication for admin access
-- Public menu browsing and order creation
-- Admin-only management for categories, menu items, and users
-- Order status updates and history retrieval
-- Image upload support using Cloudinary
-- Dashboard summary data for orders, revenue, top items, and peak hours
+- JWT-based administrator authentication
+- Public menu and category reads
+- Public customer order creation
+- Administrator-only menu and category management
+- Administrator-only order queue, order status updates, and order history
+- Administrator-only image uploads to Cloudinary
+- Administrator-only dashboard reporting
 
 ## Project Structure
 
 - `server.js` — application entrypoint
-- `src/app.js` — Express app configuration and route setup
-- `src/config/` — database and Cloudinary connection configuration
-- `src/routes/` — API route definitions for auth, categories, menu, orders, users, uploads, and admin dashboard
-- `src/controllers/` — request handlers for business logic and database interaction
-- `src/services/` — service layer implementation supporting controllers
-- `src/middleware/` — authentication, authorization, and error-handling middleware
+- `src/app.js` — Express app configuration and route mounting
+- `src/config/` — PostgreSQL and Cloudinary configuration
+- `src/routes/` — API route definitions
+- `src/controllers/` — request handlers
+- `src/services/` — business logic and database operations
+- `src/middleware/` — authentication, authorization, and error handling
 
-## Dependencies
+## Requirements
 
-- `express` — HTTP server framework
-- `cors` — cross-origin request handling
-- `dotenv` — environment variable loader
-- `jsonwebtoken` — JWT auth
-- `bcrypt` — password hashing
-- `pg` — PostgreSQL client
-- `multer` — file upload parsing
-- `cloudinary` — media upload and storage
+- Node.js
+- npm
+- PostgreSQL database
+- Cloudinary account for image uploads
 
-## Environment Variables
+## Environment Setup
 
-Create a `.env` file with these values:
+Create a local `.env` file in this folder using `.env.example` as a template.
 
-- `PORT` — server port (default: `5000`)
+Required variables:
+
+- `PORT` — API port (defaults to `5000`)
 - `DATABASE_URL` — PostgreSQL connection string
-- `JWT_SECRET` — secret key for JWT tokens
+- `JWT_SECRET` — long, random signing secret; authentication will not operate without it
 - `CLOUDINARY_CLOUD_NAME` — Cloudinary cloud name
 - `CLOUDINARY_API_KEY` — Cloudinary API key
 - `CLOUDINARY_API_SECRET` — Cloudinary API secret
 
-## Local Setup
+Never commit the real `.env` file or production credentials.
 
-Install dependencies:
+## Install and Run
 
-```bash
-npm install
-```
+From this directory:
 
-Start the backend in development mode:
+    npm install
+    npm run dev
 
-```bash
-npm run dev
-```
+For production:
 
-Start the backend in production mode:
+    npm start
 
-```bash
-npm start
-```
+## API Access
 
-## Notes
+| Route prefix | Access | Purpose |
+| --- | --- | --- |
+| `/auth` | Public login | Obtain a JWT |
+| `/categories` | Public reads; admin writes | Manage menu categories |
+| `/menu` | Public reads; admin writes | Manage menu items |
+| `/orders` | Public order creation; admin queue and updates | Process customer orders |
+| `/users` | Admin | Manage staff accounts |
+| `/upload` | Admin | Upload menu images |
+| `/admin/dashboard` | Admin | View reporting metrics |
 
-- The backend is designed to work with the frontend app in `frontend/vite-project`.
-- API routes are mounted under paths like `/auth`, `/categories`, `/menu`, `/orders`, `/users`, `/upload`, and `/admin/dashboard`.
-- Admin routes require a valid JWT and admin role.
-- File uploads are validated for type and size before sending to Cloudinary.
+Protected endpoints expect an `Authorization: Bearer <token>` header. Tokens expire after 12 hours.
+
+The frontend application is in `../frontend/vite-project`.
