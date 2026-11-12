@@ -56,6 +56,23 @@ exports.getOrderHistory = async (req, res, next) => {
   try {
     const { range, status, search, page, limit } = req.query;
 
+    const validRanges = ['today', 'all'];
+    const validStatuses = ['pending', 'accepted', 'completed', 'cancelled', 'all'];
+
+    if (range !== undefined && (typeof range !== 'string' || !validRanges.includes(range))) {
+      return res.status(400).json({ error: 'Range must be either today or all' });
+    }
+
+    if (status !== undefined && (typeof status !== 'string' || !validStatuses.includes(status))) {
+      return res.status(400).json({ error: 'Invalid order status filter' });
+    }
+
+    if (search !== undefined && (typeof search !== 'string' || search.length > 100)) {
+      return res.status(400).json({ error: 'Search must be a string no longer than 100 characters' });
+    }
+
+    const normalizedSearch = typeof search === 'string' ? search.trim() : undefined;
+
     const parsePositiveInteger = (value, defaultValue, maximum = Number.MAX_SAFE_INTEGER) => {
       if (value === undefined) return defaultValue;
 
@@ -87,7 +104,7 @@ exports.getOrderHistory = async (req, res, next) => {
     const result = await orderService.getOrderHistory({
       range,
       status,
-      search,
+      search: normalizedSearch,
       page: parsedPage,
       limit: parsedLimit,
     });
