@@ -55,8 +55,43 @@ exports.updateStatus = async (req, res, next) => {
 exports.getOrderHistory = async (req, res, next) => {
   try {
     const { range, status, search, page, limit } = req.query;
-    const result = await orderService.getOrderHistory({ range, status, search, page, limit });
-    res.json(result);
+
+    const parsePositiveInteger = (value, defaultValue, field, maximum = Number.MAX_SAFE_INTEGER) => {
+      if (value === undefined) return defaultValue;
+
+      if (typeof value !== 'string' || !/^\\d+$/.test(value)) {
+        return null;
+      }
+
+      const parsed = Number(value);
+      if (!Number.isSafeInteger(parsed) || parsed < 1 || parsed > maximum) {
+        return null;
+      }
+
+      return parsed;
+    };
+
+    const parsedPage = parsePositiveInteger(page, 1, 'page');
+    const parsedLimit = parsePositiveInteger(limit, 10, 'limit', 100);
+
+    if (parsedPage === null || parsedLimit === null) {
+      return res.status(400).json({
+        error: 'Page must be a positive integer and limit must be a positive integer no greater than 100',
+      });
+    }
+
+    if (!Number.isSafeInteger((parsedPage - 1) * parsedLimit)) {
+      return res.status(400).json({ error: 'Pagination values are too large' });
+    }
+
+    const result = await orderService.getOrderHistory({
+      range,
+      status,
+      search,
+      page: parsedPage,
+      limit: parsedLimit,
+    });
+    return res.json(result);
   } catch (err) {
     next(err);
   }
