@@ -1,41 +1,43 @@
-
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
-require('dotenv').config();
 
 const router = express.Router();
 
-const SECRET = process.env.JWT_SECRET || 'fallbacksecret';
-
-// Login route
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body || {};
+
+  if (typeof username !== 'string' || typeof password !== 'string' || !username.trim() || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    return res.status(503).json({ error: 'Authentication is not configured' });
+  }
 
   try {
-    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    const result = await pool.query(
+      'SELECT id, username, role, password_hash FROM users WHERE username = $1',
+      [username.trim()]
+    );
     const user = result.rows[0];
 
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    const match = await bcrypt.compare(password, user.password_hash);
-    if (!match) {
+    if (!user || !(await bcrypt.compare(password, user.password_hash))) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const token = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
-      SECRET,
+      secret,
       { expiresIn: '12h' }
     );
 
-    res.json({ token });
+    return res.json({ token });
   } catch (err) {
     console.error('Login error:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Unable to sign in' });
   }
 });
 
