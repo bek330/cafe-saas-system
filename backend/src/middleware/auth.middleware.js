@@ -1,35 +1,33 @@
-
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
-const SECRET = process.env.JWT_SECRET || 'fallbacksecret';
-
-
-// 🔥 auth guard
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization;
+  const authorization = req.headers.authorization || '';
+  const token = authorization.startsWith('Bearer ')
+    ? authorization.slice(7).trim()
+    : authorization.trim();
 
   if (!token) {
-    return res.status(401).json({ error: 'No token' });
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    return res.status(503).json({ error: 'Authentication is not configured' });
   }
 
   try {
-    const decoded = jwt.verify(token, SECRET);
-    req.user = decoded;
+    req.user = jwt.verify(token, secret);
     next();
   } catch {
-    return res.status(401).json({ error: 'Invalid token' });
+    return res.status(401).json({ error: 'Invalid or expired token' });
   }
 };
 
-// 🔥 role guard
-const requireRole = (role) => {
-  return (req, res, next) => {
-    if (req.user.role !== role) {
-      return res.status(403).json({ error: 'Forbidden' });
-    }
-    next();
-  };
+const requireRole = (role) => (req, res, next) => {
+  if (!req.user || req.user.role !== role) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+  next();
 };
 
 module.exports = { verifyToken, requireRole };
