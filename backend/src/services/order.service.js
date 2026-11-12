@@ -20,13 +20,16 @@ exports.createOrder = async (table_number, items) => {
 
     // 2. Insert items
     for (const item of items) {
+      // Only currently available menu items can be ordered.
       const result = await client.query(
-        "SELECT price FROM menu_items WHERE id = $1",
+        "SELECT price FROM menu_items WHERE id = $1 AND is_available = TRUE",
         [item.menu_item_id]
       );
 
       if (result.rows.length === 0) {
-        throw new Error(`Item not found: ${item.menu_item_id}`);
+        const error = new Error('One or more items are unavailable or no longer exist');
+        error.statusCode = 400;
+        throw error;
       }
 
       const price = Number(result.rows[0].price);
