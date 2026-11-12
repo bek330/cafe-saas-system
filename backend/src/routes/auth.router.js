@@ -2,10 +2,11 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
+const loginRateLimit = require('../middleware/loginRateLimit.middleware');
 
 const router = express.Router();
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginRateLimit, async (req, res) => {
   const { username, password } = req.body || {};
 
   if (typeof username !== 'string' || typeof password !== 'string' || !username.trim() || !password) {
