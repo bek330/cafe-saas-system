@@ -2,11 +2,18 @@ const express = require("express");
 const router = express.Router();
 
 const pool = require("../config/db");
+const { verifyToken, requireRole } = require("../middleware/auth.middleware");
+
+router.use(verifyToken, requireRole("admin"));
 
 router.get("/summary", async (req, res) => {
   try {
-    const { range = '7' } = req.query; // Default to 7 days
-    const days = parseInt(range);
+    const { range = '7' } = req.query;
+    const days = Number.parseInt(range, 10);
+
+    if (!Number.isInteger(days) || days < 1 || days > 365) {
+      return res.status(400).json({ error: 'Range must be an integer between 1 and 365 days' });
+    }
 
     // Current period stats
     const statsQuery = await pool.query(`
