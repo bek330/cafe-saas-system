@@ -22,24 +22,90 @@ class UserService {
   }
 
   async updateUser(id, username, password, role) {
-    let query = 'UPDATE users SET username = $1, role = $2';
-    let params = [username, role];
+    const client = await pool.connect();
 
-    if (password) {
-      const passwordHash = await bcrypt.hash(password, 10);
-      query += ', password_hash = $3';
-      params.push(passwordHash);
+    try {
+      await client.query('BEGIN');
+
+      if (role !== 'admin') {
+        // Lock administrator rows so concurrent demotions/deletions cannot remove the final admin.
+        const admins = await client.query(
+          "SELECT id FROM users WHERE role = 'admin' FOR UPDATE"
+        );
+        const target = await client.query(
+          'SELECT role FROM users WHERE id = $1 FOR UPDATE',
+          [id]
+        );
+
+        if (target.rows.length === 0) {
+          await client.query('COMMIT');
+          return undefined;
+        }
+
+        if (target.rows[0].role === 'admin' && admins.rows.length <= 1) {
+          const error = new Error('At least one administrator account must remain');
+          error.statusCode = 409;
+          throw error;
+        }
+      }
+
+      let query = 'UPDATE users SET username = $1, role = $2';
+      const params = [username, role];
+
+      if (password) {
+        const passwordHash = await bcrypt.hash(password, 10);
+        query += ', password_hash = $3';
+        params.push(passwordHash);
+      }
+
+      query += ' WHERE id = $' + (params.length + 1) + ' RETURNING id, username, role, created_at';
+      params.push(id);
+
+      const result = await client.query(query, params);
+      await client.query('COMMIT');
+      return result.rows[0];
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
     }
-
-    query += ' WHERE id = $' + (params.length + 1) + ' RETURNING id, username, role, created_at';
-    params.push(id);
-
-    const result = await pool.query(query, params);
-    return result.rows[0];
   }
 
   async deleteUser(id) {
-    await pool.query('DELETE FROM users WHERE id = $1', [id]);
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      // Acquire admin-row locks in a consistent order before checking the final-admin rule.
+      const admins = await client.query(
+        "SELECT id FROM users WHERE role = 'admin' FOR UPDATE"
+      );
+      const target = await client.query(
+        'SELECT role FROM users WHERE id = $1 FOR UPDATE',
+        [id]
+      );
+
+      if (target.rows.length === 0) {
+        await client.query('COMMIT');
+        return;
+      }
+
+      if (target.rows[0].role === 'admin' && admins.rows.length <= 1) {
+        const error = new Error('At least one administrator account must remain');
+        error.statusCode = 409;
+        throw error;
+      }
+
+      await client.query('DELETE FROM users WHERE id = $1', [id]);
+      await client.query('COMMIT');
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
   }
 
   async getUserByUsername(username) {
