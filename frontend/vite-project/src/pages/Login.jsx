@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { jwtDecode } from "jwt-decode";
 import { login as loginApi } from "../api/authApi";
 import { motion as Motion } from "framer-motion";
 import { IoLockClosedOutline, IoPersonOutline, IoKeyOutline, IoAlertCircleOutline } from "react-icons/io5";
@@ -11,23 +12,23 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
 
   const handleLogin = async () => {
     setLoading(true);
     setError("");
     try {
       const data = await loginApi(username, password);
-      login(data.token);
+      const payload = jwtDecode(data.token);
 
-      // decode token to get role
-      const payload = JSON.parse(atob(data.token.split(".")[1]));
-
-      if (payload.role) {
-        navigate("/admin/dashboard");
-      } else {
-        setError("Invalid role");
+      if (payload.role !== "admin") {
+        logout();
+        setError("This account does not have administrator access.");
+        return;
       }
+
+      login(data.token);
+      navigate("/admin/dashboard");
     } catch (err) {
       setError(err.message || "Something went wrong");
       console.error("Login error:", err);
